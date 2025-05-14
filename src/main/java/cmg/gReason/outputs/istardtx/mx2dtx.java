@@ -1,4 +1,4 @@
-package cmg.gReason;
+package cmg.gReason.outputs.istardtx;
 
 import java.io.File;
 
@@ -7,7 +7,7 @@ import cmg.gReason.inputs.drawio.ConditionExpressionParser;
 import cmg.gReason.inputs.drawio.DrawIOReader;
 import cmg.gReason.inputs.drawio.IdentifierRegistry;
 
-public class g2dt {
+public class mx2dtx {
 	
 	static String inputFile = "";
 	static String outputFile ="";

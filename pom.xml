@@ -46,7 +46,7 @@
                 <artifactId>exec-maven-plugin</artifactId>
                 <version>3.1.0</version>
                 <configuration>
-                    <mainClass>cmg.gReason.g2dt</mainClass>
+                    <mainClass>cmg.gReason.outputs.istardtx.mx2dtx</mainClass>
                 </configuration>
             </plugin>
 
