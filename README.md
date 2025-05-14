@@ -4,11 +4,11 @@
 
 iStarDT both extends and subsets the iStar 2.0 modeling language to allow high-level decision-theoretic (DT) modeling of agents. iStarDT-V is a visual component of iStarDT proposing specific shapes for building visual models. iStarDT-X is an XML-based language for storing and sharing iStarDT models.
 
-mx2dtx converts iStarDT-V models built in mxGraph-compatible tools and saved in an the native mxGraph XML format into iStarDT-X files for usage by other tools within the iStarDT ecosystem.
+`mx2dtx` converts iStarDT-V models built in mxGraph-compatible tools and saved in an the native mxGraph XML format into iStarDT-X files for usage by other tools within the iStarDT ecosystem.
 
 ## Building iStarDT-V models in draw.io
 
-iStarDT-V diagrams can be created in draw.io, mxGraph front-end, using a library of shapes specifically created for the purpose. In draw.io (we have tried version 14.1.8) go to `File --> Open Library` and select the [iStarDT-V.xml](https://github.com/cmg-york/mx2dtx/blob/main/src/main/resources/iStarDT-V.xml) file. Continue building the model exclusively using the library, and save the result in an uncompressed format. In version 14.1.8 of draw.io go to `File --> Properties` and uncheck `Compressed`. 
+iStarDT-V diagrams can be created in [draw.io](https://app.diagrams.net/), [mxGraph](https://jgraph.github.io/mxgraph/) front-end, using a library of shapes specifically created for the purpose. In draw.io (we have tried version 14.1.8) go to `File --> Open Library` and select the [iStarDT-V.xml](https://github.com/cmg-york/mx2dtx/blob/main/src/main/resources/iStarDT-V.xml) file. Continue building the model exclusively using the library, and save the result in an uncompressed format. In version 14.1.8 of draw.io go to `File --> Properties` and uncheck `Compressed`. 
 
 
 ## Installing and using mx2dtx
@@ -17,12 +17,12 @@ iStarDT-V diagrams can be created in draw.io, mxGraph front-end, using a library
 - clone the repository: `git clone https://github.com/cmg-york/mx2dtx`
 - `cd mx2dtx`
 - `mvn compile` to compile
-- `mvn exec:java` will translate an example specification and generate output on standard output
+- `mvn exec:java` will translate [an example specification](https://github.com/cmg-york/mx2dtx/blob/main/src/main/resources/OragnizeTravelNew.drawio) and generate output on standard output
 - Run with `mvn exec:java -Dexec.args="-f [drawio input file] -o [iStarDT-X output file]"`, for your own input files as well as to save the output. `-h` option describes usage. **NOTE:** if you are using Windows PowerShell, add `--%` between `exec:java` and `-Dexec` 
 - If you want to run from native java call: `java -cp .\target\classes cmg.gReason.outputs.istardtx.mx2dtx -f [draw io input file] -o [iStarDT-X output file]`
 
 
-## Notes
+## Usage Notes
 
 - Error checking of diagrams is minimal at this point. It is important that all links/connectors properly connect directly on the whole shapes. This can be achieved by dragging the end-point of the link on the target shape and drop it when the shape acquires a blue outline.
 - Effects contain unique predicates (rather than lists thereof).
