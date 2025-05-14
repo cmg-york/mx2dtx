@@ -17,7 +17,7 @@ iStarDT-V diagrams can be created in [draw.io](https://app.diagrams.net/), [mxGr
 - clone the repository: `git clone https://github.com/cmg-york/mx2dtx`
 - `cd mx2dtx`
 - `mvn compile` to compile
-- `mvn exec:java` will translate [an example specification](https://github.com/cmg-york/mx2dtx/blob/main/src/main/resources/OragnizeTravelNew.drawio) and generate output on standard output
+- `mvn exec:java` will translate [an example diagram](https://github.com/cmg-york/mx2dtx/blob/main/src/main/resources/OragnizeTravelNew.drawio) and generate the iStarDT spec on the standard output
 - Run with `mvn exec:java -Dexec.args="-f [drawio input file] -o [iStarDT-X output file]"`, for your own input files as well as to save the output. `-h` option describes usage. **NOTE:** if you are using Windows PowerShell, add `--%` between `exec:java` and `-Dexec` 
 - If you want to run from native java call: `java -cp .\target\classes cmg.gReason.outputs.istardtx.mx2dtx -f [draw io input file] -o [iStarDT-X output file]`
 
