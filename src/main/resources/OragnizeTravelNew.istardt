@@ -1,0 +1,197 @@
+
+<iStarDT>
+
+
+<!--
+*** H E A D E R ***
+-->
+
+<header title = ""
+    author = ""
+    source = ""
+    lastUpdated = "2025-05-13 20:09:43">
+</header>
+
+
+<!--
+*** O P T I O N S ***
+-->
+<options continuous = "false"
+    infeasibleActionPenalty = "100">
+</options>
+
+
+<!--
+*** A C T O R S ***
+-->
+<actors>
+<actor name="default" description="">
+
+
+<!--
+*** G O A L S ***
+-->
+<goals>
+   <goal name = "ticketsBooked" description = "Tickets Booked" root = "false" terminal = "false" episodeLength = "1">
+      <refinement type = "OR">
+         <chindGoal ref = "bookRefundableTickets"/>
+         <chindGoal ref = "bookNonRefundableTickets"/>
+      </refinement>
+   </goal>
+   <goal name = "travelOrganized" description = "Travel Organized" root = "true" terminal = "false" episodeLength = "1">
+      <refinement type = "AND">
+         <chindGoal ref = "ticketsBooked"/>
+         <chindGoal ref = "authorizationSigned"/>
+      </refinement>
+   </goal>
+   <goal name = "authorizationSigned" description = "Authorization Signed" root = "false" terminal = "false" episodeLength = "1">
+      <refinement type = "OR">
+         <chindGoal ref = "committeeAuthorizes"/>
+         <chindGoal ref = "headAuthorizes"/>
+      </refinement>
+   </goal>
+</goals>
+
+
+<!--
+*** T A S K S ***
+-->
+<tasks>
+   <task name = "bookRefundableTickets" description = "Book Refundable Tickets">
+      <effectGroup>
+         <effect name = "refTixSucc" description = "refTixSucc" satisfying = "true" probability = "0.95">
+            <turnsTrue>refTixSucc</turnsTrue>
+         </effect>
+         <effect name = "refTixFailed" description = "refTixFailed" satisfying = "false" probability = "0.05">
+            <turnsTrue>refTixFailed</turnsTrue>
+         </effect>
+      </effectGroup>
+   </task>
+   <task name = "bookNonRefundableTickets" description = "Book Non-Refundable Tickets">
+      <effectGroup>
+         <effect name = "nonRefTixFailed" description = "nonRefTixFailed" satisfying = "true" probability = "0.5">
+            <turnsTrue>nonRefTixFailed</turnsTrue>
+         </effect>
+         <effect name = "nonRefTixFailed" description = "nonRefTixFailed" satisfying = "false" probability = "0.5">
+            <turnsTrue>nonRefTixFailed</turnsTrue>
+         </effect>
+      </effectGroup>
+   </task>
+   <task name = "committeeAuthorizes" description = "Committee Authorizes">
+      <effectGroup>
+         <effect name = "cmtGranted" description = "cmtGranted" satisfying = "true" probability = "0.5">
+            <turnsTrue>cmtGranted</turnsTrue>
+         </effect>
+         <effect name = "cmtDenied" description = "cmtDenied" satisfying = "false" probability = "0.5">
+            <turnsTrue>cmtDenied</turnsTrue>
+         </effect>
+      </effectGroup>
+      <npr>
+         <taskID>bookNonRefundableTickets</taskID>
+      </npr>
+   </task>
+   <task name = "headAuthorizes" description = "Head Authorizes">
+      <effectGroup>
+         <effect name = "headGranted" description = "headGranted" satisfying = "true" probability = "0.7">
+            <turnsTrue>headGranted</turnsTrue>
+         </effect>
+         <effect name = "headDenied" description = "headDenied" satisfying = "false" probability = "0.3">
+            <turnsTrue>headDenied</turnsTrue>
+         </effect>
+      </effectGroup>
+      <pre>
+         <and><or><or><taskID>bookRefundableTickets</taskID><and><and><and><prev><predicateID>nonRefTixFailed</predicateID></prev><gt><left><variableID>cost</variableID></left><right><numConst>50</numConst></right></gt></and><lt><left><qualID>privacy</qualID></left><right><numConst>0.5</numConst></right></lt></and><predicateID>headAvailable</predicateID></and></or><predicateID>flightsExist</predicateID></or><predicateID>nonRefTixFailed</predicateID></and>
+      </pre>
+   </task>
+</tasks>
+
+
+<!--
+*** Q U A L I T I E S ***
+-->
+<qualities>
+   <quality name = "avoidMoneyLoss" description = "Avoid Money Loss" root = "PROBLEM">
+      <multiply><num-const>1.0</num-const><predicateID>refTixSucc<predicateID><mulitply>
+   </quality>
+   <quality name = "privacy" description = "Privacy" root = "PROBLEM">
+      <add>
+         <multiply><num-const>0.8</num-const><taskID>headAuthorizes<taskID><mulitply>
+         <multiply><num-const>0.3</num-const><taskID>committeeAuthorizes<taskID><mulitply>
+      </add>
+   </quality>
+   <quality name = "overallQuality" description = "Overall Quality" root = "PROBLEM">
+      <add>
+         <multiply><num-const>0.7</num-const><qualID>avoidMoneyLoss<qualID><mulitply>
+         <multiply><num-const>0.3</num-const><qualID>privacy<qualID><mulitply>
+      </add>
+   </quality>
+</qualities>
+
+
+<!--
+*** CO N D I T I O N   B O X E S ***
+-->
+<condBoxes>
+<condBox>
+   <or><or><taskID>bookRefundableTickets</taskID><and><and><and><prev><predicateID>nonRefTixFailed</predicateID></prev><gt><left><variableID>cost</variableID></left><right><numConst>50</numConst></right></gt></and><lt><left><qualID>privacy</qualID></left><right><numConst>0.5</numConst></right></lt></and><predicateID>headAvailable</predicateID></and></or><predicateID>flightsExist</predicateID></or></condBox>
+</condBoxes>
+
+
+<!--
+*** I N I T I A L I Z AT I O N S ***
+-->
+<initializations>
+      <initialization element = "flightsExist">true<initialization>
+      <initialization element = "headAvailable">true<initialization>
+      <initialization element = "cost">70</initialization>
+</initializations>
+
+
+<!--
+*** C R O S S   R U N S  ***
+-->
+<crossRuns>
+      <crossRun><qualID>avoidMoneyLoss</qualID></crossRun>
+      <crossRun><qualID>privacy</qualID></crossRun>
+      <crossRun><predicateID>headGranted</predicateID></crossRun>
+      <crossRun><variableID>cost</variableID></crossRun>
+</crossRuns>
+
+
+<!--
+*** E X P O R T S ***
+-->
+<exportedSet>
+      <export continuous = "false"><goalID>ticketsBooked</goalID></export>
+      <export continuous = "false"><qualID>overallQuality</qualID></export>
+      <export continuous = "false"><predicateID>cmtGranted</predicateID></export>
+      <export continuous = "true" minVal = "0" maxVal = "1"><qualID>privacy</qualID></export>
+</exportedSet>
+
+
+<!--
+*** P R E D I C A T E S ***
+-->
+<predicates>
+   <predicate description = "">nonRefTixFailed</predicate>
+   <predicate description = "">headGranted</predicate>
+   <predicate description = "">flightsExist</predicate>
+   <predicate description = "">cmtGranted</predicate>
+   <predicate description = "">cmtDenied</predicate>
+   <predicate description = "">refTixSucc</predicate>
+   <predicate description = "">headAvailable</predicate>
+   <predicate description = "">headDenied</predicate>
+   <predicate description = "">refTixFailed</predicate>
+</predicates>
+
+
+<!--
+*** V A R I A B L E S ***
+-->
+<variables>
+   <variable description = "">cost</variables>
+</variables>
+
+</actor>
+</actors>
+</iStarDT>
