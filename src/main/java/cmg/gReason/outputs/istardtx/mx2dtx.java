@@ -16,7 +16,7 @@ public class mx2dtx {
 	
 	private static String printUsage() {
 		String s = "";
-		s = "Usage: dtg [-options]\n" + 
+		s = "Usage: mx2dtx [-options]\n" + 
 				"where options are:\n" + 
 				"    -f filename \t draw.io XML file \n" + 
 				"    -o filename \t iStarDT-X XML file \n" + 
@@ -49,7 +49,8 @@ public class mx2dtx {
 	                    }
 	                    break;
 	            	case 'h':
-	                    System.out.println(printUsage());          		
+	                    System.out.println(printUsage());
+	                    System.exit(0);
 	                default:
                     	printUsage = true;
 	                	throw new Exception("Unknown option: " + option);
@@ -62,17 +63,18 @@ public class mx2dtx {
        
        if (args.length == 0) {
        		printUsage = true;
-       		//throw new Exception("No input file");
-       		throw new Exception("No input file.");
+       		throw new Exception("No arguments provided. Use -h for help.");
        }
 
        if (inputFile.isEmpty()) {
     	   printUsage = true;
-    	   throw new Exception("No input file.");
+    	   throw new Exception("No input file specified. Use -f to specify input file.");
        }
        
        File inpF = new File(inputFile);
-       if (!inpF.exists()) throw new Exception("Input file does not exist:" + inputFile);
+       if (!inpF.exists()) {
+           throw new Exception("Input file does not exist: " + inputFile);
+       }
 	}
 	
 	
@@ -85,22 +87,13 @@ public class mx2dtx {
 		  processArgs(args);
 		  app.setInFile(inputFile);
 		  app.setOutFile(outputFile);
-	  } catch (Exception e1) {
-		  System.err.println(e1.getMessage());
-		  if (printUsage)
+		  app.translateToIstarDTX();
+	  } catch (Exception e) {
+		  System.err.println("Error: " + e.getMessage());
+		  if (printUsage) {
 		  	System.out.println(printUsage());
-          try {
-        	System.err.println("Error reading file: trying default test file."); 
-        	app.setInFile("./src/main/resources/OragnizeTravelNew.drawio");
-		  	} catch (Exception e) {
-		  		System.out.println("Current directory:" + System.getProperty("user.dir"));
-		  	}
+		  }
+		  System.exit(1);
 	  }
-
-	  //ConditionExpressionParser c = new ConditionExpressionParser(new IdentifierRegistry());
-	  //System.out.println(c.parse("bookRefundableTickets OR PREV(nonRefTixFailed) AND (cost GT 50) AND (privacy LT 0.5) AND headAvailable OR flightsExist"));
-	  
-	  app.translateToIstarDTX();
-	  
 	}
 }
