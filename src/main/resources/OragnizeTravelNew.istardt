@@ -1,5 +1,7 @@
-
-<iStarDT>
+<?xml version="1.0" encoding="UTF-8"?>
+<iStarDT xmlns="https://example.org/istar-dt-x"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="https://example.org/istar-dt-x ../xsd/istar-rl-schema_v4.xsd">
 
 
 <!--
@@ -9,7 +11,7 @@
 <header title = ""
     author = ""
     source = ""
-    lastUpdated = "2025-05-14 12:46:10">
+    lastUpdated = "2025-05-20 00:29:25">
 </header>
 
 
@@ -100,7 +102,7 @@
          </effect>
       </effectGroup>
       <pre>
-         <and><or><or><taskID>bookRefundableTickets</taskID><and><and><and><prev><predicateID>nonRefTixFailed</predicateID></prev><gt><left><variableID>cost</variableID></left><right><numConst>50</numConst></right></gt></and><lt><left><qualID>privacy</qualID></left><right><numConst>0.5</numConst></right></lt></and><predicateID>headAvailable</predicateID></and></or><predicateID>flightsExist</predicateID></or><predicateID>nonRefTixFailed</predicateID></and>
+         <and><or><or><taskID>bookRefundableTickets</taskID><and><and><and><previous><predicateID>nonRefTixFailed</predicateID></previous><gt><left><variableID>cost</variableID></left><right><numConst>50</numConst></right></gt></and><lt><left><qualID>privacy</qualID></left><right><numConst>0.5</numConst></right></lt></and><predicateID>headAvailable</predicateID></and></or><predicateID>flightsExist</predicateID></or><predicateID>nonRefTixFailed</predicateID></and>
       </pre>
    </task>
 </tasks>
@@ -132,8 +134,8 @@
 *** CO N D I T I O N   B O X E S ***
 -->
 <condBoxes>
-<condBox>
-   <or><or><taskID>bookRefundableTickets</taskID><and><and><and><prev><predicateID>nonRefTixFailed</predicateID></prev><gt><left><variableID>cost</variableID></left><right><numConst>50</numConst></right></gt></and><lt><left><qualID>privacy</qualID></left><right><numConst>0.5</numConst></right></lt></and><predicateID>headAvailable</predicateID></and></or><predicateID>flightsExist</predicateID></or></condBox>
+<condBox name = "default0" >
+   <or><or><taskID>bookRefundableTickets</taskID><and><and><and><previous><predicateID>nonRefTixFailed</predicateID></previous><gt><left><variableID>cost</variableID></left><right><numConst>50</numConst></right></gt></and><lt><left><qualID>privacy</qualID></left><right><numConst>0.5</numConst></right></lt></and><predicateID>headAvailable</predicateID></and></or><predicateID>flightsExist</predicateID></or></condBox>
 </condBoxes>
 
 

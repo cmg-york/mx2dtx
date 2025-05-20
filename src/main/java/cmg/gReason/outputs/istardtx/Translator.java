@@ -126,7 +126,7 @@ public class Translator {
 	 */
 	public String createSpec() {
 		
-		String model = "\n<iStarDT>";
+		String model;
 		String header = "\n\n\n<!--\n*** H E A D E R ***\n-->\n\n";
 		String options = "\n\n\n<!--\n*** O P T I O N S ***\n-->\n";
 		String actors = "\n\n\n<!--\n*** A C T O R S ***\n-->\n<actors>\n";
@@ -142,7 +142,13 @@ public class Translator {
 		String exported = "\n\n\n<!--\n*** E X P O R T S ***\n-->\n<exportedSet>\n";
 		String initializations = "\n\n\n<!--\n*** I N I T I A L I Z AT I O N S ***\n-->\n<initializations>\n";
 	
-		 
+		int cBoxCounter = 0;
+		
+		
+		model = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n"
+				+ "<iStarDT xmlns=\"https://example.org/istar-dt-x\"\r\n"
+				+ "         xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\r\n"
+				+ "         xsi:schemaLocation=\"https://example.org/istar-dt-x ../xsd/istar-rl-schema_v4.xsd\">";
 		
 		header += "<header title = \"\"\n    author = \"\"\n    source = \"\"\n    lastUpdated = \"" + java.time.LocalDateTime.now()
 	    .format(java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")) +  "\">\n</header>";
@@ -278,7 +284,7 @@ public class Translator {
 			 * C O N D I T I O N S  
 			 */
 			} else if (n.getType().equals("precondition")) {
-				condBoxes += "<condBox>\n" + getIndent(1) + parser.parse(n.getLabel()) + "</condBox>\n"; 
+				condBoxes += "<condBox name = \"default" + cBoxCounter++ + "\" >\n" + getIndent(1) + parser.parse(n.getLabel()) + "</condBox>\n"; 
 			
 			/* * 
 			 * I N I T I A L I Z A T I O N S  

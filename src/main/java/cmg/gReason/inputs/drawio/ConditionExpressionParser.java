@@ -65,9 +65,12 @@ public class ConditionExpressionParser {
             String expr = parseExpression(0);
             expect(")");
             return expr;
-        } else if (token.equals("NOT") || token.equals("PREV")) {
+        } else if (token.equals("NOT")) {
             String expr = parseExpression(PRECEDENCE.get(token));
             return "<" + token.toLowerCase() + ">" + expr + "</" + token.toLowerCase() + ">";
+        } else if (token.equals("PREV")) {
+            String expr = parseExpression(PRECEDENCE.get(token));
+            return "<previous>" + expr + "</previous>";
         } else {
             return wrapValue(token, inComparisonContext);
         }
