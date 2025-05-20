@@ -253,7 +253,9 @@ public class Translator {
 				String formEnd = "";
 				int indentAdd = 0;
 				
-				qualities += getIndent(1) + getXMLQuality(n.getCamelLabel(),n.getLabel(),"PROBLEM") + "\n" ;
+				qualities += getIndent(1) + getXMLQuality(n.getCamelLabel(),
+						n.getLabel(),
+						n.equals(g.getQRoot()) ? "true" : "false") + "\n" ;
 				
 				if (n.getIncompingContributions().size()>1) {
 					form = getIndent(2) + "<add>\n";
