@@ -11,7 +11,7 @@
 <header title = ""
     author = ""
     source = ""
-    lastUpdated = "2025-05-20 00:50:49">
+    lastUpdated = "2025-05-20 13:50:46">
 </header>
 
 
@@ -36,20 +36,20 @@
 <goals>
    <goal name = "ticketsBooked" description = "Tickets Booked" root = "false" terminal = "false" episodeLength = "1">
       <refinement type = "OR">
-         <chindGoal ref = "bookRefundableTickets"/>
-         <chindGoal ref = "bookNonRefundableTickets"/>
+         <childGoal ref = "bookRefundableTickets"/>
+         <childGoal ref = "bookNonRefundableTickets"/>
       </refinement>
    </goal>
    <goal name = "travelOrganized" description = "Travel Organized" root = "true" terminal = "false" episodeLength = "1">
       <refinement type = "AND">
-         <chindGoal ref = "ticketsBooked"/>
-         <chindGoal ref = "authorizationSigned"/>
+         <childGoal ref = "ticketsBooked"/>
+         <childGoal ref = "authorizationSigned"/>
       </refinement>
    </goal>
    <goal name = "authorizationSigned" description = "Authorization Signed" root = "false" terminal = "false" episodeLength = "1">
       <refinement type = "OR">
-         <chindGoal ref = "committeeAuthorizes"/>
-         <chindGoal ref = "headAuthorizes"/>
+         <childGoal ref = "committeeAuthorizes"/>
+         <childGoal ref = "headAuthorizes"/>
       </refinement>
    </goal>
 </goals>
@@ -113,18 +113,18 @@
 -->
 <qualities>
    <quality name = "avoidMoneyLoss" description = "Avoid Money Loss" root = "false">
-      <multiply><num-const>1.0</num-const><predicateID>refTixSucc<predicateID><mulitply>
+      <multiply><numConst>1.0</numConst><predicateID>refTixSucc<predicateID><multiply>
    </quality>
    <quality name = "privacy" description = "Privacy" root = "false">
       <add>
-         <multiply><num-const>0.8</num-const><taskID>headAuthorizes<taskID><mulitply>
-         <multiply><num-const>0.3</num-const><taskID>committeeAuthorizes<taskID><mulitply>
+         <multiply><numConst>0.8</numConst><taskID>headAuthorizes<taskID><multiply>
+         <multiply><numConst>0.3</numConst><taskID>committeeAuthorizes<taskID><multiply>
       </add>
    </quality>
    <quality name = "overallQuality" description = "Overall Quality" root = "true">
       <add>
-         <multiply><num-const>0.7</num-const><qualID>avoidMoneyLoss<qualID><mulitply>
-         <multiply><num-const>0.3</num-const><qualID>privacy<qualID><mulitply>
+         <multiply><numConst>0.7</numConst><qualID>avoidMoneyLoss<qualID><multiply>
+         <multiply><numConst>0.3</numConst><qualID>privacy<qualID><multiply>
       </add>
    </quality>
 </qualities>
@@ -143,8 +143,8 @@
 *** I N I T I A L I Z AT I O N S ***
 -->
 <initializations>
-      <initialization element = "flightsExist">true<initialization>
-      <initialization element = "headAvailable">true<initialization>
+      <initialization element = "flightsExist">true</initialization>
+      <initialization element = "headAvailable">true</initialization>
       <initialization element = "cost">70</initialization>
 </initializations>
 
@@ -191,7 +191,7 @@
 *** V A R I A B L E S ***
 -->
 <variables>
-   <variable description = "">cost</variables>
+   <variable description = "">cost</variable>
 </variables>
 
 </actor>

@@ -218,14 +218,14 @@ public class Translator {
 				if (!n.getORChildren().isEmpty()) {
 					goals += getIndent(2) + "<refinement type = \"OR\">\n";
 					for (GMNode ch:n.getORChildren()) {
-						goals += getIndent(3) + "<chindGoal ref = \"" + ch.getCamelLabel() + "\"/>\n";	 
+						goals += getIndent(3) + "<childGoal ref = \"" + ch.getCamelLabel() + "\"/>\n";	 
 					}
 					goals += getIndent(2) + "</refinement>\n";
 				}
 				if (!n.getANDChildren().isEmpty()) {
 					goals += getIndent(2) + "<refinement type = \"AND\">\n";
 					for (GMNode ch:n.getANDChildren()) {
-						goals += getIndent(3) + "<chindGoal ref = \"" + ch.getCamelLabel() + "\"/>\n";
+						goals += getIndent(3) + "<childGoal ref = \"" + ch.getCamelLabel() + "\"/>\n";
 			        }
 					goals += getIndent(2) + "</refinement>\n";
 				}
@@ -265,7 +265,7 @@ public class Translator {
 				
 				for (GMNode inC:n.getIncompingContributions()) {
 					Contribution cont = (Contribution) inC;
-					String factor = "<num-const>" + cont.getContributionWeight() + "</num-const>";
+					String factor = "<numConst>" + cont.getContributionWeight() + "</numConst>";
 					String term = cont.getContributionOrigin().getCamelLabel();
 					
 					if (cont.getContributionOrigin().getType().equals("effect")) {
@@ -277,7 +277,7 @@ public class Translator {
 					} else if (cont.getContributionOrigin().getType().equals("quality")) {
 						term = "<qualID>" + term + "<qualID>";
 					}
-					form += getIndent(2+indentAdd) + "<multiply>" + factor + term + "<mulitply>\n";
+					form += getIndent(2+indentAdd) + "<multiply>" + factor + term + "<multiply>\n";
 				}
 				qualities += form + formEnd;
 				qualities += getIndent(1) + getXMLQualityClose() + "\n";
@@ -320,7 +320,7 @@ public class Translator {
 		 * V A R I A B L E S
 		 */
 		for (String s : identifiers.getVariables()) {
-			variables+= getIndent(1) + "<variable description = \"\">" + s + "</variables>\n";
+			variables+= getIndent(1) + "<variable description = \"\">" + s + "</variable>\n";
 		}
 		
 		tasks += "</tasks>";
@@ -409,7 +409,7 @@ public class Translator {
 		p.parse(initLabel);
 		
 		for (String prop : p.getPropositions()) {
-			result += getIndent(2) + "<initialization element = \"" + prop + "\">true<initialization>\n";  
+			result += getIndent(2) + "<initialization element = \"" + prop + "\">true</initialization>\n";  
 		}
 		
 		for (Entry<String, String> entry : p.getVariables().entrySet()) {
