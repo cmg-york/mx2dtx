@@ -11,7 +11,7 @@
 <header title = ""
     author = ""
     source = ""
-    lastUpdated = "2025-05-20 13:50:46">
+    lastUpdated = "2025-05-21 01:39:03">
 </header>
 
 
@@ -113,18 +113,18 @@
 -->
 <qualities>
    <quality name = "avoidMoneyLoss" description = "Avoid Money Loss" root = "false">
-      <multiply><numConst>1.0</numConst><predicateID>refTixSucc<predicateID><multiply>
+      <multiply><numConst>1.0</numConst><predicateID>refTixSucc</predicateID></multiply>
    </quality>
    <quality name = "privacy" description = "Privacy" root = "false">
       <add>
-         <multiply><numConst>0.8</numConst><taskID>headAuthorizes<taskID><multiply>
-         <multiply><numConst>0.3</numConst><taskID>committeeAuthorizes<taskID><multiply>
+         <multiply><numConst>0.8</numConst><taskID>headAuthorizes</taskID></multiply>
+         <multiply><numConst>0.3</numConst><taskID>committeeAuthorizes</taskID></multiply>
       </add>
    </quality>
    <quality name = "overallQuality" description = "Overall Quality" root = "true">
       <add>
-         <multiply><numConst>0.7</numConst><qualID>avoidMoneyLoss<qualID><multiply>
-         <multiply><numConst>0.3</numConst><qualID>privacy<qualID><multiply>
+         <multiply><numConst>0.7</numConst><qualID>avoidMoneyLoss</qualID></multiply>
+         <multiply><numConst>0.3</numConst><qualID>privacy</qualID></multiply>
       </add>
    </quality>
 </qualities>

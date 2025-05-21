@@ -269,15 +269,15 @@ public class Translator {
 					String term = cont.getContributionOrigin().getCamelLabel();
 					
 					if (cont.getContributionOrigin().getType().equals("effect")) {
-						term = "<predicateID>" + term + "<predicateID>"; 
+						term = "<predicateID>" + term + "</predicateID>"; 
 					} else if (cont.getContributionOrigin().getType().equals("goal")) {
-						term = "<goalID>" + term + "<goalID>";
+						term = "<goalID>" + term + "</goalID>";
 					} else if (cont.getContributionOrigin().getType().equals("task")) { 
-						term = "<taskID>" + term + "<taskID>";
+						term = "<taskID>" + term + "</taskID>";
 					} else if (cont.getContributionOrigin().getType().equals("quality")) {
-						term = "<qualID>" + term + "<qualID>";
+						term = "<qualID>" + term + "</qualID>";
 					}
-					form += getIndent(2+indentAdd) + "<multiply>" + factor + term + "<multiply>\n";
+					form += getIndent(2+indentAdd) + "<multiply>" + factor + term + "</multiply>\n";
 				}
 				qualities += form + formEnd;
 				qualities += getIndent(1) + getXMLQualityClose() + "\n";

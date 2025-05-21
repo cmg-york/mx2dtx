@@ -1,10 +1,10 @@
-# mx2dtx: mxGraph iStarDT-V to iStarDT-X converter
+# mx2dtx: an mxGraph to iStarDT-X Adapter for iStarDT-V
 
-`mx2dtx` is a converter from iStarDT-V models build using mxGraph to the XML representation of iStarDT called iStarDT-X.
+`mx2dtx` is a converter of iStarDT-V models build using mxGraph to the XML representation of iStar-DT called iStarDT-X.
 
-iStarDT both extends and subsets the iStar 2.0 modeling language to allow high-level decision-theoretic (DT) modeling of agents. iStarDT-V is a visual component of iStarDT proposing specific shapes for building visual models. iStarDT-X is an XML-based language for storing and sharing iStarDT models.
+iStar-DT both extends and subsets the iStar 2.0 modeling language to allow high-level decision-theoretic (DT) modeling of agents. iStarDT-V is a visual component of iStar-DT proposing specific shapes for building diagrammatic representations. iStarDT-X is an XML-based language for storing and sharing iStar-DT models.
 
-`mx2dtx` converts iStarDT-V models built in mxGraph-compatible tools and saved in an the native mxGraph XML format into iStarDT-X files for usage by other tools within the iStarDT ecosystem.
+`mx2dtx` converts iStarDT-V models built in mxGraph-compatible tools and saved in an the native mxGraph XML format into iStarDT-X files for usage by other tools within the iStar-DT ecosystem.
 
 ## Building iStarDT-V models in draw.io
 
