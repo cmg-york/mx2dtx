@@ -21,17 +21,49 @@ public class GraphElementFactory {
 		String type = e.getAttribute("concept");
 		GraphElement c = null;
 		
+		
 		switch(type) {
 		/* Entities */
 		case "goal":
 		case "task":
 		case "quality":
+			c = new GraphElement(e.getAttribute("id"),
+								type,
+								e.getAttribute("label"),
+								"entity",
+								e.getAttribute("actor"),
+								e.getAttribute("formula"),
+								e.getAttribute("dtxFormula"),
+								e.getAttribute("notes"));
+			c.setQRoot(Boolean.parseBoolean(e.getAttribute("root")));
+			c.setRunNum(e.getAttribute("runs"));
+			break;
+		case "variable":
+			c = new GraphElement(e.getAttribute("id"),
+					type,
+					e.getAttribute("label"),
+					"entity",
+					e.getAttribute("actor"),
+					e.getAttribute("formula"),
+					e.getAttribute("dtxFormula"),
+					e.getAttribute("notes"));
+			break;
 		case "precondition":
+			c = new GraphElement(e.getAttribute("id"),
+					type,
+					e.getAttribute("label"),
+					"entity",
+					e.getAttribute("actor"),
+					e.getAttribute("formula"),
+					e.getAttribute("dtxFormula"),
+					e.getAttribute("notes"));
+
+			break;
 		case "initialization":
 		case "export":
 		case "crossrun":
 		case "effectGroup":
-			c = new GraphElement(e.getAttribute("id"),type,e.getAttribute("label"),"entity",e.getAttribute("actor"));
+			c = new GraphElement(e.getAttribute("id"),type,e.getAttribute("label"),"entity",e.getAttribute("formula"),e.getAttribute("notes"));
 			break;
 		case "effect":
 			c = new GraphElement(e.getAttribute("id"),type,e.getAttribute("label"),"entity");

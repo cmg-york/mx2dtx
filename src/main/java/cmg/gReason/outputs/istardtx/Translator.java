@@ -81,6 +81,8 @@ public class Translator {
 		//First build the identifier registry based on condition boxes
 		buildIdentifierRegistry();
 		
+		//TODO: Process duplicate quality goals
+		
 		//Performs the translation
 		spec = createSpec();
 		
@@ -214,11 +216,17 @@ public class Translator {
 			} else if (n.getType().equals("goal")) {
 				goals += getIndent(1) + getXMLGoal(n.getCamelLabel(),n.getLabel(),
 						g.getRoot().equals(n) ? "true" : "false",
-						"false", "1") + "\n" ;
+						"false", n.getRuns()) + "\n" ;
 				if (!n.getORChildren().isEmpty()) {
 					goals += getIndent(2) + "<refinement type = \"OR\">\n";
 					for (GMNode ch:n.getORChildren()) {
-						goals += getIndent(3) + "<childGoal ref = \"" + ch.getCamelLabel() + "\"/>\n";	 
+						if (ch.getType().equals("goal")) {
+							goals += getIndent(3) + "<childGoal ref = \"" + ch.getCamelLabel() + "\"/>\n";
+						} else if (ch.getType().equals("task")) {
+							goals += getIndent(3) + "<childTask ref = \"" + ch.getCamelLabel() + "\"/>\n";
+						} else {
+							System.err.println("Child of goal should be either goal or task. " + ch.getType() + "found.");
+						}
 					}
 					goals += getIndent(2) + "</refinement>\n";
 				}
@@ -257,36 +265,52 @@ public class Translator {
 						n.getLabel(),
 						n.equals(g.getQRoot()) ? "true" : "false") + "\n" ;
 				
-				if (n.getIncompingContributions().size()>1) {
-					form = getIndent(2) + "<add>\n";
-					formEnd = getIndent(2) + "</add>\n";
-					indentAdd = 1;
+				if (n.hasDtxFormula()) {
+					// HAS HARDCODED DTX FORMULA - SKIP CONTRIBUTIONS
+					qualities += n.getDtxFormula() + "\n";
+				} else {
+					// NO HARDCODED DTX FORMULA - INFER FROM CONTRIBUTIONS
+					if (n.getIncompingContributions().size()>1) {
+						form = getIndent(2) + "<add>\n";
+						formEnd = getIndent(2) + "</add>\n";
+						indentAdd = 1;
+					}
+					
+					for (GMNode inC:n.getIncompingContributions()) {
+						Contribution cont = (Contribution) inC;
+						String factor = "<numConst>" + cont.getContributionWeight() + "</numConst>";
+						String term = cont.getContributionOrigin().getCamelLabel();
+						
+						if (cont.getContributionOrigin().getType().equals("effect")) {
+							term = "<predicateID>" + term + "</predicateID>"; 
+						} else if (cont.getContributionOrigin().getType().equals("goal")) {
+							term = "<goalID>" + term + "</goalID>";
+						} else if (cont.getContributionOrigin().getType().equals("task")) { 
+							term = "<taskID>" + term + "</taskID>";
+						} else if (cont.getContributionOrigin().getType().equals("quality")) {
+							term = "<qualID>" + term + "</qualID>";
+						}
+						form += getIndent(2+indentAdd) + "<multiply>" + factor + term + "</multiply>\n";
+					}
+					qualities += form + formEnd;
+
 				}
 				
-				for (GMNode inC:n.getIncompingContributions()) {
-					Contribution cont = (Contribution) inC;
-					String factor = "<numConst>" + cont.getContributionWeight() + "</numConst>";
-					String term = cont.getContributionOrigin().getCamelLabel();
-					
-					if (cont.getContributionOrigin().getType().equals("effect")) {
-						term = "<predicateID>" + term + "</predicateID>"; 
-					} else if (cont.getContributionOrigin().getType().equals("goal")) {
-						term = "<goalID>" + term + "</goalID>";
-					} else if (cont.getContributionOrigin().getType().equals("task")) { 
-						term = "<taskID>" + term + "</taskID>";
-					} else if (cont.getContributionOrigin().getType().equals("quality")) {
-						term = "<qualID>" + term + "</qualID>";
-					}
-					form += getIndent(2+indentAdd) + "<multiply>" + factor + term + "</multiply>\n";
-				}
-				qualities += form + formEnd;
 				qualities += getIndent(1) + getXMLQualityClose() + "\n";
 			
 			/* * 
 			 * C O N D I T I O N S  
 			 */
 			} else if (n.getType().equals("precondition")) {
-				condBoxes += "<condBox name = \"default" + cBoxCounter++ + "\" >\n" + getIndent(1) + parser.parse(n.getLabel()) + "</condBox>\n"; 
+				
+				if (n.hasDtxFormula()) {
+					//It is a named box
+					condBoxes += "<condBox name = \"" + n.getLabel() + "\">" + n.getDtxFormula() + "</condBox>\n";
+				} else {
+					//Label has simple formula
+					condBoxes += "<condBox name = \"default" + cBoxCounter++ + "\" >\n" + getIndent(1) + parser.parse(n.getLabel()) + "</condBox>\n";	
+				}
+				 
 			
 			/* * 
 			 * I N I T I A L I Z A T I O N S  
@@ -526,7 +550,7 @@ public class Translator {
 	}
 
 	private String getXMLEffect(String name, String description, String satisfying, String probability) {
-		return "<effect name = \"" + name + "\"" +
+		return "<effect name = \"" + name + "_Eff\"" +
 				      " description = \"" + description + "\"" + 
 				      " satisfying = \"" + satisfying + "\"" +
 				      " probability = \"" + probability + "\">";

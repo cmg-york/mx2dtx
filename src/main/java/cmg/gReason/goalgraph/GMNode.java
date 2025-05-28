@@ -16,7 +16,37 @@ public class GMNode {
 	protected String id;
 	protected String label;
 	protected String type;
+	protected String actor;
+	protected String runs;
 	
+	public String getRuns() {
+		return (runs.equals("") ? "1" : runs) ;
+	}
+
+	public void setRuns(String runs) {
+		this.runs = runs;
+	}
+
+	public String getFormula() {
+		return formula;
+	}
+
+	public void setFormula(String formula) {
+		this.formula = formula;
+	}
+
+	public String getDtxFormula() {
+		return dtxFormula;
+	}
+
+	public void setDtxFormula(String dtxFormula) {
+		this.dtxFormula = dtxFormula;
+	}
+
+
+
+
+
 	// For effects only
 	protected String effectStatus;
 	
@@ -42,7 +72,19 @@ public class GMNode {
 	/* For effects and temporarily effect groups */
 	protected GMNode inEffectLink = null;
 
- 
+	
+	/* For qualities and condition boxes */
+	protected String formula;
+	protected String dtxFormula;
+	protected boolean isQRoot;
+	
+	public boolean hasFormula() {
+		return( !(formula.equals("")) && !(formula == null) );
+	}
+	
+	public boolean hasDtxFormula() {
+		return( !(dtxFormula.equals("")) && !(dtxFormula == null) );
+	}	
 	
     /**
      * Get the unique ID of the node.
@@ -401,4 +443,14 @@ public class GMNode {
 		}
 		return (result.substring(0, result.length() - 1) + "}");
 	}
+
+	public void setQRoot(boolean root) {
+		this.isQRoot = root;
+	}
+	public boolean isQRoot() {
+		return (this.isQRoot);
+	}
+
 }
+
+

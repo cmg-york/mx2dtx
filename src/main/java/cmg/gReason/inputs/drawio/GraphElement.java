@@ -16,13 +16,26 @@ public class GraphElement {
 	private String type;
 	private String label;
 	private String actor;
+	private String formula;
+	private String dtxFormula;
+	private String notes;
+	private String runNum;
 	
+	public String getRunNum() {
+		return runNum;
+	}
+
+	public void setRunNum(String runNum) {
+		this.runNum = runNum;
+	}
+
 	//Relationships only
 	private String originID;
 	private String targetID;
 	
 	//Effects only
 	private String status;
+	private boolean setRoot;
 	
 	
 	/**
@@ -33,14 +46,49 @@ public class GraphElement {
 	 * @param label The label of the shape.
 	 * @param category Whether it is an "entity" or a "relationship"
 	 */
-	public GraphElement(String id, String type, String label, String category, String actor) {
+	public GraphElement(
+			String id, 
+			String type, 
+			String label, 
+			String category, 
+			String actor,
+			String formula,
+			String dtxFormula,
+			String notes) {
 		this.id = id;
 		this.type = type;
 		this.label = label;
 		this.category = category;
 		this.actor = actor;
+		this.formula = formula;
+		this.dtxFormula = dtxFormula;
+		this.notes = notes;
 	}
 	
+	public String getActor() {
+		return actor;
+	}
+
+	public void setActor(String actor) {
+		this.actor = actor;
+	}
+
+	public String getFormula() {
+		return formula;
+	}
+
+	public void setFormula(String formula) {
+		this.formula = formula;
+	}
+
+	public String getDtxFormula() {
+		return dtxFormula;
+	}
+
+	public void setDtxFormula(String dtxFormula) {
+		this.dtxFormula = dtxFormula;
+	}
+
 	/**
 	 * 
 	 * Create a GraphElement with id, type, label and category. Reserved for entities (unary concepts)
@@ -49,7 +97,11 @@ public class GraphElement {
 	 * @param label The label of the shape.
 	 * @param category Whether it is an "entity" or a "relationship"
 	 */
-	public GraphElement(String id, String type, String label, String category) {
+	public GraphElement(
+			String id, 
+			String type, 
+			String label, 
+			String category) {
 		this.id = id;
 		this.type = type;
 		this.label = label;
@@ -68,7 +120,13 @@ public class GraphElement {
 	 * @param originID The id of the origin of the link.
 	 * @param targetID The id of the destination of the link.
 	 */
-	public GraphElement(String id, String type, String label, String category, String originID, String targetID) {
+	public GraphElement(
+			String id, 
+			String type, 
+			String label, 
+			String category, 
+			String originID, 
+			String targetID) {
 		this(id, type, label, category);
 		this.originID = originID;
 		this.targetID = targetID;
@@ -164,5 +222,13 @@ public class GraphElement {
 	public String getCategory() {
 		return this.category;
 	}
+
+	public void setQRoot(boolean b) {
+		this.setRoot = b;
+	}
 	
+	public boolean isQRoot() {
+		return (this.setRoot);
+		
+	}
 }

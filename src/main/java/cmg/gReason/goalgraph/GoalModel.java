@@ -47,6 +47,7 @@ public class GoalModel {
 					gmnOrigin.setLabel(elOrigin.getLabel());
 					gmnOrigin.setType(elOrigin.getType());
 					gmnOrigin.setEffectStatus(elOrigin.getStatus());
+					gmnOrigin.setRuns(elOrigin.getRunNum());
 					goalModel.add(gmnOrigin);
 				}
 
@@ -59,6 +60,7 @@ public class GoalModel {
 					gmnTarget.setLabel(elTarget.getLabel());
 					gmnTarget.setType(elTarget.getType());
 					gmnTarget.setEffectStatus(elTarget.getStatus());
+					gmnTarget.setRuns(elTarget.getRunNum());
 					goalModel.add(gmnTarget);
 				}
 				
@@ -112,7 +114,25 @@ public class GoalModel {
 				exr.setLabel(c.getLabel());
 				exr.setId(c.getID());
 				exr.setType(c.getType());
-				goalModel.add(exr); 
+				goalModel.add(exr);
+			} else if (c.getType().equals("quality")) {
+				GMNode  qua = new GMNode();
+				qua.setLabel(c.getLabel());
+				qua.setId(c.getID());
+				qua.setType(c.getType());
+				qua.setDtxFormula(c.getDtxFormula());
+				qua.setFormula(c.getFormula());
+				qua.setQRoot(c.isQRoot());
+				goalModel.add(qua);
+			} else if (c.getType().equals("precondition")) {
+				GMNode  cond = new GMNode();
+				cond.setLabel(c.getLabel());
+				cond.setId(c.getID());
+				cond.setType(c.getType());
+				cond.setDtxFormula(c.getDtxFormula());
+				cond.setFormula(c.getFormula());
+				goalModel.add(cond);
+
 			}
 		}//loop 
 		
@@ -159,15 +179,29 @@ public class GoalModel {
 				this.root = n;
 				roots.add(n.getLabel());
 			}
-			if (n.getType().equals("quality") && n.getOutgoingContributions().isEmpty()) {
+			if (n.getType().equals("quality") && n.isQRoot()) {
+				System.out.println(n.getCamelLabel() + " is root");
 				this.qroot = n;
 				qRoots.add(n.getLabel());
 			}
 		}
+		
 		if (roots.size() > 1)
 			throw new Exception("Error: Too many root goals, 1 expected, " + roots.size() + " found: " + roots);
-		if (roots.size() > 1)
-			throw new Exception("Error: Too many quality root goals, 1 expected, " + roots.size() + " found: " + qRoots);
+
+		if (qRoots.size() > 1) {
+			throw new Exception("Error: Too many quality root goals, 1 expected, " + qRoots.size() + " found: " + qRoots + ".");
+		} else if (qRoots.size() == 0) {
+			for (GMNode n:goalModel) {
+				if (n.getType().equals("quality") && n.getOutgoingContributions().isEmpty()) {
+					this.qroot = n;
+					qRoots.add(n.getLabel());
+				}
+			}
+			if (qRoots.size() >1)
+				throw new Exception("Error: Too many quality root goals, 1 expected, " + qRoots.size() + " found: " + qRoots + ". Pick one manually but adding property root = true.");
+		}
+	
 	}
 	
 	
