@@ -1,6 +1,6 @@
-<mxfile host="Electron" modified="2025-05-27T20:00:44.529Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/15.4.0 Chrome/91.0.4472.164 Electron/13.5.0 Safari/537.36" etag="tF-kjh_q_NMTN1MlY7P_" compressed="false" version="15.4.0" type="device">
+<mxfile host="Electron" modified="2025-05-29T21:00:11.148Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/15.4.0 Chrome/91.0.4472.164 Electron/13.5.0 Safari/537.36" etag="y5I20KsrG1van4xbzd6Z" compressed="false" version="15.4.0" type="device">
   <diagram id="UxMqaiS_ZeVZrvt0yCDw" name="Page-1">
-    <mxGraphModel dx="2278" dy="678" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1100" pageHeight="850" math="0" shadow="0">
+    <mxGraphModel dx="2187" dy="663" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1100" pageHeight="850" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -183,7 +183,7 @@
             <mxGeometry x="290" y="560" width="100" height="30" as="geometry" />
           </mxCell>
         </object>
-        <object label="Running Time" concept="quality" actor="default" formula="hvacOn * 10" note="" dtxFormula="&lt;add&gt;&#xa;	&lt;previous&gt;&lt;qualID&gt;runningTime&lt;/qualID&gt;&lt;/previous&gt;&#xa;	&lt;multiply&gt;&#xa;	 &lt;numConst&gt;10&lt;/numConst&gt;&#xa;	 &lt;predicateID&gt;hvacOn&lt;/predicateID&gt;&#xa;	&lt;/multiply&gt;&#xa;&lt;/add&gt;" id="vVbBvmcP8cE8SM1TlQaR-53">
+        <object label="Running Time" concept="quality" actor="default" formula="hvacOn * 10" note="" dtxFormula="&lt;add&gt;&#xa; &lt;previous&gt;&lt;qualID&gt;runningTime&lt;/qualID&gt;&lt;/previous&gt;&#xa; &lt;multiply&gt;&#xa;  &lt;numConst&gt;10&lt;/numConst&gt;&#xa;  &lt;predicateID&gt;hvacOn&lt;/predicateID&gt;&#xa; &lt;/multiply&gt;&#xa;&lt;/add&gt;" id="vVbBvmcP8cE8SM1TlQaR-53">
           <mxCell style="ellipse;shape=cloud;whiteSpace=wrap;html=1;strokeWidth=3;fontSize=15;fillColor=#d5e8d4;strokeColor=#688F51;" parent="1" vertex="1">
             <mxGeometry x="60" y="590" width="170" height="60" as="geometry" />
           </mxCell>

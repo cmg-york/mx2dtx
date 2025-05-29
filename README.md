@@ -10,7 +10,6 @@ iStar-DT both extends and subsets the iStar 2.0 modeling language to allow high-
 
 iStarDT-V diagrams can be created in [draw.io](https://app.diagrams.net/), [mxGraph](https://jgraph.github.io/mxgraph/) front-end, using a library of shapes specifically created for the purpose. In draw.io (we have tried version 14.1.8) go to `File --> Open Library` and select the [iStarDT-V.xml](https://github.com/cmg-york/mx2dtx/blob/main/src/main/resources/iStarDT-V.xml) file. Continue building the model exclusively using the library, and save the result in an uncompressed format. In version 14.1.8 of draw.io go to `File --> Properties` and uncheck `Compressed`. 
 
-
 ## Installing and using mx2dtx
 
 - Ensure you have maven, Java and git installed in your system. We have tested with Maven version 3.9.9 and Java 21.0.4.
@@ -20,15 +19,17 @@ iStarDT-V diagrams can be created in [draw.io](https://app.diagrams.net/), [mxGr
 - Run with `mvn exec:java -Dexec.mainClass="cmg.gReason.outputs.istardtx.mx2dtx" -Dexec.args="-f [drawio input file] -o [iStarDT-X output file]"` to convert your diagram. The `-o` option is optional - if omitted, the output will be printed to standard output.
 - Use `-h` option to see usage information and available options. **NOTE:** if you are using Windows PowerShell, add `--%` between `exec:java` and `-Dexec`
 - If you want to run from native java call: `java -cp target/classes cmg.gReason.outputs.istardtx.mx2dtx -f [drawio input file] -o [iStarDT-X output file]`
-
+- Example models can be found in `src/main/resources`
 
 ## Usage Notes
 
-- Error checking of diagrams is minimal at this point. It is important that all links/connectors properly connect directly on the whole shapes. This can be achieved by dragging the end-point of the link on the target shape and drop it when the shape acquires a blue outline.
 - Effects contain unique predicates (rather than lists thereof).
-- Custom numeric formulae for qualities are not supported at this point. Ensure a tree-like hierarchy of qualities. Satisfaction level of a quality is the linear combination of the satisfaction levels of the origins multipled by the contribution labels.
+- Custom numeric formulae for qualities are supported only in iStarDT-X at this point. Prepare the formula in a text editor and paste within the `dtxFormula` attribute of qualities. Otherwise, ensure a tree-like hierarchy of qualities. Satisfaction level of a quality is the linear combination of the satisfaction levels of the origins multiplied by the contribution labels.
 - To reference goals, tasks and qualities in formulae or lists, use camel-case representation of the label in the corresponding element. For example goal `Have Meeting Scheduled` is referenced as `haveMeetingScheduled`.
-- Avoid special characters and formatting when labeling elements and forming lists and formulae.
+- Avoid special characters (including RC/LF) and formatting when labeling elements and forming lists and formulae.
+- Error checking of diagrams is minimal at this point. It is important that all links/connectors properly connect directly on the whole shapes. This can be achieved by dragging the end-point of the link on the target shape and drop it when the shape acquires a blue outline.
 
+## Contact
 
+- For bug reports and queries please contact [liaskos@yorku.ca](liaskos@yorku.ca).  
 
