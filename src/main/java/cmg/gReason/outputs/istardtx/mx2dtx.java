@@ -2,19 +2,50 @@ package cmg.gReason.outputs.istardtx;
 
 import java.io.File;
 
-import cmg.gReason.inputs.drawio.BooleanExpressionParser;
+import cmg.gReason.outputs.common.Translator;
+import cmg.gReason.goalgraph.GoalModel;
 import cmg.gReason.inputs.drawio.ConditionExpressionParser;
 import cmg.gReason.inputs.drawio.DrawIOReader;
 import cmg.gReason.inputs.drawio.IdentifierRegistry;
 
 public class mx2dtx {
-	
+
 	static String inputFile = "";
 	static String outputFile ="";
 	static boolean printUsage = false;
+
+	
+	public static void main(String[] args) {
+
+		mx2dtx mainClass = new mx2dtx();
+		DrawIOReader reader = new DrawIOReader();
+		Translator writer = new dtxTranslator();
+		GoalModel model = new GoalModel();
+
+		try {
+			mainClass.processArgs(args);
+			
+			//Read from the XML
+			reader.setInFile(inputFile);
+			model = reader.readXML();
+			
+			//Produce the translation
+			writer.setOutFile(outputFile);
+			writer.setModel(model);
+			writer.translate();
+
+		} catch (Exception e) {
+			System.err.println("[mx2dtx] Error: " + e.getMessage());
+			if (printUsage) {
+				System.out.println(mainClass.printUsage());
+			}
+			System.exit(1);
+		}
+	}
 	
 	
-	private static String printUsage() {
+
+	private String printUsage() {
 		String s = "";
 		s = "Usage: mx2dtx [-options]\n" + 
 				"where options are:\n" + 
@@ -23,77 +54,61 @@ public class mx2dtx {
 				"    -h \t\t\t prints this help \n";
 		return(s);
 	}
-	
-	private static void processArgs(String[] args) throws Exception {
-       for (int i = 0; i < args.length; i++) {
-            String arg = args[i];
-            if (arg.startsWith("-")) {
-                char option = arg.charAt(1);
-                switch (option) {
-	                case 'f':
-	                    if (i + 1 < args.length) {
-	                        inputFile = args[i + 1];
-	                        i++;
-	                    } else {
-	                    	printUsage = true;
-		                	throw new Exception("Option -f requires a file name.");
-	                    }
-	                	break;
-	            	case 'o':
-	                    if (i + 1 < args.length) {
-	                        outputFile = args[i + 1];
-	                        i++;
-	                    } else {
-	                    	printUsage = true;
-		                	throw new Exception("Option -o requires a file name.");
-	                    }
-	                    break;
-	            	case 'h':
-	                    System.out.println(printUsage());
-	                    System.exit(0);
-	                default:
-                    	printUsage = true;
-	                	throw new Exception("Unknown option: " + option);
-                }
-            } else {
-            	printUsage = true;
-                throw new Exception("Invalid argument: " + arg);
-            }
-        }
-       
-       if (args.length == 0) {
-       		printUsage = true;
-       		throw new Exception("No arguments provided. Use -h for help.");
-       }
 
-       if (inputFile.isEmpty()) {
-    	   printUsage = true;
-    	   throw new Exception("No input file specified. Use -f to specify input file.");
-       }
-       
-       File inpF = new File(inputFile);
-       if (!inpF.exists()) {
-           throw new Exception("Input file does not exist: " + inputFile);
-       }
-	}
-	
-	
+	private void processArgs(String[] args) throws Exception {
+		for (int i = 0; i < args.length; i++) {
+			String arg = args[i];
+			if (arg.startsWith("-")) {
+				char option = arg.charAt(1);
+				switch (option) {
+				case 'f':
+					if (i + 1 < args.length) {
+						inputFile = args[i + 1];
+						i++;
+					} else {
+						printUsage = true;
+						throw new Exception("Option -f requires a file name.");
+					}
+					break;
+				case 'o':
+					if (i + 1 < args.length) {
+						outputFile = args[i + 1];
+						i++;
+					} else {
+						printUsage = true;
+						throw new Exception("Option -o requires a file name.");
+					}
+					break;
+				case 'h':
+					System.out.println(printUsage());
+					System.exit(0);
+				default:
+					printUsage = true;
+					throw new Exception("Unknown option: " + option);
+				}
+			} else {
+				printUsage = true;
+				throw new Exception("Invalid argument: " + arg);
+			}
+		}
 
-	public static void main(String[] args) {
-	  
-	  DrawIOReader app = new DrawIOReader();
-	  
-	  try {
-		  processArgs(args);
-		  app.setInFile(inputFile);
-		  app.setOutFile(outputFile);
-		  app.translateToIstarDTX();
-	  } catch (Exception e) {
-		  System.err.println("Error: " + e.getMessage());
-		  if (printUsage) {
-		  	System.out.println(printUsage());
-		  }
-		  System.exit(1);
-	  }
+		if (args.length == 0) {
+			printUsage = true;
+			throw new Exception("No arguments provided. Use -h for help.");
+		}
+
+		if (inputFile.isEmpty()) {
+			printUsage = true;
+			throw new Exception("No input file specified. Use -f to specify input file.");
+		}
+
+		File inpF = new File(inputFile);
+		if (!inpF.exists()) {
+			throw new Exception("Input file does not exist: " + inputFile);
+		}
 	}
+
+
+
+
 }

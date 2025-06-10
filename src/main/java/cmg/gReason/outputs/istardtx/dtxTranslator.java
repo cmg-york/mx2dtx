@@ -13,19 +13,14 @@ import cmg.gReason.goalgraph.GoalModel;
 import cmg.gReason.inputs.drawio.ConditionExpressionParser;
 import cmg.gReason.inputs.drawio.IdentifierRegistry;
 import cmg.gReason.inputs.drawio.InitializationParser;
+import cmg.gReason.outputs.common.Translator;
 
 /**
  * 
  */
-/**
- * 
- */
-/**
- * 
- */
-public class Translator {
+public class dtxTranslator extends Translator {
 
-	private GoalModel g;
+
     private IdentifierRegistry identifiers = new IdentifierRegistry();
     private ConditionExpressionParser parser;
    
@@ -41,7 +36,7 @@ public class Translator {
 	/**
 	 * Create a new empty translator.
 	 */
-	public Translator() {
+	public dtxTranslator() {
 
 	}
 	
@@ -49,7 +44,7 @@ public class Translator {
 	 * Create a new empty translator and add a goal model in it.
 	 * @param m The goal model to be translated
 	 */
-	public Translator(GoalModel m) {
+	public dtxTranslator(GoalModel m) {
 		this();
 		this.g = m;
 		this.parser = new ConditionExpressionParser(identifiers);
@@ -77,7 +72,7 @@ public class Translator {
 	/**
 	 * Perform the translation of the {@linkplain GoalModel} object into a iStar-DT-X specification. 
 	 */
-	public void translate() {
+	public void produceTranslation() {
 		//First build the identifier registry based on condition boxes
 		buildIdentifierRegistry();
 		
