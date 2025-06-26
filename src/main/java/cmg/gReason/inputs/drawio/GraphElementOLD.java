@@ -8,7 +8,7 @@ package cmg.gReason.inputs.drawio;
  * @author Sotirios Liaskos
  *
  */
-public class GraphElement {
+public class GraphElementOLD {
 
 	// All elements
 	private String id;
@@ -46,7 +46,7 @@ public class GraphElement {
 	 * @param label The label of the shape.
 	 * @param category Whether it is an "entity" or a "relationship"
 	 */
-	public GraphElement(
+	public GraphElementOLD(
 			String id, 
 			String type, 
 			String label, 
@@ -97,7 +97,7 @@ public class GraphElement {
 	 * @param label The label of the shape.
 	 * @param category Whether it is an "entity" or a "relationship"
 	 */
-	public GraphElement(
+	public GraphElementOLD(
 			String id, 
 			String type, 
 			String label, 
@@ -120,7 +120,7 @@ public class GraphElement {
 	 * @param originID The id of the origin of the link.
 	 * @param targetID The id of the destination of the link.
 	 */
-	public GraphElement(
+	public GraphElementOLD(
 			String id, 
 			String type, 
 			String label, 

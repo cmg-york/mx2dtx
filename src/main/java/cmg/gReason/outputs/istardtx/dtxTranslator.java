@@ -9,7 +9,7 @@ import java.util.Map.Entry;
 
 import cmg.gReason.goalgraph.Contribution;
 import cmg.gReason.goalgraph.GMNode;
-import cmg.gReason.goalgraph.GoalModel;
+import cmg.gReason.goalgraph.GoalModelOLD;
 import cmg.gReason.inputs.drawio.ConditionExpressionParser;
 import cmg.gReason.inputs.drawio.IdentifierRegistry;
 import cmg.gReason.inputs.drawio.InitializationParser;
@@ -40,16 +40,6 @@ public class dtxTranslator extends Translator {
 
 	}
 	
-	/**
-	 * Create a new empty translator and add a goal model in it.
-	 * @param m The goal model to be translated
-	 */
-	public dtxTranslator(GoalModel m) {
-		this();
-		this.g = m;
-		this.parser = new ConditionExpressionParser(identifiers);
-	}
-	
 
 	
 	
@@ -77,16 +67,15 @@ public class dtxTranslator extends Translator {
 		buildIdentifierRegistry();
 		
 		//TODO: Process duplicate quality goals
-		
+	
 		//Performs the translation
 		spec = createSpec();
-		
 	}
 	
 	
 	/**
-	 * Builds a registry of identifiers and their types. It first goes over all condition boxes parses.
-	 * The result of this is that all identifiers are either predicates or variables.
+	 * Builds a registry of identifiers and their types. It first goes over all condition boxes which it parses.
+	 * All ground elements of condition boxes are either predicates or variables. They are registered as such. 
 	 * Then the remaining items of the goal model are processed and if what was known from the previous step 
 	 * to be a predicate or variable is now becoming a goal, task, etc.      
 	 */

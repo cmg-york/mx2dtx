@@ -1,5 +1,6 @@
 package cmg.gReason.inputs.drawio;
 
+import cmg.gReason.inputs.drawio.graphelementstructure.*;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
@@ -19,56 +20,97 @@ public class GraphElementFactory {
 	public GraphElement constructElement(Element e) throws Exception {
 		
 		String type = e.getAttribute("concept");
-		GraphElement c = null;
-		
+		GraphElement g;
 		
 		switch(type) {
 		/* Entities */
 		case "goal":
-		case "task":
-		case "quality":
-			c = new GraphElement(e.getAttribute("id"),
-								type,
-								e.getAttribute("label"),
-								"entity",
-								e.getAttribute("actor"),
-								e.getAttribute("formula"),
-								e.getAttribute("dtxFormula"),
-								e.getAttribute("notes"));
-			c.setQRoot(Boolean.parseBoolean(e.getAttribute("root")));
-			c.setRunNum(e.getAttribute("runs"));
-			break;
-		case "variable":
-			c = new GraphElement(e.getAttribute("id"),
-					type,
+			//String id, String label, String actor, String notes
+			g = new Goal(
+					e.getAttribute("id"),
 					e.getAttribute("label"),
-					"entity",
 					e.getAttribute("actor"),
+					e.getAttribute("notes"),
+					e.getAttribute("runNum")
+					);
+			break;
+		case "task":
+			g = new Task(
+					e.getAttribute("id"),
+					e.getAttribute("label"),
+					e.getAttribute("actor"),
+					e.getAttribute("notes")
+					);
+			break;
+		case "quality":
+			g = new Quality(
+					e.getAttribute("id"),
+					e.getAttribute("label"),
+					e.getAttribute("actor"),
+					e.getAttribute("notes"),
 					e.getAttribute("formula"),
 					e.getAttribute("dtxFormula"),
-					e.getAttribute("notes"));
+					Boolean.parseBoolean(e.getAttribute("root"))
+					);
 			break;
 		case "precondition":
-			c = new GraphElement(e.getAttribute("id"),
-					type,
+			g = new Precondition(
+					e.getAttribute("id"),
 					e.getAttribute("label"),
-					"entity",
 					e.getAttribute("actor"),
+					e.getAttribute("notes"),
 					e.getAttribute("formula"),
-					e.getAttribute("dtxFormula"),
-					e.getAttribute("notes"));
-
+					e.getAttribute("dtxFormula")
+					);
 			break;
 		case "initialization":
+			g = new InitializationSet(
+					e.getAttribute("id"),
+					e.getAttribute("label"),
+					e.getAttribute("actor"),
+					e.getAttribute("notes"),
+					e.getAttribute("formula"),
+					e.getAttribute("dtxFormula")
+					);
+			break;
 		case "export":
+			g = new ExportedSet(
+					e.getAttribute("id"),
+					e.getAttribute("label"),
+					e.getAttribute("actor"),
+					e.getAttribute("notes"),
+					e.getAttribute("formula"),
+					e.getAttribute("dtxFormula")
+					);
+			break;
 		case "crossrun":
+			g = new CrossRunSet(
+					e.getAttribute("id"),
+					e.getAttribute("label"),
+					e.getAttribute("actor"),
+					e.getAttribute("notes"),
+					e.getAttribute("formula"),
+					e.getAttribute("dtxFormula")
+					);
+			break;		
 		case "effectGroup":
-			c = new GraphElement(e.getAttribute("id"),type,e.getAttribute("label"),"entity",e.getAttribute("formula"),e.getAttribute("notes"));
+			g = new EffectGroup(
+					e.getAttribute("id"),
+					e.getAttribute("label"),
+					e.getAttribute("actor"),
+					e.getAttribute("notes")
+					);
 			break;
 		case "effect":
-			c = new GraphElement(e.getAttribute("id"),type,e.getAttribute("label"),"entity");
-			c.setStatus(e.getAttribute("status"));
+			g = new Effect(
+					e.getAttribute("id"),
+					e.getAttribute("label"),
+					e.getAttribute("actor"),
+					e.getAttribute("notes"),
+					e.getAttribute("status")
+					);
 			break;
+			
 		/* Relationships */
 		case "andDecomp":
 		case "orDecomp":
@@ -81,11 +123,18 @@ public class GraphElementFactory {
         	Node n = e.getElementsByTagName("mxCell").item(0);
         	String source = n.getAttributes().getNamedItem("source").getTextContent();
         	String target = n.getAttributes().getNamedItem("target").getTextContent();
-			c = new GraphElement(e.getAttribute("id"),type,e.getAttribute("label"),"relationship",source,target);
+        	g = new Link(
+					e.getAttribute("id"),
+					e.getAttribute("label"),
+					e.getAttribute("actor"),
+					e.getAttribute("notes"),
+					type,
+					source,
+					target);
 			break;
 		default:
 			throw new Exception("Concept type " + type + " unrecognized. Please check visual element with label " + e.getAttribute("label") + " and id " + e.getAttribute("id"));
 		}
-		return(c);
+		return(g);
 	}
 }

@@ -1,5 +1,6 @@
 package cmg.gReason.outputs.common;
 
+import cmg.gReason.goalgraph.GoalModelOLD;
 import cmg.gReason.goalgraph.GoalModel;
 
 public abstract class Translator {
@@ -8,7 +9,8 @@ public abstract class Translator {
 	
 	/**
 	 * Produces the translation in string format and 
-	 * sets it to a variable accessible through getSpec() 
+	 * sets it to a variable accessible through getSpec(). 
+	 * This is the starting point of your custom translator.
 	 */
 	protected abstract void produceTranslation();
 	
@@ -45,9 +47,6 @@ public abstract class Translator {
 			throw new Exception("translate: GoalModel object is null");
 		
 		System.out.println("Translating...");
-		
-		//t = new dtxTranslator(m);
-		//t.translate();
 		
 		produceTranslation();
 		

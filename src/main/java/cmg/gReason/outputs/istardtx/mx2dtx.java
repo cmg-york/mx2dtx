@@ -3,6 +3,7 @@ package cmg.gReason.outputs.istardtx;
 import java.io.File;
 
 import cmg.gReason.outputs.common.Translator;
+import cmg.gReason.goalgraph.GoalModelOLD;
 import cmg.gReason.goalgraph.GoalModel;
 import cmg.gReason.inputs.drawio.ConditionExpressionParser;
 import cmg.gReason.inputs.drawio.DrawIOReader;
@@ -43,8 +44,6 @@ public class mx2dtx {
 		}
 	}
 	
-	
-
 	private String printUsage() {
 		String s = "";
 		s = "Usage: mx2dtx [-options]\n" + 

@@ -32,6 +32,9 @@ public class OutputManager {
 		return (outFile.equals(""));
 	}
 	
+	/**
+	 * To be called only if there is an output file set. Will throw error if not.
+	 */
 	public void saveOutput() {
 		Writer fW;
 		try {
