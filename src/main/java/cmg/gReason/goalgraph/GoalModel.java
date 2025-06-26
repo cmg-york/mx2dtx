@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import cmg.gReason.inputs.drawio.graphelementstructure.*;
+import cmg.gReason.outputs.common.ErrorReporter;
 
 
 /**
@@ -13,6 +14,8 @@ import cmg.gReason.inputs.drawio.graphelementstructure.*;
  *
  */
 public class GoalModel {
+	private ErrorReporter err = null;
+	
 	ArrayList<GraphElement> elements = new ArrayList<GraphElement>();
 	ArrayList<GMNode> goalModel = new ArrayList<GMNode>();
 
@@ -20,6 +23,9 @@ public class GoalModel {
 	private GMNode qroot;
 	
 	
+	public GoalModel(ErrorReporter e) {
+		this.err = e;
+	}
 	
 	private GMNode handleRelEndPoint(GraphElement e) {
 		GMNode gNode = new GMNode();
@@ -286,7 +292,7 @@ public class GoalModel {
 	        if (c instanceof Link) {
 	        	System.out.println("Rel. Type  : " + ((Link) c).getType());
 	        	System.out.println("Origin     : " + ((Link) c).getSource());
-	        	System.out.println("Target     : " + ((Link) c).getSource());
+	        	System.out.println("Target     : " + ((Link) c).getTarget());
 	        }
 	        if (c instanceof Effect) {
 	        	System.out.println("Status     : " + ((Effect) c).getStatus());

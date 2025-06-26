@@ -1,6 +1,6 @@
 <mxfile host="Electron" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/27.0.9 Chrome/134.0.6998.205 Electron/35.4.0 Safari/537.36" compressed="false" version="27.0.9">
   <diagram id="UxMqaiS_ZeVZrvt0yCDw" name="Page-1">
-    <mxGraphModel dx="2273" dy="714" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1100" pageHeight="850" math="0" shadow="0">
+    <mxGraphModel dx="2142" dy="660" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1100" pageHeight="850" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -156,7 +156,7 @@
             <mxGeometry x="440" y="640" width="100" height="60" as="geometry" />
           </mxCell>
         </object>
-        <object label="Overall Quality" concept="quality" actor="default" id="s7Z0I-bON0rsUeWnYovQ-89">
+        <object label="Overall Quality" concept="quality" actor="default" root="true" id="s7Z0I-bON0rsUeWnYovQ-89">
           <mxCell style="ellipse;shape=cloud;whiteSpace=wrap;html=1;strokeWidth=3;fontSize=15;fillColor=#d5e8d4;strokeColor=#688F51;" parent="1" vertex="1">
             <mxGeometry x="262.5" y="730" width="115" height="60" as="geometry" />
           </mxCell>
@@ -260,7 +260,7 @@
         <object label="1.0" concept="contributionLink" id="vVbBvmcP8cE8SM1TlQaR-9">
           <mxCell style="endArrow=classic;html=1;fontSize=15;elbow=vertical;curved=1;strokeColor=#000000;" parent="1" source="s7Z0I-bON0rsUeWnYovQ-60" target="s7Z0I-bON0rsUeWnYovQ-84" edge="1">
             <mxGeometry x="-0.1022" y="-24" relative="1" as="geometry">
-              <mxPoint x="466.98417253092384" y="539.5237412036154" as="sourcePoint" />
+              <mxPoint x="600" y="530" as="sourcePoint" />
               <mxPoint x="169.23877091453505" y="664.7850562824508" as="targetPoint" />
               <Array as="points">
                 <mxPoint x="400" y="640" />

@@ -1,11 +1,7 @@
 package cmg.gReason.inputs.drawio;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.Writer;
-import java.util.Properties;
 
 import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
@@ -18,23 +14,44 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-import cmg.gReason.goalgraph.GoalModelOLD;
 import cmg.gReason.goalgraph.GoalModel;
 import cmg.gReason.inputs.drawio.graphelementstructure.GraphElement;
-import cmg.gReason.outputs.istardtx.dtxTranslator;
+import cmg.gReason.outputs.common.ErrorReporter;
 
 public class DrawIOReader {
 
 	private String inFile = "";
+	private ErrorReporter err = null;
+
+	
+	public DrawIOReader(ErrorReporter err) {
+		this.err = err;
+	}
+	
+	
+	public GoalModel readXML() {
+		GoalModel g = readFile();
+		if (err.hasErrors()) {
+			err.printAll();
+			System.exit(-1);
+		}
+		g = generateGoalGraph(g);
+		if (err.hasErrors()) {
+			err.printAll();
+			System.exit(-1);
+		}
+		err.printAll();
+		return(g);
+	}
 
 
 	/**
 	 * Reads the XML file from draw.io and creates a list of elements within a
 	 * {@link GoalModel} object.
 	 */
-	public GoalModel readXML() {
+	public GoalModel readFile() {
 		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-		GraphElementFactory cf = new GraphElementFactory();
+		GraphElementFactory cf = new GraphElementFactory(err);
 		GoalModel m = null;
 		
 		try {
@@ -42,7 +59,7 @@ public class DrawIOReader {
 
 			DocumentBuilder db = dbf.newDocumentBuilder();
 			Document doc = (Document) db.parse(new File(inFile));
-			m = new GoalModel();
+			m = new GoalModel(err);
 			
 			System.out.println("Reading XML file...");
 
@@ -52,11 +69,9 @@ public class DrawIOReader {
 				if (node.getNodeType() == Node.ELEMENT_NODE) {
 					Element element = (Element) node;
 					GraphElement c;
-					try {
-						c = cf.constructElement(element);
-						m.addElement(c);
-					} catch (Exception e) {
-						System.err.println(e.getMessage());
+					c = cf.constructElement(element);
+					if (c!=null) {
+						m.addElement(c);	
 					}
 				}
 			}
@@ -64,18 +79,24 @@ public class DrawIOReader {
 			e.printStackTrace();
 		}
 		
+		if (err.hasErrors()) {
+			err.printAll();
+			System.exit(0);
+		}
+		return(m);
+	}
+	
+	public GoalModel generateGoalGraph(GoalModel m) {
 		System.out.println("Creating goal graph...");
 		try {
 			m.createGoalGraph();
 		} catch (Exception e) {
 			System.err.println(e.getMessage());
 		}
-
 		return(m);
 	}
 
-
-	
+		
 
 	/**
 	 * 

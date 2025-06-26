@@ -2,6 +2,7 @@ package cmg.gReason.outputs.istardtx;
 
 import java.io.File;
 
+import cmg.gReason.outputs.common.ErrorReporter;
 import cmg.gReason.outputs.common.Translator;
 import cmg.gReason.goalgraph.GoalModelOLD;
 import cmg.gReason.goalgraph.GoalModel;
@@ -18,10 +19,12 @@ public class mx2dtx {
 	
 	public static void main(String[] args) {
 
+		ErrorReporter err = new ErrorReporter();
 		mx2dtx mainClass = new mx2dtx();
-		DrawIOReader reader = new DrawIOReader();
+		GoalModel model = new GoalModel(err);
+		DrawIOReader reader = new DrawIOReader(err);
 		Translator writer = new dtxTranslator();
-		GoalModel model = new GoalModel();
+		
 
 		try {
 			mainClass.processArgs(args);
@@ -34,6 +37,10 @@ public class mx2dtx {
 			writer.setOutFile(outputFile);
 			writer.setModel(model);
 			writer.translate();
+			
+			if (err.hasAnything()) {
+				err.printAll();
+			}
 
 		} catch (Exception e) {
 			System.err.println("[mx2dtx] Error: " + e.getMessage());
