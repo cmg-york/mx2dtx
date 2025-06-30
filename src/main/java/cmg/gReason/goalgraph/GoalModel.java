@@ -28,52 +28,124 @@ public class GoalModel {
 	}
 	
 	private GMNode handleRelEndPoint(GraphElement e) {
+		
+		//TODO: Remove new GMNode
+		//TODO: Remove the setType
+		
 		GMNode gNode = new GMNode();
 
-		gNode.setId(e.getID());
-		gNode.setLabel(e.getLabel());
-		//TODO: Notes need to be added.
-
 		if (e instanceof Goal) {
+			gNode = new GMGoal();
 			gNode.setRuns(((Goal) e).getRunNum());
+			((GMGoal) gNode).setRoot(((Goal) e).isRoot());
 			gNode.setType("goal");
 		} else if (e instanceof Task) {
+			gNode = new GMTask();
 			gNode.setType("task");
 		} else if (e instanceof Quality) {
+			gNode = new GMQuality();
 			gNode.setType("quality");
 			gNode.setDtxFormula(((Quality) e).getDtxFormua());
 			gNode.setFormula(((Quality) e).getFormula());
 			gNode.setQRoot(((Quality) e).isQRoot());
 		} else if (e instanceof EffectGroup) {
+			gNode = new GMEffectGroup();
 			gNode.setType("effectGroup");
 		} else if (e instanceof Effect) {
+			gNode = new GMEffect();
 			gNode.setType("effect");
 			gNode.setEffectStatus(((Effect) e).getStatus());
 		} else if (e instanceof Precondition) {
+			gNode = new GMPrecondition();
 			gNode.setType("precondition");
 			gNode.setDtxFormula(((Precondition) e).getDtxFormua());
 			gNode.setFormula(((Precondition) e).getFormula());
 		}
+		
+		gNode.setId(e.getID());
+		gNode.setLabel(e.getLabel());
+		//TODO: Notes need to be added.
+		
 		return (gNode);
+	}
+	
+	
+	public GMNode GMNodeFactory(GraphElement e) {
+		GMNode gNode;
+		if (e instanceof Goal) {
+			gNode = new GMGoal(); 
+		} else if (e instanceof Task) {
+			gNode = new GMTask();
+		} else if (e instanceof Quality) {
+			gNode = new GMQuality();
+		} else if (e instanceof EffectGroup) {
+			gNode = new GMEffectGroup();
+		} else if (e instanceof Effect) {
+			gNode = new GMEffect();
+		} else if (e instanceof Precondition) {
+			gNode = new GMPrecondition();
+		} else if (e instanceof InitializationSet) {
+			gNode = new GMInitializationSet();
+		} else if (e instanceof ExportedSet) {
+			gNode = new GMExportedSet();
+		} else if (e instanceof CrossRunSet) {
+			gNode = new GMCrossRunSet();
+		} else if (e instanceof Link) {
+			switch (((Link) e).getType()) {
+			case "orDecomp":
+				gNode = new ORDecomp();
+				break;
+			case "andDecomp":
+				gNode = new ANDDecomp();
+				break;
+			case "precedenceLink":
+				gNode = new PRELink();
+				break;
+			case "negPrecedenceLink":
+				gNode = new NPRLink();
+				break;
+			case "contributionLink":
+				gNode = new Contribution();
+				break;
+			case "effectLink":
+				gNode = new EffLink();
+				break;
+			case "effectGroupLink":
+				gNode = new EffGroupLink();
+				break;
+			default:
+				gNode = null;
+				err.addError("Unrecognized GraphElemen relationship type: " + e.getClass().getSimpleName() + "," + ((Link) e).getType(), "GoalModel::GMNodeFactory");
+				break;
+			}
+			
+		} else {
+			gNode = null;
+			err.addError("Unrecognized graph element type: " + e.getClass().getSimpleName(), "GoalModel::GMNodeFactory");
+		}
+		return(gNode);
 	}
 	
 	/**
 	 * Reads the list of {@linkplain GraphElement} objects (which are primarily relationships) and generates a goal model based on {@linkplain GMNode} objects.
 	 * @throws Exception in a variety of situations in which the goal model is invalid.
 	 */
-	public void createGoalGraph() throws Exception {
+	public void createGoalGraph() {
 
 		for (GraphElement c:elements) {
+			
+			GMNode gmn = GMNodeFactory(c); 
+			gmn.setId(c.getID());
+			gmn.setLabel(c.getLabel());
+			
 			if (c instanceof Link) {
 				//Create the node
-				GMNode gmn = new GMNode();
+				//GMNode gmn = new GMNode();
 				GMNode gmnOrigin;
 				GMNode gmnTarget;
 				
-				gmn.setId(c.getID());
-				gmn.setLabel(c.getLabel());
-				gmn.setType(((Link) c).getType());
-				
+
+
 				//Handle origin and destination
 				String strOrigin = ((Link) c).getSource();
 				gmnOrigin = findNodeByID(strOrigin);
@@ -92,6 +164,55 @@ public class GoalModel {
 				}
 				
 				//gmn, gmnOrigin, gmnTarget
+				//TODO: add relationship validation code here.
+				
+				if (gmn instanceof ORDecomp) {
+					gmnTarget.addORChild(gmnOrigin);
+					gmnOrigin.setParent(gmnTarget);
+				} else if (gmn instanceof ANDDecomp) {
+					gmnTarget.addANDChild(gmnOrigin);
+					gmnOrigin.setParent(gmnTarget);
+				} else if (gmn instanceof PRELink) {
+					gmnOrigin.addOutPrecedence(gmnTarget);
+					gmnTarget.addInPrecedence(gmnOrigin);
+				} else if (gmn instanceof NPRLink) {
+					gmnOrigin.addOutNegPrecedence(gmnTarget);
+					gmnTarget.addInNegPrecedence(gmnOrigin);
+				} else if (gmn instanceof Contribution) {
+					((Contribution) gmn).setContributionOrigin(gmnOrigin);
+					((Contribution) gmn).setContributionOrigin(gmnTarget);
+					((Contribution) gmn).setContributionWeight(Float.parseFloat(gmn.getLabel()));
+					gmnOrigin.addOutContribution(gmn);
+					gmnTarget.addInContribution(gmn);
+				} else if (gmn instanceof EffLink) {
+					gmnOrigin.setOutEffectLink(gmnTarget); //gmnTarget is an effect group
+					gmnTarget.setInEffectLink(gmnOrigin); //gmnOrigin is a task
+				} else if (gmn instanceof EffGroupLink) {
+					gmnOrigin.addEffect(gmnTarget);
+					gmnTarget.setParent(gmnOrigin);
+					gmnTarget.setInWeight(Float.parseFloat(gmn.getLabel()));
+				}
+			} //e is Link - gmn will be discarded, LINKS ARE NOT ADDED TO THE MODEL
+			
+			else if (c instanceof InitializationSet) {
+				gmn.setFormula(((InitializationSet) c).getFormula());
+				gmn.setDtxFormula(((InitializationSet) c).getDtxFormula());
+				//gmn.setType("initialization");
+				goalModel.add(gmn);
+			} else if (c instanceof CrossRunSet) {
+				gmn.setFormula(((CrossRunSet) c).getFormula());
+				gmn.setDtxFormula(((CrossRunSet) c).getDtxFormula());
+				//gmn.setType("crossrun");
+				goalModel.add(gmn);
+			} else if (c instanceof ExportedSet) {
+				gmn.setFormula(((ExportedSet) c).getFormula());
+				gmn.setDtxFormula(((ExportedSet) c).getDtxFormula());
+				//gmn.setType("export");
+				goalModel.add(gmn);
+			}
+				
+				/* 
+				
 				switch(gmn.getType()) {
 				case "orDecomp":
 					gmnTarget.addORChild(gmnOrigin);
@@ -123,43 +244,15 @@ public class GoalModel {
 					gmnTarget.setInWeight(Float.parseFloat(gmn.getLabel()));
 					break;
 				}
+				*/
 			// c is not a link
-			} else if (c instanceof InitializationSet) {
-				GMNode ini = new GMNode();
-				ini.setLabel(c.getLabel());
-				ini.setId(c.getID());
-				ini.setFormula(((InitializationSet) c).getFormula());
-				ini.setDtxFormula(((InitializationSet) c).getDtxFormula());
-				ini.setType("initialization");
-				goalModel.add(ini);
-			} else if (c instanceof CrossRunSet) {
-				GMNode  crs = new GMNode();
-				crs.setLabel(c.getLabel());
-				crs.setId(c.getID());
-				crs.setFormula(((CrossRunSet) c).getFormula());
-				crs.setDtxFormula(((CrossRunSet) c).getDtxFormula());
-				crs.setType("crossrun");
-				goalModel.add(crs);
-			} else if (c instanceof ExportedSet) {
-				GMNode  exr = new GMNode();
-				exr.setLabel(c.getLabel());
-				exr.setId(c.getID());
-				exr.setFormula(((ExportedSet) c).getFormula());
-				exr.setDtxFormula(((ExportedSet) c).getDtxFormula());
-				exr.setType("export");
-				goalModel.add(exr);
-			}
-		}//loop 
+
+		}//loop over elements in GraphElement Graph
 		
 		//Bypass effectGroups
 		byPassEffectGroups();
 	
-		try {
-			findRoot();
-		} catch (Exception e) {
-			System.err.println(e.getMessage());
-			e.printStackTrace();
-		}
+		findRoot();
 	}
 
 	
@@ -171,7 +264,7 @@ public class GoalModel {
 		
 		while (itr.hasNext()) {
 			GMNode n = itr.next();
-			if (n.getType().equals("effectGroup")) {
+			if (n instanceof GMEffectGroup) {
 				n.getInEffectLink().setEffects(n.getEffects());
 				for (GMNode o:n.getEffects())
 					o.setParent(n.getInEffectLink());
@@ -185,38 +278,124 @@ public class GoalModel {
 	 * Find and set the roots of the goal decomposition and quality subgraphs.  
 	 * @throws Exception if multiple roots are found.
 	 */
-	private void findRoot() throws Exception {
-		ArrayList<String> roots = new ArrayList<String>();
-		ArrayList<String> qRoots = new ArrayList<String>();
+	private void findRoot() {
+		ArrayList<GMNode> declaredRoots = new ArrayList<GMNode>();
+		ArrayList<GMNode> declaredQRoots = new ArrayList<GMNode>();
+		
+		ArrayList<GMNode> foundRoots = new ArrayList<GMNode>();
+		ArrayList<GMNode> foundQRoots = new ArrayList<GMNode>();
+		
+		boolean hasFormula = false;
 		
 		for (GMNode n:goalModel) {
-			if (n.getType().equals("goal") && (n.getParent()==null) ) {
-				this.root = n;
-				roots.add(n.getLabel());
-			}
-			if (n.getType().equals("quality") && n.isQRoot()) {
-				System.out.println(n.getCamelLabel() + " is root");
-				this.qroot = n;
-				qRoots.add(n.getLabel());
-			}
-		}
-		
-		if (roots.size() > 1)
-			throw new Exception("Error: Too many root goals, 1 expected, " + roots.size() + " found: " + roots);
-
-		if (qRoots.size() > 1) {
-			throw new Exception("Error: Too many quality root goals, 1 expected, " + qRoots.size() + " found: " + qRoots + ".");
-		} else if (qRoots.size() == 0) {
-			for (GMNode n:goalModel) {
-				if (n.getType().equals("quality") && n.getOutgoingContributions().isEmpty()) {
-					this.qroot = n;
-					qRoots.add(n.getLabel());
+			if ((n instanceof GMGoal)) {
+				if (n.getParent()==null) {
+					foundRoots.add(n);
+				}
+				if (((GMGoal) n).isRoot()) {
+					declaredRoots.add(n);
 				}
 			}
-			if (qRoots.size() >1)
-				throw new Exception("Error: Too many quality root goals, 1 expected, " + qRoots.size() + " found: " + qRoots + ". Pick one manually but adding property root = true.");
+			
+			if ((n instanceof GMQuality)) {
+				if (n.getOutgoingContributions().isEmpty()) {
+					foundQRoots.add(n);
+				}
+				if (((GMGoal) n).isQRoot()) {
+					declaredQRoots.add(n);
+				}
+				if ((n.hasDtxFormula() || n.hasFormula())) {
+					hasFormula = true;
+				}
+			}
 		}
-	
+
+		
+		/*
+		 * Root Hard Goal
+		 */
+		
+		this.root = null;
+		
+		if (declaredRoots.size() == 0) {
+			if (foundRoots.size() == 0) {
+				err.addError("No root goal specified or found, 1 expected. " , "GoalModel::findRoot()");	
+			}
+			if (foundRoots.size() == 1) {
+				err.addWarning("No root goal explicitly specified, one inferrred (" + foundRoots.get(0) + ") and will be adopted.", "GoalModel::findRoot()");
+				this.root = foundRoots.get(0);
+			}
+			if (foundRoots.size() > 1) {
+				err.addError("No root goal explicitly specified, too many inferrred (" + foundRoots + ").", "GoalModel::findRoot()");	
+			}
+		}
+
+		if (declaredRoots.size() == 1) {
+			this.root = declaredRoots.get(0);
+			
+			if (foundRoots.size() == 0) {
+				err.addWarning("Neither specified root goal (" + declaredRoots.get(0) + ") nor other goals are parentless." , "GoalModel::findRoot()");	
+			}
+			if (foundRoots.size() == 1) {
+				if (!declaredRoots.get(0).equals(foundRoots.get(0))) {
+					err.addWarning("Specified root goal (" + declaredRoots.get(0) + ") does not match inferred root goal: " + foundRoots.get(0), "GoalModel::findRoot()");	
+				}
+			}
+			if (foundRoots.size() > 1) {
+				if (!foundRoots.contains(declaredRoots.get(0))) {
+					err.addWarning("Specified root goal (" + declaredRoots.get(0) + ") does not match any of the inferred root goal(s): " + foundRoots, "GoalModel::findRoot()");	
+				}
+			}
+		}
+
+		if (declaredRoots.size() > 1) {
+			err.addWarning("Too many root goals specified (" + declaredRoots + ") choose only one." , "GoalModel::findRoot()");
+		}
+		
+		/*
+		 * Root Quality Goal
+		 */
+		this.qroot = null;
+		
+		if (declaredQRoots.size() == 0) {
+			if (foundQRoots.size() == 0) {
+				err.addError("No root quality specified or found, 1 expected. " , "GoalModel::findRoot()");	
+			}
+			if (foundQRoots.size() == 1) {
+				if (hasFormula) {
+					err.addError("No root quality explicitly specified, one inferrred (" + foundQRoots.get(0) + ") but formulae have been detected. Please explicilty specify root quality goal.", "GoalModel::findRoot()");
+					} else {
+						err.addError("No root quality explicitly specified, one inferrred (" + foundQRoots.get(0) + ") and adopted.", "GoalModel::findRoot()");
+						this.qroot = foundQRoots.get(0);	
+					}
+ 			}
+			if (foundQRoots.size() > 1) {
+				err.addError("No root goal explicitly specified, too many inferrred (" + foundQRoots + ").", "GoalModel::findRoot()");	
+			}
+		}
+
+		if (declaredQRoots.size() == 1) {
+			this.qroot = declaredQRoots.get(0);
+			
+			if ((foundQRoots.size() == 0) && !hasFormula) {
+				err.addWarning("Neither specified root quality (" + declaredQRoots.get(0) + ") nor other qualities are parentless." , "GoalModel::findRoot()");	
+			}
+			if (foundQRoots.size() == 1) {
+				if (!declaredQRoots.get(0).equals(foundQRoots.get(0))) {
+					err.addWarning("Specified root quality (" + declaredQRoots.get(0) + ") does not match inferred root quality: " + foundQRoots.get(0), "GoalModel::findRoot()");	
+				}
+			}
+			if (foundQRoots.size() > 1) {
+				if (!foundQRoots.contains(declaredQRoots.get(0))) {
+					err.addWarning("Specified root quality (" + declaredQRoots.get(0) + ") does not match any of the inferred root qualities: " + foundQRoots, "GoalModel::findRoot()");	
+				}
+			}
+		}
+
+		if (declaredQRoots.size() > 1) {
+			err.addError("Too many root qulities specified (" + declaredQRoots + ") choose only one." , "GoalModel::findRoot()");
+		}
+		
 	}
 	
 	

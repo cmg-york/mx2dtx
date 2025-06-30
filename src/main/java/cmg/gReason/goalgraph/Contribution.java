@@ -10,6 +10,11 @@ public class Contribution extends GMNode {
 	public GMNode origin;
 	public GMNode target;
 	public float weight;
+	
+	public Contribution() {
+		
+	}
+	
 	public Contribution(GMNode gmnOrigin, GMNode gmnTarget, String weight) {
 		origin = gmnOrigin;
 		target = gmnTarget;

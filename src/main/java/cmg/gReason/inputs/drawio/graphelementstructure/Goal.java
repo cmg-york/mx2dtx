@@ -2,14 +2,17 @@ package cmg.gReason.inputs.drawio.graphelementstructure;
 
 public class Goal extends Entity {
 	private String runNum;
+	private Boolean isRoot;
 	
 	public Goal(String id, 
 			String label, 
 			String actor, 
 			String notes, 
-			String runNum) {
+			String runNum,
+			boolean isRoot) {
 		super(id, label, actor, notes);
 		this.runNum = runNum;
+		this.isRoot = isRoot;
 	}
 
 	public String getRunNum() {
@@ -20,6 +23,11 @@ public class Goal extends Entity {
 		this.runNum = runNum;
 	}
 	
+	public Boolean isRoot() {
+		return (isRoot);
+	}
 	
-
+	public void setRoot(boolean isRoot) {
+		this.isRoot = isRoot;
+	}
 }

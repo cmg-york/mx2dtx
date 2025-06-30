@@ -91,7 +91,8 @@ public class GraphElementFactory {
 					label,
 					e.getAttribute("actor"),
 					e.getAttribute("notes"),
-					e.getAttribute("runNum")
+					e.getAttribute("runNum"),
+					Boolean.parseBoolean(e.getAttribute("isRoot"))
 					);
 			break;
 		case "task":
@@ -116,7 +117,7 @@ public class GraphElementFactory {
 					e.getAttribute("notes"),
 					formula,
 					dtxFormula,
-					Boolean.parseBoolean(e.getAttribute("root"))
+					Boolean.parseBoolean(e.getAttribute("isRoot"))
 					);
 			break;
 		case "precondition":

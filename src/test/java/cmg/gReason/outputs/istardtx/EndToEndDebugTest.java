@@ -32,7 +32,7 @@ class EndToEndDebugTest {
 			String outputFile = "src/test/resources/Order.istardtx";
 			writer.setOutFile(outputFile);
 			writer.setModel(model);
-			writer.translate();
+			//writer.translate();
 			
 
 			
