@@ -1,5 +1,5 @@
 package cmg.gReason.goalgraph;
 
-public class GMCrossRunSet extends GMNode {
+public class GMCrossRunSet extends WithFormula {
 
 }

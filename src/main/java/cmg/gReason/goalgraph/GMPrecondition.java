@@ -1,5 +1,5 @@
 package cmg.gReason.goalgraph;
 
-public class GMPrecondition extends GMNode {
+public class GMPrecondition extends WithFormula {
 
 }

@@ -2,6 +2,8 @@ package cmg.gReason.goalgraph;
 
 import java.util.ArrayList;
 
+import cmg.gReason.outputs.common.TextCleaner;
+
 /**
  * 
  * Representation of a goal model node. Encapsulates relationships. 
@@ -15,76 +17,20 @@ public class GMNode {
 	
 	protected String id;
 	protected String label;
-	protected String type;
 	protected String actor;
-	protected String runs;
+	protected TextCleaner cleaner = new TextCleaner();
 	
-	public String getRuns() {
-		return (runs.equals("") ? "1" : runs) ;
-	}
-
-	public void setRuns(String runs) {
-		this.runs = runs;
-	}
-
-	public String getFormula() {
-		return formula;
-	}
-
-	public void setFormula(String formula) {
-		this.formula = formula;
-	}
-
-	public String getDtxFormula() {
-		return dtxFormula;
-	}
-
-	public void setDtxFormula(String dtxFormula) {
-		this.dtxFormula = dtxFormula;
-	}
-
-
-
-
-
-	// For effects only
-	protected String effectStatus;
-	
-	// For effects and quality goals
-	protected float inWeight;
-	
-	protected GMNode parent = null;
-	protected ArrayList<GMNode> orChildren  = new ArrayList<GMNode>();
-	protected ArrayList<GMNode> andChildren  = new ArrayList<GMNode>();
-	protected ArrayList<GMNode> inContr = new ArrayList<GMNode>();
+	//Goals, Tasks, Effects, Preconditions
 	protected ArrayList<GMNode> outContr  = new ArrayList<GMNode>();
+	
+	//Goals, Tasks, Effects
 	protected ArrayList<GMNode> inPre  = new ArrayList<GMNode>();
-	protected ArrayList<GMNode> outPre  = new ArrayList<GMNode>();
 	protected ArrayList<GMNode> inNegPre  = new ArrayList<GMNode>();
+	
+	//Goals, Tasks, Effects, Preconditions
+	protected ArrayList<GMNode> outPre  = new ArrayList<GMNode>();
 	protected ArrayList<GMNode> outNegPre  = new ArrayList<GMNode>();
-		
-	/* For tasks and temporarily effect groups */
-	protected ArrayList<GMNode> effects  = new ArrayList<GMNode>();
 	
-	/* For tasks */
-	protected GMNode outEffectLink = null;
-	
-	/* For effects and temporarily effect groups */
-	protected GMNode inEffectLink = null;
-
-	
-	/* For qualities and condition boxes */
-	protected String formula;
-	protected String dtxFormula;
-	protected boolean isQRoot;
-	
-	public boolean hasFormula() {
-		return( !(formula.equals("")) && !(formula == null) );
-	}
-	
-	public boolean hasDtxFormula() {
-		return( !(dtxFormula.equals("")) && !(dtxFormula == null) );
-	}	
 	
     /**
      * Get the unique ID of the node.
@@ -105,46 +51,6 @@ public class GMNode {
 	}
 	
     /**
-     * Get the effect status of the node (for effects only).
-     * 
-     * @return The effect status of the node: "success" of "failure"
-     */
-	public String getEffectStatus() {
-		return effectStatus;
-	}
-
-
-    /**
-     * Set the effect status of the node (for effects only).
-     * 
-     * @param effectStatus The effect status to be set, one of  "success" of "failure".
-     */
-	public void setEffectStatus(String effectStatus) {
-		this.effectStatus = effectStatus;
-	}
-	
-	
-    /**
-     * Get the incoming weight of the node (for effects only). For effects it is the probability of the effect.
-     * 
-     * @return The probability of the effect.
-     */
-	public float getInWeight() {
-		return inWeight;
-	}
-
-
-    /**
-     * Set the incoming weight of the node (for effectsonly).
-     * 
-     * @param inWeight The incoming weight to be set.
-     */
-	public void setInWeight(float inWeight) {
-		this.inWeight = inWeight;
-	}
-
-	
-    /**
      * Get the label of the node.
      * 
      * @return The label of the node.
@@ -160,7 +66,7 @@ public class GMNode {
      * @return The label of the node.
      */
 	public String getCamelLabel() {
-		return toCamelCase(label);
+		return cleaner.toCamelCase(label);
 	}
 	
 	    /**
@@ -172,61 +78,6 @@ public class GMNode {
 		this.label = label;
 	}
 
-    /**
-     * Get the type of the node.
-     * 
-     * @return The type of the node: "goal", "task", "quality" etc.
-     */
-	public String getType() {
-		return type;
-	}
-
-    /**
-     * Set the type of the node.
-     * 
-     * @param type The type to be set for the node: "goal", "task", "quality" etc.
-     */
-	public void setType(String type) {
-		this.type = type;
-	}
-	
-    /**
-     * Set the parent node of this node.
-     * 
-     * @param parent The parent node to be set.
-     */
-	public void setParent(GMNode parent) {
-		this.parent = parent;
-	}
-
-    /**
-     * Add an AND child to the node.
-     * 
-     * @param e The child node to be added.
-     */
-	public void addANDChild(GMNode e) {
-		andChildren.add(e);
-	}
-	
-    /**
-     * Add an OR child to the node.
-     * 
-     * @param e The child node to be added.
-     */
-	public void addORChild(GMNode e) {
-		orChildren.add(e);
-	}
-	
-    /**
-     * Add a node as an incoming contribution to this node.
-     * 
-     * @param e The contribution node to be added. A {@linkplain Contribution} object.
-     */
-	public void addInContribution(GMNode e) {
-		inContr.add(e);
-	}
-
-	
     /**
      * Add a node as an outgoing contribution to this node.
      * 
@@ -272,7 +123,6 @@ public class GMNode {
 	public void addOutNegPrecedence(GMNode e) {
 		outNegPre.add(e);
 	}	
-	
 
     /**
      * Get the list of incoming negative precedences to this node.
@@ -284,136 +134,17 @@ public class GMNode {
 	}
 	
 	
-    /**
-     * Add a node as an effect to this node (for tasks and temporarily effect groups).
-     * 
-     * @param e The effect node to be added.
-     */
-	public void addEffect(GMNode e) {
-		effects.add(e);
-	}
-	
-	 /**
-     * Set the list of effect nodes for this node (for tasks and temporarily effect groups).
-     * 
-     * @param effs The list of effect nodes to be set.
-     */
-	public void setEffects(ArrayList<GMNode> effs) {
-		this.effects = effs;
-	}
-	
-	   /**
-     * Set a node as the incoming effect link for this node (for effects and temporarily effect groups).
-     * 
-     * @param e The incoming effect link node to be set.
-     */
-	public void setInEffectLink(GMNode e) {
-		this.inEffectLink = e;
-	}
-	
-    /**
-     * Get the incoming effect link node for this node (for effects and temporarily effect groups).
-     * 
-     * @return The incoming effect link node.
-     */
-	public GMNode getInEffectLink() {
-		return(this.inEffectLink);
-	}
-	
-    /**
-     * Set a node as the outgoing effect link for this node (for tasks).
-     * 
-     * @param e The outgoing effect link node to be set.
-     */
-	public void setOutEffectLink(GMNode e) {
-		this.outEffectLink = e;
-	}
-	
-    /**
-     * Get the outgoing effect link node for this node (for tasks).
-     * 
-     * @return The outgoing effect link node.
-     */
-	public GMNode getOutEffectLink() {
-		return(this.outEffectLink);
-	}
-
-	
-	
-	
-	
-	/**
-	 * Read Node Information
-	 */
-	
-	public GMNode getParent() {
-		return this.parent;
-	};
-
-	public ArrayList<GMNode> getORChildren(){
-		return this.orChildren;
-	}
-	
-	public ArrayList<GMNode> getANDChildren(){
-		return this.andChildren;
-	}
-	
-	public ArrayList<GMNode> getIncompingContributions(){
-		return this.inContr;
-	}
-	
 	public ArrayList<GMNode> getOutgoingContributions(){
 		return this.outContr;
 	}
 	
-	public ArrayList<GMNode> getIncompingPrecedences(){
+	public ArrayList<GMNode> getIncomingPrecedences(){
 		return this.inPre;
 	}
 	
 	public ArrayList<GMNode> getOutgoingPrecedences(){
 		return this.outPre;
 	}
-	
-	public ArrayList<GMNode> getEffects(){
-		return this.effects;
-	}
-	
-	
-	
-	public String toCamelCase(String input) {
-		if (input == null || input.isEmpty()) {
-			return "";
-		}
-
-		// Keep only letters and digits, treat others as word separators
-		String[] parts = input.split("[^a-zA-Z0-9]+");
-
-		StringBuilder sb = new StringBuilder();
-
-		for (int i = 0; i < parts.length; i++) {
-			String part = parts[i];
-			if (part.isEmpty()) continue;
-
-			if (i == 0) {
-				// First word: lowercase first letter
-				sb.append(part.substring(0, 1).toLowerCase());
-				sb.append(part.substring(1));
-			} else {
-				// Other words: capitalize first letter
-				sb.append(part.substring(0, 1).toUpperCase());
-				sb.append(part.substring(1));
-			}
-		}
-
-		// Ensure first character is lowercase (required for Prolog atoms)
-		if (sb.length() > 0) {
-			sb.setCharAt(0, Character.toLowerCase(sb.charAt(0)));
-		}
-
-		return sb.toString();
-	}
-
-	
 	
 	
 	
@@ -443,14 +174,6 @@ public class GMNode {
 		}
 		return (result.substring(0, result.length() - 1) + "}");
 	}
-
-	public void setQRoot(boolean root) {
-		this.isQRoot = root;
-	}
-	public boolean isQRoot() {
-		return (this.isQRoot);
-	}
-
 }
 
 

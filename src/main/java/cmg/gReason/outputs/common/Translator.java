@@ -1,6 +1,5 @@
 package cmg.gReason.outputs.common;
 
-import cmg.gReason.goalgraph.GoalModelOLD;
 import cmg.gReason.goalgraph.GoalModel;
 
 public abstract class Translator {

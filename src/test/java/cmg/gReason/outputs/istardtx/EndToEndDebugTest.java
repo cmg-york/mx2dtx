@@ -2,6 +2,11 @@ package cmg.gReason.outputs.istardtx;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.List;
+
 import org.junit.jupiter.api.Test;
 
 import cmg.gReason.goalgraph.GoalModel;
@@ -12,7 +17,7 @@ import cmg.gReason.outputs.common.Translator;
 class EndToEndDebugTest {
 
 	@Test
-	void test() {
+	void test() throws IOException {
 		mx2dtx mainClass = new mx2dtx();
 		ErrorReporter err = new ErrorReporter();
 		DrawIOReader reader = new DrawIOReader(err);
@@ -32,14 +37,21 @@ class EndToEndDebugTest {
 			String outputFile = "src/test/resources/Order.istardtx";
 			writer.setOutFile(outputFile);
 			writer.setModel(model);
-			//writer.translate();
-			
-
-			
+			writer.translate();
+					
 		} catch (Exception e) {
 			System.err.println("[mx2dtx] Error: " + e.getMessage());
 			System.exit(1);
 		}
+		
+        Path actual = Path.of("src/test/resources/Order.istardtx");
+        Path expected = Path.of("src/test/resources/Order-Authoritative.istardtx");
+
+        List<String> actualLines = Files.readAllLines(actual);
+        List<String> expectedLines = Files.readAllLines(expected);
+
+        assertEquals(expectedLines, actualLines, "Files do not match!");
+		
 	}
 
 }

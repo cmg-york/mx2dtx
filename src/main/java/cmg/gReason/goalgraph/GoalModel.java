@@ -21,8 +21,7 @@ public class GoalModel {
 
 	private GMNode root;
 	private GMNode qroot;
-	
-	
+		
 	public GoalModel(ErrorReporter e) {
 		this.err = e;
 	}
@@ -36,30 +35,24 @@ public class GoalModel {
 
 		if (e instanceof Goal) {
 			gNode = new GMGoal();
-			gNode.setRuns(((Goal) e).getRunNum());
+			((GMGoal) gNode).setRuns(((Goal) e).getRunNum());
 			((GMGoal) gNode).setRoot(((Goal) e).isRoot());
-			gNode.setType("goal");
 		} else if (e instanceof Task) {
 			gNode = new GMTask();
-			gNode.setType("task");
 		} else if (e instanceof Quality) {
 			gNode = new GMQuality();
-			gNode.setType("quality");
-			gNode.setDtxFormula(((Quality) e).getDtxFormua());
-			gNode.setFormula(((Quality) e).getFormula());
-			gNode.setQRoot(((Quality) e).isQRoot());
+			((WithFormula) gNode).setDtxFormula(((Quality) e).getDtxFormua());
+			((WithFormula) gNode).setFormula(((Quality) e).getFormula());
+			((GMQuality) gNode).setQRoot(((Quality) e).isQRoot());
 		} else if (e instanceof EffectGroup) {
 			gNode = new GMEffectGroup();
-			gNode.setType("effectGroup");
 		} else if (e instanceof Effect) {
 			gNode = new GMEffect();
-			gNode.setType("effect");
-			gNode.setEffectStatus(((Effect) e).getStatus());
+			((GMEffect) gNode).setEffectStatus(((Effect) e).getStatus());
 		} else if (e instanceof Precondition) {
 			gNode = new GMPrecondition();
-			gNode.setType("precondition");
-			gNode.setDtxFormula(((Precondition) e).getDtxFormua());
-			gNode.setFormula(((Precondition) e).getFormula());
+			((WithFormula) gNode).setDtxFormula(((Precondition) e).getDtxFormua());
+			((WithFormula) gNode).setFormula(((Precondition) e).getFormula());
 		}
 		
 		gNode.setId(e.getID());
@@ -139,12 +132,9 @@ public class GoalModel {
 			gmn.setLabel(c.getLabel());
 			
 			if (c instanceof Link) {
-				//Create the node
-				//GMNode gmn = new GMNode();
+
 				GMNode gmnOrigin;
 				GMNode gmnTarget;
-				
-
 
 				//Handle origin and destination
 				String strOrigin = ((Link) c).getSource();
@@ -167,11 +157,11 @@ public class GoalModel {
 				//TODO: add relationship validation code here.
 				
 				if (gmn instanceof ORDecomp) {
-					gmnTarget.addORChild(gmnOrigin);
-					gmnOrigin.setParent(gmnTarget);
+					((GMGoal) gmnTarget).addORChild(gmnOrigin);
+					((WithParent) gmnOrigin).setParent((WithParent) gmnTarget);
 				} else if (gmn instanceof ANDDecomp) {
-					gmnTarget.addANDChild(gmnOrigin);
-					gmnOrigin.setParent(gmnTarget);
+					((GMGoal) gmnTarget).addANDChild(gmnOrigin);
+					((WithParent) gmnOrigin).setParent((WithParent) gmnTarget);
 				} else if (gmn instanceof PRELink) {
 					gmnOrigin.addOutPrecedence(gmnTarget);
 					gmnTarget.addInPrecedence(gmnOrigin);
@@ -183,71 +173,34 @@ public class GoalModel {
 					((Contribution) gmn).setContributionOrigin(gmnTarget);
 					((Contribution) gmn).setContributionWeight(Float.parseFloat(gmn.getLabel()));
 					gmnOrigin.addOutContribution(gmn);
-					gmnTarget.addInContribution(gmn);
+					((GMQuality) gmnTarget).addInContribution(gmn);
 				} else if (gmn instanceof EffLink) {
-					gmnOrigin.setOutEffectLink(gmnTarget); //gmnTarget is an effect group
-					gmnTarget.setInEffectLink(gmnOrigin); //gmnOrigin is a task
+					((GMTask) gmnOrigin).setOutEffectLink(gmnTarget); //gmnTarget is an effect group
+					((GMEffectGroup) gmnTarget).setInEffectLink(gmnOrigin); //gmnOrigin is a task
 				} else if (gmn instanceof EffGroupLink) {
-					gmnOrigin.addEffect(gmnTarget);
-					gmnTarget.setParent(gmnOrigin);
-					gmnTarget.setInWeight(Float.parseFloat(gmn.getLabel()));
+					((GMEffectGroup) gmnOrigin).addEffect(gmnTarget);
+					((GMEffect) gmnTarget).setParent((GMEffectGroup) gmnOrigin);
+					((GMEffect) gmnTarget).setInWeight(Float.parseFloat(gmn.getLabel()));
 				}
 			} //e is Link - gmn will be discarded, LINKS ARE NOT ADDED TO THE MODEL
 			
 			else if (c instanceof InitializationSet) {
-				gmn.setFormula(((InitializationSet) c).getFormula());
-				gmn.setDtxFormula(((InitializationSet) c).getDtxFormula());
-				//gmn.setType("initialization");
+				((WithFormula) gmn).setFormula(((InitializationSet) c).getFormula());
+				((WithFormula) gmn).setDtxFormula(((InitializationSet) c).getDtxFormula());
 				goalModel.add(gmn);
 			} else if (c instanceof CrossRunSet) {
-				gmn.setFormula(((CrossRunSet) c).getFormula());
-				gmn.setDtxFormula(((CrossRunSet) c).getDtxFormula());
-				//gmn.setType("crossrun");
+				((WithFormula) gmn).setFormula(((CrossRunSet) c).getFormula());
+				((WithFormula) gmn).setDtxFormula(((CrossRunSet) c).getDtxFormula());
 				goalModel.add(gmn);
 			} else if (c instanceof ExportedSet) {
-				gmn.setFormula(((ExportedSet) c).getFormula());
-				gmn.setDtxFormula(((ExportedSet) c).getDtxFormula());
-				//gmn.setType("export");
+				((WithFormula) gmn).setFormula(((ExportedSet) c).getFormula());
+				((WithFormula) gmn).setDtxFormula(((ExportedSet) c).getDtxFormula());
 				goalModel.add(gmn);
 			}
-				
-				/* 
-				
-				switch(gmn.getType()) {
-				case "orDecomp":
-					gmnTarget.addORChild(gmnOrigin);
-					gmnOrigin.setParent(gmnTarget);
-					break;
-				case "andDecomp":
-					gmnTarget.addANDChild(gmnOrigin);
-					gmnOrigin.setParent(gmnTarget);
-					break;
-				case "precedenceLink":
-					gmnOrigin.addOutPrecedence(gmnTarget);
-					gmnTarget.addInPrecedence(gmnOrigin);
-					break;
-				case "negPrecedenceLink":
-					gmnOrigin.addOutNegPrecedence(gmnTarget);
-					gmnTarget.addInNegPrecedence(gmnOrigin);
-					break;
-				case "contributionLink":
-					gmnOrigin.addOutContribution(new Contribution(gmnOrigin,gmnTarget,gmn.getLabel()));
-					gmnTarget.addInContribution(new Contribution(gmnOrigin,gmnTarget,gmn.getLabel()));
-					break;
-				case "effectLink":
-					gmnOrigin.setOutEffectLink(gmnTarget); //gmnTarget is an effect group
-					gmnTarget.setInEffectLink(gmnOrigin); //gmnOrigin is a task
-					break;
-				case "effectGroupLink":
-					gmnOrigin.addEffect(gmnTarget);
-					gmnTarget.setParent(gmnOrigin);
-					gmnTarget.setInWeight(Float.parseFloat(gmn.getLabel()));
-					break;
-				}
-				*/
-			// c is not a link
 
 		}//loop over elements in GraphElement Graph
+		
+		System.out.println("I am about to bypass and findroot");
 		
 		//Bypass effectGroups
 		byPassEffectGroups();
@@ -265,9 +218,9 @@ public class GoalModel {
 		while (itr.hasNext()) {
 			GMNode n = itr.next();
 			if (n instanceof GMEffectGroup) {
-				n.getInEffectLink().setEffects(n.getEffects());
-				for (GMNode o:n.getEffects())
-					o.setParent(n.getInEffectLink());
+				((GMTask) ((GMEffectGroup) n).getInEffectLink()).setEffects(((GMEffectGroup) n).getEffects());
+				for (GMNode o:((GMEffectGroup) n).getEffects())
+					((WithParent) o).setParent((WithParent) ((GMEffectGroup) n).getInEffectLink());
 				itr.remove();
 			}
 		}
@@ -289,7 +242,7 @@ public class GoalModel {
 		
 		for (GMNode n:goalModel) {
 			if ((n instanceof GMGoal)) {
-				if (n.getParent()==null) {
+				if (((WithParent) n).getParent()==null) {
 					foundRoots.add(n);
 				}
 				if (((GMGoal) n).isRoot()) {
@@ -301,16 +254,16 @@ public class GoalModel {
 				if (n.getOutgoingContributions().isEmpty()) {
 					foundQRoots.add(n);
 				}
-				if (((GMGoal) n).isQRoot()) {
+				if (((GMQuality) n).isQRoot()) {
 					declaredQRoots.add(n);
 				}
-				if ((n.hasDtxFormula() || n.hasFormula())) {
+				if ((((WithFormula) n).hasDtxFormula() || ((WithFormula) n).hasFormula())) {
 					hasFormula = true;
 				}
 			}
 		}
 
-		
+
 		/*
 		 * Root Hard Goal
 		 */
@@ -352,6 +305,8 @@ public class GoalModel {
 			err.addWarning("Too many root goals specified (" + declaredRoots + ") choose only one." , "GoalModel::findRoot()");
 		}
 		
+
+		
 		/*
 		 * Root Quality Goal
 		 */
@@ -365,7 +320,7 @@ public class GoalModel {
 				if (hasFormula) {
 					err.addError("No root quality explicitly specified, one inferrred (" + foundQRoots.get(0) + ") but formulae have been detected. Please explicilty specify root quality goal.", "GoalModel::findRoot()");
 					} else {
-						err.addError("No root quality explicitly specified, one inferrred (" + foundQRoots.get(0) + ") and adopted.", "GoalModel::findRoot()");
+						err.addWarning("No root quality explicitly specified, one inferrred (" + foundQRoots.get(0) + ") and adopted.", "GoalModel::findRoot()");
 						this.qroot = foundQRoots.get(0);	
 					}
  			}
@@ -394,6 +349,12 @@ public class GoalModel {
 
 		if (declaredQRoots.size() > 1) {
 			err.addError("Too many root qulities specified (" + declaredQRoots + ") choose only one." , "GoalModel::findRoot()");
+		}
+		
+		System.out.println("Was this even run??");		
+		if (err.hasErrors()) {
+			err.printAll();
+			System.exit(-1);
 		}
 		
 	}
@@ -482,18 +443,18 @@ public class GoalModel {
 	
 	public void debugGoalModelFlat() {
 		for (GMNode c:goalModel) {
-			System.out.println(c.getLabel() + " (" + c.getType() + ") ID:" + c.getId());
-			System.out.println(" --> AND Children: " + GMNode.debugPrintList(c.getANDChildren(),","));
-			System.out.println(" --> OR Children: " + GMNode.debugPrintList(c.getORChildren(),","));
-			System.out.println(" --> Effects: " + GMNode.debugPrintList(c.getEffects(),","));
-			System.out.println(" --> InPrecedences: " + GMNode.debugPrintList(c.getIncompingPrecedences(),","));
+			System.out.println(c.getLabel() + " (" + c.getClass().getSimpleName() + ") ID:" + c.getId());
+			System.out.println(" --> AND Children: " + GMNode.debugPrintList(((GMGoal) c).getANDChildren(),","));
+			System.out.println(" --> OR Children: " + GMNode.debugPrintList(((GMGoal) c).getORChildren(),","));
+			System.out.println(" --> Effects: " + GMNode.debugPrintList(((GMTask) c).getEffects(),","));
+			System.out.println(" --> InPrecedences: " + GMNode.debugPrintList(c.getIncomingPrecedences(),","));
 			System.out.println(" --> OutPrecedences: " + GMNode.debugPrintList(c.getOutgoingPrecedences(),","));
-			System.out.println(" --> InContributions: " + GMNode.debugPrintList(c.getIncompingContributions(),","));
+			System.out.println(" --> InContributions: " + GMNode.debugPrintList(((GMQuality) c).getIncompingContributions(),","));
 			System.out.println(" --> OutContributions: " + GMNode.debugPrintList(c.getOutgoingContributions(),","));
-			System.out.println(" --> InWeight: " + Float.toString(c.getInWeight()));
-			System.out.println(" --> Status: " + c.getEffectStatus());
-			if (c.getParent()!= null)
-				System.out.println(" --> Parent: " + c.getParent().getLabel());
+			System.out.println(" --> InWeight: " + Float.toString(((GMEffect) c).getInWeight()));
+			System.out.println(" --> Status: " + ((GMEffect) c).getEffectStatus());
+			if (((WithParent) c).getParent()!= null)
+				System.out.println(" --> Parent: " + ((WithParent) c).getParent().getLabel());
 			else 
 				System.out.println(" --> Parent: none");
 		}

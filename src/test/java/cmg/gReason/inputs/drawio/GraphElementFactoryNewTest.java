@@ -1,24 +1,17 @@
 package cmg.gReason.inputs.drawio;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 import java.io.File;
-import java.io.IOException;
 
 import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
 
 import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-import org.xml.sax.SAXException;
 
-import cmg.gReason.goalgraph.GoalModelOLD;
 import cmg.gReason.goalgraph.GoalModel;
 import cmg.gReason.inputs.drawio.graphelementstructure.GraphElement;
 import cmg.gReason.outputs.common.ErrorReporter;

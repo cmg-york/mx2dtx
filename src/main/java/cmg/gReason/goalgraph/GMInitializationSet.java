@@ -1,5 +1,5 @@
 package cmg.gReason.goalgraph;
 
-public class GMInitializationSet extends GMNode {
+public class GMInitializationSet extends WithFormula {
 
 }

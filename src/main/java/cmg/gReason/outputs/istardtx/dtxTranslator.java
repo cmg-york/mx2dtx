@@ -8,8 +8,16 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import cmg.gReason.goalgraph.Contribution;
+import cmg.gReason.goalgraph.GMCrossRunSet;
+import cmg.gReason.goalgraph.GMEffect;
+import cmg.gReason.goalgraph.GMExportedSet;
+import cmg.gReason.goalgraph.GMGoal;
+import cmg.gReason.goalgraph.GMInitializationSet;
 import cmg.gReason.goalgraph.GMNode;
-import cmg.gReason.goalgraph.GoalModelOLD;
+import cmg.gReason.goalgraph.GMPrecondition;
+import cmg.gReason.goalgraph.GMQuality;
+import cmg.gReason.goalgraph.GMTask;
+import cmg.gReason.goalgraph.WithFormula;
 import cmg.gReason.inputs.drawio.ConditionExpressionParser;
 import cmg.gReason.inputs.drawio.IdentifierRegistry;
 import cmg.gReason.inputs.drawio.InitializationParser;
@@ -40,9 +48,6 @@ public class dtxTranslator extends Translator {
 
 	}
 	
-
-	
-	
 	/**
 	 * Returns the result of the translation.
 	 * @return The complete iStar-DT-X specification
@@ -65,8 +70,6 @@ public class dtxTranslator extends Translator {
 	public void produceTranslation() {
 		//First build the identifier registry based on condition boxes
 		buildIdentifierRegistry();
-		
-		//TODO: Process duplicate quality goals
 	
 		//Performs the translation
 		spec = createSpec();
@@ -74,32 +77,32 @@ public class dtxTranslator extends Translator {
 	
 	
 	/**
-	 * Builds a registry of identifiers and their types. It first goes over all condition boxes which it parses.
-	 * All ground elements of condition boxes are either predicates or variables. They are registered as such. 
-	 * Then the remaining items of the goal model are processed and if what was known from the previous step 
+	 * Builds a registry of identifiers and their types. It first goes over all condition boxes, which it parses.
+	 * All ground elements of condition boxes are either predicates or variables. Once found, they are registered 
+	 * as such. Then the remaining items of the goal model are processed and if what was known from the previous step 
 	 * to be a predicate or variable is now becoming a goal, task, etc.      
 	 */
 	private void buildIdentifierRegistry() {
 
 		// Collect items from condition boxes first
-		for (GMNode n:this.g.getGoalModel()) {
-			if (n.getType().equals("precondition")) {
+		for (GMNode n: this.g.getGoalModel()) {
+			if (n instanceof GMPrecondition) {
 				parser.parse(n.getLabel());
-				//identifiers = parser.getIdentifiers();
 			}
 		}		
 
-		//everything that exists in conditions is now a predicate or a variable
+		//Everything that exists in conditions is now a predicate or a variable in the registry
+		//The parse routine does it..
 		
 		// Now collect all other items and add them or replace the existing ones with new type information
 		for (GMNode n:this.g.getGoalModel()) {
-			if (n.getType().equals("task")) {
+			if (n instanceof GMTask) {
 				identifiers.addIdentifier(n.getCamelLabel(),"taskID");
-			} else if (n.getType().equals("goal")) {
+			} else if (n instanceof GMGoal) {
 				identifiers.addIdentifier(n.getCamelLabel(),"goalID");
-			} else if (n.getType().equals("quality")) {
+			} else if (n instanceof GMQuality) {
 				identifiers.addIdentifier(n.getCamelLabel(),"qualID");
-			} else if (n.getType().equals("effect")) {
+			} else if (n instanceof GMEffect) {
 				identifiers.addIdentifier(n.getCamelLabel(),"predicateID");
 			}
 		}
@@ -117,7 +120,6 @@ public class dtxTranslator extends Translator {
 		String options = "\n\n\n<!--\n*** O P T I O N S ***\n-->\n";
 		String actors = "\n\n\n<!--\n*** A C T O R S ***\n-->\n<actors>\n";
 		String actor = "";
-		String namespaces = "";
 		String tasks = "\n\n\n<!--\n*** T A S K S ***\n-->\n<tasks>\n";
 		String goals = "\n\n\n<!--\n*** G O A L S ***\n-->\n<goals>\n";
 		String qualities = "\n\n\n<!--\n*** Q U A L I T I E S ***\n-->\n<qualities>\n";
@@ -136,8 +138,10 @@ public class dtxTranslator extends Translator {
 				+ "         xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\r\n"
 				+ "         xsi:schemaLocation=\"https://example.org/istar-dt-x ../xsd/istar-rl-schema_v4.xsd\">";
 		
-		header += "<header title = \"\"\n    author = \"\"\n    source = \"\"\n    lastUpdated = \"" + java.time.LocalDateTime.now()
-	    .format(java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")) +  "\">\n</header>";
+		//header += "<header title = \"\"\n    author = \"\"\n    source = \"\"\n    lastUpdated = \"" + java.time.LocalDateTime.now()
+	    //.format(java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")) +  "\">\n</header>";
+		
+		header += "<header title = \"\"\n    author = \"\"\n    source = \"\"\n    lastUpdated = \"Test\">\n</header>";
 		
 		options += "<options continuous = \"false\"\n    infeasibleActionPenalty = \"100\">\n</options>";
 		
@@ -149,22 +153,22 @@ public class dtxTranslator extends Translator {
 			/* * 
 			 * T A S K S  
 			 */
-			if (n.getType().equals("task")) {
+			if (n instanceof GMTask) {
 				tasks += getIndent(1) + getXMLTask(n.getCamelLabel(),n.getLabel()) + "\n" ;
 				String effects = getIndent(2) + "<effectGroup>\n";
 
 				/* * 
 				 * E F F E C T S  
 				 */
-				for (GMNode eff:n.getEffects()) {
+				for (GMNode eff:((GMTask) n).getEffects()) {
 					effects += getIndent(3) + getXMLEffect(eff.getCamelLabel(),eff.getLabel(),
-							getEffectStatus(eff.getEffectStatus()),String.valueOf(eff.getInWeight())) + "\n";
+							getEffectStatus(((GMEffect) eff).getEffectStatus()),String.valueOf(((GMEffect) eff).getInWeight())) + "\n";
 					effects += getIndent(4) + getXMLTurnsTrue(eff.getCamelLabel()) + "\n";
 					
 					
-					if (eff.getIncompingPrecedences().size()>0) { 
+					if (eff.getIncomingPrecedences().size()>0) { 
 						effects += getIndent(3) + "<pre>" + "\n";
-						effects += getIndent(4) + constructPreFormula(eff.getIncompingPrecedences())  + "\n";
+						effects += getIndent(4) + constructPreFormula(eff.getIncomingPrecedences())  + "\n";
 						effects += getIndent(3) + "</pre>" + "\n";
 					}
 					
@@ -178,9 +182,9 @@ public class dtxTranslator extends Translator {
 				}//effects
 				tasks += effects + getIndent(2) + "</effectGroup>\n";
 				
-				if (n.getIncompingPrecedences().size()>0) { 
+				if (n.getIncomingPrecedences().size()>0) { 
 					tasks += getIndent(2) + "<pre>" + "\n";
-					tasks += getIndent(3) + constructPreFormula(n.getIncompingPrecedences())  + "\n";
+					tasks += getIndent(3) + constructPreFormula(n.getIncomingPrecedences())  + "\n";
 					tasks += getIndent(2) + "</pre>" + "\n";
 				}
 				
@@ -196,35 +200,36 @@ public class dtxTranslator extends Translator {
 			/* * 
 			 * G O A L S  
 			 */
-				
-			} else if (n.getType().equals("goal")) {
+
+			} else if (n instanceof GMGoal) {
 				goals += getIndent(1) + getXMLGoal(n.getCamelLabel(),n.getLabel(),
 						g.getRoot().equals(n) ? "true" : "false",
-						"false", n.getRuns()) + "\n" ;
-				if (!n.getORChildren().isEmpty()) {
+						"false", ((GMGoal) n).getRuns()) + "\n" ;
+				if (!((GMGoal) n).getORChildren().isEmpty()) {
 					goals += getIndent(2) + "<refinement type = \"OR\">\n";
-					for (GMNode ch:n.getORChildren()) {
-						if (ch.getType().equals("goal")) {
+					for (GMNode ch:((GMGoal) n).getORChildren()) {
+						//if (ch.getType().equals("goal")) {
+						if (ch instanceof GMGoal) {
 							goals += getIndent(3) + "<childGoal ref = \"" + ch.getCamelLabel() + "\"/>\n";
-						} else if (ch.getType().equals("task")) {
+						} else if (ch instanceof GMTask) {
 							goals += getIndent(3) + "<childTask ref = \"" + ch.getCamelLabel() + "\"/>\n";
 						} else {
-							System.err.println("Child of goal should be either goal or task. " + ch.getType() + "found.");
+							System.err.println("Child of goal should be either goal or task. " + ch.getClass().getSimpleName() + "found.");
 						}
 					}
 					goals += getIndent(2) + "</refinement>\n";
 				}
-				if (!n.getANDChildren().isEmpty()) {
+				if (!((GMGoal) n).getANDChildren().isEmpty()) {
 					goals += getIndent(2) + "<refinement type = \"AND\">\n";
-					for (GMNode ch:n.getANDChildren()) {
+					for (GMNode ch:((GMGoal) n).getANDChildren()) {
 						goals += getIndent(3) + "<childGoal ref = \"" + ch.getCamelLabel() + "\"/>\n";
 			        }
 					goals += getIndent(2) + "</refinement>\n";
 				}
 				
-				if (n.getIncompingPrecedences().size()>0) {
+				if (n.getIncomingPrecedences().size()>0) {
 					goals += getIndent(2) + "<pre>" + "\n";
-					goals += getIndent(3) + constructPreFormula(n.getIncompingPrecedences())  + "\n";
+					goals += getIndent(3) + constructPreFormula(n.getIncomingPrecedences())  + "\n";
 					goals += getIndent(2) + "</pre>" + "\n";
 				}
 				
@@ -240,7 +245,7 @@ public class dtxTranslator extends Translator {
 			 * Q U A L I T I E S  
 			 */
 				
-			} else if (n.getType().equals("quality")) {
+			} else if (n instanceof GMQuality) {
 				String form = "";
 				String formEnd = "";
 				int indentAdd = 0;
@@ -249,29 +254,29 @@ public class dtxTranslator extends Translator {
 						n.getLabel(),
 						n.equals(g.getQRoot()) ? "true" : "false") + "\n" ;
 				
-				if (n.hasDtxFormula()) {
+				if (((WithFormula) n).hasDtxFormula()) {
 					// HAS HARDCODED DTX FORMULA - SKIP CONTRIBUTIONS
-					qualities += n.getDtxFormula() + "\n";
+					qualities += ((WithFormula) n).getDtxFormula() + "\n";
 				} else {
 					// NO HARDCODED DTX FORMULA - INFER FROM CONTRIBUTIONS
-					if (n.getIncompingContributions().size()>1) {
+					if (((GMQuality) n).getIncompingContributions().size()>1) {
 						form = getIndent(2) + "<add>\n";
 						formEnd = getIndent(2) + "</add>\n";
 						indentAdd = 1;
 					}
 					
-					for (GMNode inC:n.getIncompingContributions()) {
+					for (GMNode inC: ((GMQuality) n).getIncompingContributions()) {
 						Contribution cont = (Contribution) inC;
 						String factor = "<numConst>" + cont.getContributionWeight() + "</numConst>";
 						String term = cont.getContributionOrigin().getCamelLabel();
 						
-						if (cont.getContributionOrigin().getType().equals("effect")) {
+						if (cont.getContributionOrigin() instanceof GMEffect) {
 							term = "<predicateID>" + term + "</predicateID>"; 
-						} else if (cont.getContributionOrigin().getType().equals("goal")) {
+						} else if (cont.getContributionOrigin()  instanceof GMGoal) {
 							term = "<goalID>" + term + "</goalID>";
-						} else if (cont.getContributionOrigin().getType().equals("task")) { 
+						} else if (cont.getContributionOrigin()  instanceof GMTask) { 
 							term = "<taskID>" + term + "</taskID>";
-						} else if (cont.getContributionOrigin().getType().equals("quality")) {
+						} else if (cont.getContributionOrigin()  instanceof GMQuality) {
 							term = "<qualID>" + term + "</qualID>";
 						}
 						form += getIndent(2+indentAdd) + "<multiply>" + factor + term + "</multiply>\n";
@@ -285,11 +290,11 @@ public class dtxTranslator extends Translator {
 			/* * 
 			 * C O N D I T I O N S  
 			 */
-			} else if (n.getType().equals("precondition")) {
+			} else if (n  instanceof GMPrecondition) {
 				
-				if (n.hasDtxFormula()) {
+				if (((WithFormula) n).hasDtxFormula()) {
 					//It is a named box
-					condBoxes += "<condBox name = \"" + n.getLabel() + "\">" + n.getDtxFormula() + "</condBox>\n";
+					condBoxes += "<condBox name = \"" + n.getLabel() + "\">" + ((WithFormula) n).getDtxFormula() + "</condBox>\n";
 				} else {
 					//Label has simple formula
 					condBoxes += "<condBox name = \"default" + cBoxCounter++ + "\" >\n" + getIndent(1) + parser.parse(n.getLabel()) + "</condBox>\n";	
@@ -299,19 +304,19 @@ public class dtxTranslator extends Translator {
 			/* * 
 			 * I N I T I A L I Z A T I O N S  
 			 */
-			} else if (n.getType().equals("initialization")) {
+			} else if (n  instanceof GMInitializationSet) {
 				initializations += constructInitialization(n.getLabel());
 				
 			/* * 
 			 * C R O S S   R U  N S 
 			 */
-			} else if (n.getType().equals("crossrun")) {
+			} else if (n instanceof GMCrossRunSet) {
 				crossRuns += constructCrossRun(n.getLabel());
 				
 			/* * 
 			 * E X P O R T S
 			 */
-			} else if (n.getType().equals("export")) {
+			} else if (n  instanceof GMExportedSet) {
 				exported += constructExportedSet(n.getLabel());
 			} 
 		}
@@ -342,21 +347,11 @@ public class dtxTranslator extends Translator {
 		variables += "</variables>";
 		
 		
-		actor+= goals + tasks + qualities + condBoxes + 
+		actor += goals + tasks + qualities + condBoxes + 
 				initializations + crossRuns + exported + predicates + variables + "\n\n</actor>";
-		actors+= actor + "\n</actors>\n";
+		actors += actor + "\n</actors>\n";
 		
-		model+= header + options + actors + "</iStarDT>";
-		
-		//System.out.println(condBoxes);
-		//System.out.println(initializations);
-		//System.out.println(crossRuns);
-		//System.out.println(exported);
-		//System.out.println(predicates);
-		//System.out.println(variables);
-		//System.out.println(tasks);
-		//System.out.println(goals);
-		//System.out.println(qualities);
+		model += header + options + actors + "</iStarDT>";
 		
 		return (model);
 				
@@ -378,8 +373,6 @@ public class dtxTranslator extends Translator {
 	 */
 	private String parseConditionFormula(String s) {
 		String out = parser.parse(s);
-		//Make sure to update identifiers as well
-		//identifiers = parser.getIdentifiers();
 		return (out);
 	}
 	
@@ -394,7 +387,7 @@ public class dtxTranslator extends Translator {
 		int count = 0;
 		for (GMNode pre:g) {
 			count++;
-			if (pre.getType().equals("precondition")) {
+			if (pre instanceof GMPrecondition) {
 				res += parseConditionFormula(pre.getLabel());
 			} else {
 				res += "<" + identifiers.getIdentifierType(pre.getCamelLabel()) + ">";
@@ -409,6 +402,10 @@ public class dtxTranslator extends Translator {
 		return res;
 	}
 	
+	
+	/*
+	 * Initializations
+	 */
 	
 	public String constructInitialization(String initLabel) {
 		String result = "";
@@ -426,6 +423,12 @@ public class dtxTranslator extends Translator {
 		return result;
 	}
 	
+	
+	
+	/*
+	 * Cross Runs
+	 */
+	
 	public String constructCrossRun(String label) {
 		String result = "";
 		
@@ -440,33 +443,10 @@ public class dtxTranslator extends Translator {
 	}
 
 	
+	/*
+	 * Exported + 2 helpers
+	 */
 	
-    // Splits top-level comma-separated terms, ignoring commas inside parentheses
-    public static List<String> splitTerms(String input) {
-        List<String> result = new ArrayList<>();
-        int depth = 0;
-        StringBuilder current = new StringBuilder();
-
-        for (char c : input.toCharArray()) {
-            if (c == ',' && depth == 0) {
-                result.add(current.toString());
-                current.setLength(0);
-            } else {
-                if (c == '(') depth++;
-                if (c == ')') depth--;
-                current.append(c);
-            }
-        }
-        if (current.length() > 0) {
-            result.add(current.toString());
-        }
-        return result;
-    }
-	
-    public String wrapWithIdentifier(String name) {
-    	return "<" + identifiers.getIdentifierType(name) + ">" + name + "</" + identifiers.getIdentifierType(name) + ">"; 
-    }
-    
 	public String constructExportedSet(String label) {
 		String result = "";
 		
@@ -502,6 +482,34 @@ public class dtxTranslator extends Translator {
 	}
 
 	
+    // Splits top-level comma-separated terms, ignoring commas inside parentheses
+    public static List<String> splitTerms(String input) {
+        List<String> result = new ArrayList<>();
+        int depth = 0;
+        StringBuilder current = new StringBuilder();
+
+        for (char c : input.toCharArray()) {
+            if (c == ',' && depth == 0) {
+                result.add(current.toString());
+                current.setLength(0);
+            } else {
+                if (c == '(') depth++;
+                if (c == ')') depth--;
+                current.append(c);
+            }
+        }
+        if (current.length() > 0) {
+            result.add(current.toString());
+        }
+        return result;
+    }
+	
+    public String wrapWithIdentifier(String name) {
+    	return "<" + identifiers.getIdentifierType(name) + ">" + name + "</" + identifiers.getIdentifierType(name) + ">"; 
+    }
+    
+
+	
 	
 
 	
@@ -519,7 +527,6 @@ public class dtxTranslator extends Translator {
 		return "</task>";
 	}
 
-	
 	private String getXMLGoal(String name, String description, String root, String terminal, String episodeLength) {
 		return "<goal name = \"" + name + "\"" +
 			      " description = \"" + description + "\"" + 
@@ -527,7 +534,6 @@ public class dtxTranslator extends Translator {
 			      " terminal = \"" + terminal + "\"" +
 			      " episodeLength = \"" + episodeLength + "\">";
 	}
-
 	
 	private String getXMLGoalClose() {
 		return "</goal>";

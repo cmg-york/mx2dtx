@@ -1,5 +1,5 @@
 package cmg.gReason.goalgraph;
 
-public class GMExportedSet extends GMNode {
+public class GMExportedSet extends WithFormula {
 
 }

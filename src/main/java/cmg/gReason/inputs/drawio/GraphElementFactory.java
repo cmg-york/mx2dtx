@@ -2,7 +2,7 @@ package cmg.gReason.inputs.drawio;
 
 import cmg.gReason.inputs.drawio.graphelementstructure.*;
 import cmg.gReason.outputs.common.ErrorReporter;
-import cmg.gReason.outputs.common.HTMLCleaner;
+import cmg.gReason.outputs.common.TextCleaner;
 
 import java.util.List;
 
@@ -38,7 +38,7 @@ public class GraphElementFactory {
 	 * @throws Exception when the concept type is unrecognized.
 	 */
 	public GraphElement constructElement(Element e) {
-		HTMLCleaner cl = new HTMLCleaner();
+		TextCleaner cl = new TextCleaner();
 		GraphElement g = null;
 
 
