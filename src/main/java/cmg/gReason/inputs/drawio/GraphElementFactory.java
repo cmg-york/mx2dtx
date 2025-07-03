@@ -43,7 +43,6 @@ public class GraphElementFactory {
 
 
 		List<String> mustHaveLabel = List.of("goal","task","quality","effect","precondition");
-		List<String> oneOrTheOther = List.of("quality","precondition");
 
 		String type = e.getAttribute("concept");		
 
@@ -61,10 +60,10 @@ public class GraphElementFactory {
 		}
 
 		//Qualities and Preconditions:
-		String formula = e.getAttribute("formula");
-		String dtxFormula = e.getAttribute("dtxformula");
+		String formula = cl.clean(e.getAttribute("formula"));
+		String dtxFormula = cl.clean(e.getAttribute("dtxformula"));
 
-		if (oneOrTheOther.contains(type)) {
+		if (type.equals("quality")) {
 			if (e.getAttribute("dtxFormula").equals("")) {
 				if (e.getAttribute("formula").equals("")) {
 					err.addInfo(type + " labeled as '" + label + "' has no custom formula. Label will be treated as the formula.", "GraphElementFactory::constructElement(Element)");
@@ -81,7 +80,18 @@ public class GraphElementFactory {
 			}
 		}
 
-
+		
+		if (type.equals("precondition")) {
+			if (e.getAttribute("formula").equals("")) {
+					err.addInfo("Precondition labeled as '" + label + "' has no custom, formula. Label will be treated as the formula.", "GraphElementFactory::constructElement(Element)");
+					formula = label; 
+			} else {
+					err.addInfo("Precondition labeled as '" + label + "' has a custom formula, which will be adopted. Label will be converted to identifier.", "GraphElementFactory::constructElement(Element)");
+					label = cl.toCamelCase(label.length() > 20 ? label.substring(0, 20) : label);
+			}				
+			
+		}
+		
 		switch(type) {
 		/* Entities */
 		case "goal":
@@ -123,7 +133,7 @@ public class GraphElementFactory {
 		case "precondition":
 			g = new Precondition(
 					e.getAttribute("id"),
-					e.getAttribute("label"),
+					label,
 					e.getAttribute("actor"),
 					e.getAttribute("notes"),
 					formula,
@@ -133,7 +143,7 @@ public class GraphElementFactory {
 		case "initialization":
 			g = new InitializationSet(
 					e.getAttribute("id"),
-					e.getAttribute("label"),
+					label,
 					e.getAttribute("actor"),
 					e.getAttribute("notes"),
 					formula,
@@ -143,7 +153,7 @@ public class GraphElementFactory {
 		case "export":
 			g = new ExportedSet(
 					e.getAttribute("id"),
-					e.getAttribute("label"),
+					label,
 					e.getAttribute("actor"),
 					e.getAttribute("notes"),
 					formula,
@@ -153,7 +163,7 @@ public class GraphElementFactory {
 		case "crossrun":
 			g = new CrossRunSet(
 					e.getAttribute("id"),
-					e.getAttribute("label"),
+					label,
 					e.getAttribute("actor"),
 					e.getAttribute("notes"),
 					formula,
@@ -163,7 +173,7 @@ public class GraphElementFactory {
 		case "effectGroup":
 			g = new EffectGroup(
 					e.getAttribute("id"),
-					e.getAttribute("label"),
+					label,
 					e.getAttribute("actor"),
 					e.getAttribute("notes")
 					);
@@ -174,11 +184,14 @@ public class GraphElementFactory {
 			}
 			g = new Effect(
 					e.getAttribute("id"),
-					e.getAttribute("label"),
+					label,
 					e.getAttribute("actor"),
 					e.getAttribute("notes"),
-					e.getAttribute("status")
+					e.getAttribute("status"),
+					e.getAttribute("turnsTrue"),
+					e.getAttribute("turnsFalse")
 					);
+			
 			break;
 
 			/* Relationships */
@@ -210,6 +223,7 @@ public class GraphElementFactory {
 		return(g);
 	}
 
+	
 	private Boolean validateLink(Element e, Node n) {
 		
 		if (n.getAttributes().getNamedItem("source") == null) { 

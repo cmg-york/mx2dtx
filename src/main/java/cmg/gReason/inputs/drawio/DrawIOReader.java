@@ -91,7 +91,7 @@ public class DrawIOReader {
 		try {
 			m.createGoalGraph();
 		} catch (Exception e) {
-			System.err.println(e.getMessage());
+			e.printStackTrace();
 		}
 		return(m);
 	}

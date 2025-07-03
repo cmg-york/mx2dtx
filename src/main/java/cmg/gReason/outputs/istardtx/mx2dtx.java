@@ -41,6 +41,7 @@ public class mx2dtx {
 
 		} catch (Exception e) {
 			System.err.println("[mx2dtx] Error: " + e.getMessage());
+			e.printStackTrace();
 			if (printUsage) {
 				System.out.println(mainClass.printUsage());
 			}

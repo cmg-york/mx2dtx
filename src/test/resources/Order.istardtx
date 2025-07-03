@@ -51,12 +51,15 @@
       <effectGroup>
          <effect name = "deliveredInTimeA_Eff" description = "deliveredInTimeA" satisfying = "true" probability = "0.75">
             <turnsTrue>deliveredInTimeA</turnsTrue>
+            <turnsFalse>deliveredInTimeA</turnsFalse>
          </effect>
          <effect name = "neverDeliveredA_Eff" description = "neverDeliveredA" satisfying = "false" probability = "0.05">
             <turnsTrue>neverDeliveredA</turnsTrue>
+            <turnsFalse>neverDeliveredA</turnsFalse>
          </effect>
          <effect name = "deliveredLateA_Eff" description = "deliveredLateA" satisfying = "true" probability = "0.2">
             <turnsTrue>deliveredLateA</turnsTrue>
+            <turnsFalse>deliveredLateA</turnsFalse>
          </effect>
       </effectGroup>
    </task>
@@ -64,12 +67,15 @@
       <effectGroup>
          <effect name = "deliveredInTimeB_Eff" description = "deliveredInTimeB" satisfying = "true" probability = "0.5">
             <turnsTrue>deliveredInTimeB</turnsTrue>
+            <turnsFalse>deliveredInTimeB</turnsFalse>
          </effect>
          <effect name = "neverDeliveredB_Eff" description = "neverDeliveredB" satisfying = "false" probability = "0.15">
             <turnsTrue>neverDeliveredB</turnsTrue>
+            <turnsFalse>neverDeliveredB</turnsFalse>
          </effect>
          <effect name = "deliveredLateB_Eff" description = "deliveredLateB" satisfying = "true" probability = "0.35">
             <turnsTrue>deliveredLateB</turnsTrue>
+            <turnsFalse>deliveredLateB</turnsFalse>
          </effect>
       </effectGroup>
    </task>

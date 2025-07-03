@@ -17,9 +17,8 @@ import cmg.gReason.goalgraph.GMNode;
 import cmg.gReason.goalgraph.GMPrecondition;
 import cmg.gReason.goalgraph.GMQuality;
 import cmg.gReason.goalgraph.GMTask;
+import cmg.gReason.goalgraph.GoalModel;
 import cmg.gReason.goalgraph.WithFormula;
-import cmg.gReason.inputs.drawio.ConditionExpressionParser;
-import cmg.gReason.inputs.drawio.IdentifierRegistry;
 import cmg.gReason.inputs.drawio.InitializationParser;
 import cmg.gReason.outputs.common.Translator;
 
@@ -27,11 +26,7 @@ import cmg.gReason.outputs.common.Translator;
  * 
  */
 public class dtxTranslator extends Translator {
-
-
-    private IdentifierRegistry identifiers = new IdentifierRegistry();
-    private ConditionExpressionParser parser;
-   
+       
     private String spec = "";
 	
 	/**
@@ -45,7 +40,6 @@ public class dtxTranslator extends Translator {
 	 * Create a new empty translator.
 	 */
 	public dtxTranslator() {
-
 	}
 	
 	/**
@@ -68,48 +62,11 @@ public class dtxTranslator extends Translator {
 	 * Perform the translation of the {@linkplain GoalModel} object into a iStar-DT-X specification. 
 	 */
 	public void produceTranslation() {
-		//First build the identifier registry based on condition boxes
-		buildIdentifierRegistry();
-	
 		//Performs the translation
 		spec = createSpec();
 	}
 	
-	
-	/**
-	 * Builds a registry of identifiers and their types. It first goes over all condition boxes, which it parses.
-	 * All ground elements of condition boxes are either predicates or variables. Once found, they are registered 
-	 * as such. Then the remaining items of the goal model are processed and if what was known from the previous step 
-	 * to be a predicate or variable is now becoming a goal, task, etc.      
-	 */
-	private void buildIdentifierRegistry() {
 
-		// Collect items from condition boxes first
-		for (GMNode n: this.g.getGoalModel()) {
-			if (n instanceof GMPrecondition) {
-				parser.parse(n.getLabel());
-			}
-		}		
-
-		//Everything that exists in conditions is now a predicate or a variable in the registry
-		//The parse routine does it..
-		
-		// Now collect all other items and add them or replace the existing ones with new type information
-		for (GMNode n:this.g.getGoalModel()) {
-			if (n instanceof GMTask) {
-				identifiers.addIdentifier(n.getCamelLabel(),"taskID");
-			} else if (n instanceof GMGoal) {
-				identifiers.addIdentifier(n.getCamelLabel(),"goalID");
-			} else if (n instanceof GMQuality) {
-				identifiers.addIdentifier(n.getCamelLabel(),"qualID");
-			} else if (n instanceof GMEffect) {
-				identifiers.addIdentifier(n.getCamelLabel(),"predicateID");
-			}
-		}
-
-	}
-	
-	
 	/**
 	 * The main spec writing iteration.
 	 */
@@ -163,9 +120,20 @@ public class dtxTranslator extends Translator {
 				for (GMNode eff:((GMTask) n).getEffects()) {
 					effects += getIndent(3) + getXMLEffect(eff.getCamelLabel(),eff.getLabel(),
 							getEffectStatus(((GMEffect) eff).getEffectStatus()),String.valueOf(((GMEffect) eff).getInWeight())) + "\n";
-					effects += getIndent(4) + getXMLTurnsTrue(eff.getCamelLabel()) + "\n";
 					
-					
+					//A unique turns true on the label
+					//if (((GMEffect) eff).useLabel()) {
+					//	effects += getIndent(4) + getXMLTurnsTrue(eff.getCamelLabel()) + "\n";
+					//} else { //Has lists of trues and falses
+						for (String truePred: ((GMEffect) eff).getTruePredicates()) {
+							effects += getIndent(4) + getXMLTurnsTrue(truePred) + "\n";
+						}
+						for (String falsePred: ((GMEffect) eff).getTruePredicates()) {
+							effects += getIndent(4) + getXMLTurnsFalse(falsePred) + "\n";
+						}
+					//}
+						
+						
 					if (eff.getIncomingPrecedences().size()>0) { 
 						effects += getIndent(3) + "<pre>" + "\n";
 						effects += getIndent(4) + constructPreFormula(eff.getIncomingPrecedences())  + "\n";
@@ -325,14 +293,14 @@ public class dtxTranslator extends Translator {
 		/* * 
 		 * P R E D I C A T E S
 		 */
-		for (String s : identifiers.getPredicates()) {
+		for (String s : g.getPredicates()) {
 			predicates+= getIndent(1) + "<predicate description = \"\">" + s + "</predicate>\n";
 		}
 
 		/* * 
 		 * V A R I A B L E S
 		 */
-		for (String s : identifiers.getVariables()) {
+		for (String s : g.getVariables()) {
 			variables+= getIndent(1) + "<variable description = \"\">" + s + "</variable>\n";
 		}
 		
@@ -390,9 +358,9 @@ public class dtxTranslator extends Translator {
 			if (pre instanceof GMPrecondition) {
 				res += parseConditionFormula(pre.getLabel());
 			} else {
-				res += "<" + identifiers.getIdentifierType(pre.getCamelLabel()) + ">";
+				res += "<" + this.g.getIdentifierType(pre.getCamelLabel()) + ">";
 				res += pre.getCamelLabel();
-				res += "</" + identifiers.getIdentifierType(pre.getCamelLabel()) + ">";
+				res += "</" + this.g.getIdentifierType(pre.getCamelLabel()) + ">";
 			}
 		}
 		
@@ -435,7 +403,7 @@ public class dtxTranslator extends Translator {
 		ArrayList<String> list = new ArrayList<>(Arrays.asList(label.split("\\s*,\\s*")));
 				
 		for (String element : list) {
-			String tag = identifiers.getIdentifierType(element);
+			String tag = g.getIdentifierType(element);
 			result += getIndent(2) + "<crossRun><" +  tag + ">" + element + "</" + tag + "></crossRun>\n";  
 		}
 		
@@ -505,7 +473,7 @@ public class dtxTranslator extends Translator {
     }
 	
     public String wrapWithIdentifier(String name) {
-    	return "<" + identifiers.getIdentifierType(name) + ">" + name + "</" + identifiers.getIdentifierType(name) + ">"; 
+    	return "<" + g.getIdentifierType(name) + ">" + name + "</" + this.g.getIdentifierType(name) + ">"; 
     }
     
 
@@ -555,7 +523,11 @@ public class dtxTranslator extends Translator {
 		return "<turnsTrue>" + name + "</turnsTrue>";
 	}
 
+	private String getXMLTurnsFalse(String name) {
+		return "<turnsFalse>" + name + "</turnsFalse>";
+	}
 
+	
 	private String getXMLQuality(String name, String description, String root) {
 		return "<quality name = \"" + name + "\"" +
 			      " description = \"" + description + "\"" + 

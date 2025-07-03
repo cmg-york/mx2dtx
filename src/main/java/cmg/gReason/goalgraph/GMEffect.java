@@ -1,12 +1,74 @@
 package cmg.gReason.goalgraph;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
 public class GMEffect extends WithParent {
 	// For effects only
 	protected String effectStatus;
+	EffectsParser parserTrue = 	new EffectsParser();
+	EffectsParser parserFalse = new EffectsParser();
 	
 	// Effects, Qualities
 	protected float inWeight;
 	
+	
+	public EffectsParser getParserTrue() {
+		return parserTrue;
+	}
+
+	public void setParserTrue(EffectsParser parserTrue) {
+		this.parserTrue = parserTrue;
+	}
+
+	public EffectsParser getParserFalse() {
+		return parserFalse;
+	}
+
+	public void setParserFalse(EffectsParser parserFalse) {
+		this.parserFalse = parserFalse;
+	}
+
+	public boolean useLabel() {
+		return(parserTrue.getPropositions().isEmpty() &&
+				parserTrue.getVariables().isEmpty() &&
+				parserFalse.getPropositions().isEmpty() &&
+				parserFalse.getVariables().isEmpty());
+	}
+	
+	
+	public List<String> getAllPredicates() {
+		List<String> combinedPredicates = new ArrayList<String>();
+		combinedPredicates.addAll(parserTrue.getPropositions());
+		combinedPredicates.addAll(parserFalse.getPropositions());
+		return (combinedPredicates);
+	}
+	
+	public ArrayList<String> getTruePredicates(){
+		if (this.useLabel()) {
+			return new ArrayList<> (List.of(this.getCamelLabel()));
+		} else {
+			return(parserTrue.getPropositions());
+		}
+	}
+
+	public ArrayList<String> getFalsePredicates(){
+		return(parserFalse.getPropositions());
+	}
+
+	public HashMap<String,String> getVariables(){
+		return(parserTrue.getVariables());
+	}
+	
+	public void setTurnsTrue(String turnsTrue) {
+		this.parserTrue.parse(turnsTrue);
+	}
+
+	public void setTurnsFalse(String turnsFalse) {
+		this.parserFalse.parse(turnsFalse);
+	}
+		
     /**
      * Get the effect status of the node (for effects only).
      * 

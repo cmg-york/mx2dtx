@@ -1,8 +1,6 @@
-package cmg.gReason.inputs.drawio;
+package cmg.gReason.goalgraph;
 
 import java.util.*;
-
-import cmg.gReason.goalgraph.IdentifierRegistry;
 
 public class ConditionExpressionParser {
 

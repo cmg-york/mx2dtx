@@ -1,10 +1,12 @@
 package cmg.gReason.outputs.common;
 
 import cmg.gReason.goalgraph.GoalModel;
+import cmg.gReason.inputs.drawio.ConditionExpressionParser;
 
 public abstract class Translator {
 	protected OutputManager outputManager;
 	protected GoalModel g;
+	protected ConditionExpressionParser parser;
 	
 	/**
 	 * Produces the translation in string format and 
@@ -12,7 +14,6 @@ public abstract class Translator {
 	 * This is the starting point of your custom translator.
 	 */
 	protected abstract void produceTranslation();
-	
 	
 	/**
 	 * Gets the specification string produced by produceTranslation
@@ -32,7 +33,14 @@ public abstract class Translator {
 
 	public void setModel(GoalModel model) {
 		this.g = model;
+		parser = new ConditionExpressionParser(this.g.getIdentifierRegistry());
 	}
+	
+	public GoalModel getModel() {
+		return(this.g);
+	}
+	
+	
 	
 	/**
 	 * Translates a {@linkplain GoalModel} object set using {@linkplain Translator#setModel(GoalModel)} and 

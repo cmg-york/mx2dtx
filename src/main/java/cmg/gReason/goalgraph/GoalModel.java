@@ -14,14 +14,16 @@ import cmg.gReason.outputs.common.ErrorReporter;
  * 
  * A goal model object containing a tree of {@linkplain GMNode} objects.
  * @author Sotirios Liaskos
- *
+ * TODO: The dependency to graphelementstructure must be removed.
  */
 public class GoalModel {
+	
 	private ErrorReporter err = null;
+	private IdentifierRegistry identifiers;
+	private ConditionExpressionParser parser;
 	
 	ArrayList<GraphElement> elements = new ArrayList<GraphElement>();
 	ArrayList<GMNode> goalModel = new ArrayList<GMNode>();
-	
 	
 	
 	private GMGoal root;
@@ -29,8 +31,43 @@ public class GoalModel {
 		
 	public GoalModel(ErrorReporter e) {
 		this.err = e;
+		identifiers = new IdentifierRegistry(this,e);
+		parser = new ConditionExpressionParser(identifiers);
+		identifiers.setParser(parser);
 	}
 		
+	public void buildIdentifierRegistry() {
+		identifiers.build();
+	}
+	
+	public ArrayList<String> getPredicates() {
+		return identifiers.getPredicates();
+	}
+
+	public ArrayList<String> getVariables() {
+		return identifiers.getVariables();
+	}
+	
+	public String getIdentifierType(String identifier) {
+		return identifiers.getIdentifierType(identifier);
+	}
+	
+	public IdentifierRegistry getIdentifierRegistry() {
+		return identifiers;
+	}
+	
+	
+
+	private void predicateValidation() {
+		
+		//Predicate/variable appears in an effect and nowhere else. (Warning)
+		//Predicate/variable appears in a precondition but in no effect. (Error)
+		identifiers.validate();
+		
+		//Initializations, Exported Sets, Cross Must Mention existing predicates.
+	}
+	
+	
 	private void generalValidation() {
 		
 		Set<String> seen = new HashSet<>();
@@ -46,17 +83,27 @@ public class GoalModel {
 		        duplicates.add(label);  // Set will ignore repeated duplicates
 		    }
 
-			//TODO: these validations
-			//Disconnected elements
 		    if (node instanceof GMGoal) {
-		    	//Must have children
+		    	if (((GMGoal) node).andChildren.isEmpty() && ((GMGoal) node).orChildren.isEmpty()) {
+		    		err.addError("Goal '" + node.getLabel() + "' has no children.", "GoalModel::generalValidation()");
+		    	}
 		    } else if (node instanceof GMTask) {
-		    	//Must have parent
-		    	//Must have one or more effects
+		    	if (((GMTask) node).effects.isEmpty()) {
+		    		err.addError("Task '" + node.getLabel() + "' has no effects.", "GoalModel::generalValidation()");
+		    	}
+		    	
+		    	if (((GMTask) node).getParent() == null) {
+		    		err.addError("Task '" + node.getLabel() + "' has no parent.", "GoalModel::generalValidation()");
+		    	}
 		    } else if (node instanceof GMQuality) {
-		    	//Must have incoming contribution OR dtxFormula OR formula
+		    	if (!((GMQuality) node).hasDtxFormula() && !((GMQuality) node).hasFormula() && ((GMQuality) node).inContr.isEmpty()) {
+		    		err.addError("Quality '" + node.getLabel() + "' has no formula nor incoming contribution links.", "GoalModel::generalValidation()");
+		    	}
 		    } else if (node instanceof GMPrecondition) {
-		    	//Must have a pre or npr link to something.
+		    	if (((GMPrecondition) node).outPre.isEmpty() && ((GMPrecondition) node).outNegPre.isEmpty()) {
+		    		err.addError("Precondition with content '" + (node.getLabel().length() > 50 ? node.getLabel().substring(0, 50) : node.getLabel()) + "' has no outgoing pre or npr link.", "GoalModel::generalValidation()");
+		    	}
+
 		    } else if (node instanceof GMInitializationSet) {
 		    	hasInitialization = true;
 		    } else if (node instanceof GMCrossRunSet) {
@@ -171,10 +218,25 @@ public class GoalModel {
 		} else if (e instanceof Effect) {
 			gNode = new GMEffect();
 			((GMEffect) gNode).setEffectStatus(((Effect) e).getStatus());
+			gNode.setLabel(e.getLabel());
+			//GMEffect will parse the string in element
+			((GMEffect) gNode).setTurnsTrue(((Effect) e).getTurnsTrue());
+			((GMEffect) gNode).setTurnsFalse(((Effect) e).getTurnsFalse());
+			identifiers.addEffectPredicates(((GMEffect) gNode).getTruePredicates());
+			identifiers.addEffectPredicates(((GMEffect) gNode).getFalsePredicates());
+			identifiers.addEffectVariables(((GMEffect) gNode).getVariables());
+			
 		} else if (e instanceof Precondition) {
 			gNode = new GMPrecondition();
-			((WithFormula) gNode).setDtxFormula(((Precondition) e).getDtxFormua());
-			((WithFormula) gNode).setFormula(((Precondition) e).getFormula());
+			gNode.setLabel(e.getLabel());
+			
+			//What formula returns has been taken care of.
+			String preFormula = ((Precondition) e).getFormula();
+			((GMPrecondition) gNode).setFormula(preFormula);
+			((GMPrecondition) gNode).setDtxFormula("");
+			//Parse the formula for the purpose of populating the identifiers
+			parser.parse(preFormula);
+			
 		} else {
 			err.addError("Unexpected relationship endpoint type: " + e.getClass().getSimpleName() + " (" + e.getLabel() + ")", "GoalModel::handleRelEndPoint()");
 			err.printAll();
@@ -235,13 +297,13 @@ public class GoalModel {
 				break;
 			default:
 				gNode = null;
-				err.addError("Unrecognized GraphElemen relationship type: " + e.getClass().getSimpleName() + "," + ((Link) e).getType(), "GoalModel::GMNodeFactory");
+				err.addError("Unrecognized GraphElement relationship type: " + e.getClass().getSimpleName() + "," + ((Link) e).getType(), "GoalModel::GMNodeFactory");
 				break;
 			}
 			
 		} else {
 			gNode = null;
-			err.addError("Unrecognized graph element type: " + e.getClass().getSimpleName(), "GoalModel::GMNodeFactory");
+			err.addError("Unrecognized GraphElement type: " + e.getClass().getSimpleName(), "GoalModel::GMNodeFactory");
 		}
 		return(gNode);
 	}
@@ -338,8 +400,13 @@ public class GoalModel {
 	
 		findRoot();
 		
+		//Build the identifiers registry 
+		buildIdentifierRegistry();
+		
 		//Model now complete - perform remaining validation checks
 		generalValidation();
+		
+		predicateValidation();
 		
 		if (err.hasErrors()) {
 			err.printAll();
@@ -416,11 +483,11 @@ public class GoalModel {
 				err.addError("No root goal specified or found, 1 expected. " , "GoalModel::findRoot()");	
 			}
 			if (foundRoots.size() == 1) {
-				err.addWarning("No root goal explicitly specified, one inferrred (" + foundRoots.get(0) + ") and will be adopted.", "GoalModel::findRoot()");
+				err.addWarning("No root goal explicitly specified, one inferred (" + foundRoots.get(0) + ") and will be adopted.", "GoalModel::findRoot()");
 				this.root = (GMGoal) foundRoots.get(0);
 			}
 			if (foundRoots.size() > 1) {
-				err.addError("No root goal explicitly specified, too many inferrred (" + foundRoots + ").", "GoalModel::findRoot()");	
+				err.addError("No root goal explicitly specified, too many inferred (" + foundRoots + ").", "GoalModel::findRoot()");	
 			}
 		}
 
@@ -459,14 +526,14 @@ public class GoalModel {
 			}
 			if (foundQRoots.size() == 1) {
 				if (hasFormula) {
-					err.addError("No root quality explicitly specified, one inferrred (" + foundQRoots.get(0) + ") but formulae have been detected. Please explicilty specify root quality goal.", "GoalModel::findRoot()");
+					err.addError("No root quality explicitly specified, one inferred (" + foundQRoots.get(0) + ") but formulae have been detected. Please explicilty specify root quality goal.", "GoalModel::findRoot()");
 					} else {
-						err.addWarning("No root quality explicitly specified, one inferrred (" + foundQRoots.get(0) + ") and adopted.", "GoalModel::findRoot()");
+						err.addWarning("No root quality explicitly specified, one inferred (" + foundQRoots.get(0) + ") and adopted.", "GoalModel::findRoot()");
 						this.qroot = (GMQuality) foundQRoots.get(0);	
 					}
  			}
 			if (foundQRoots.size() > 1) {
-				err.addError("No root goal explicitly specified, too many inferrred (" + foundQRoots + ").", "GoalModel::findRoot()");	
+				err.addError("No root goal explicitly specified, too many inferred (" + foundQRoots + ").", "GoalModel::findRoot()");	
 			}
 		}
 
@@ -491,8 +558,7 @@ public class GoalModel {
 		if (declaredQRoots.size() > 1) {
 			err.addError("Too many root qulities specified (" + declaredQRoots + ") choose only one." , "GoalModel::findRoot()");
 		}
-		
-		System.out.println("Was this even run??");		
+			
 		if (err.hasErrors()) {
 			err.printAll();
 			System.exit(-1);
