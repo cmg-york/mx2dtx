@@ -1,7 +1,10 @@
 package cmg.gReason.goalgraph;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
 
 import cmg.gReason.inputs.drawio.graphelementstructure.*;
 import cmg.gReason.outputs.common.ErrorReporter;
@@ -18,20 +21,139 @@ public class GoalModel {
 	
 	ArrayList<GraphElement> elements = new ArrayList<GraphElement>();
 	ArrayList<GMNode> goalModel = new ArrayList<GMNode>();
-
-	private GMNode root;
-	private GMNode qroot;
+	
+	
+	
+	private GMGoal root;
+	private GMQuality qroot;
 		
 	public GoalModel(ErrorReporter e) {
 		this.err = e;
 	}
+		
+	private void generalValidation() {
+		
+		Set<String> seen = new HashSet<>();
+		Set<String> duplicates = new HashSet<>();
+		boolean hasInitialization = false;
+		boolean hasExportedSet = false;
+		boolean hasCrossRun = false;
+		boolean rootIsMultiRun = false;
+		
+		for (GMNode node : goalModel) {
+		    String label = node.getLabel();
+		    if (!seen.add(label)) {
+		        duplicates.add(label);  // Set will ignore repeated duplicates
+		    }
+
+			//TODO: these validations
+			//Disconnected elements
+		    if (node instanceof GMGoal) {
+		    	//Must have children
+		    } else if (node instanceof GMTask) {
+		    	//Must have parent
+		    	//Must have one or more effects
+		    } else if (node instanceof GMQuality) {
+		    	//Must have incoming contribution OR dtxFormula OR formula
+		    } else if (node instanceof GMPrecondition) {
+		    	//Must have a pre or npr link to something.
+		    } else if (node instanceof GMInitializationSet) {
+		    	hasInitialization = true;
+		    } else if (node instanceof GMCrossRunSet) {
+		    	hasCrossRun = true;
+		    } else if (node instanceof GMExportedSet) {
+		    	hasExportedSet = true;
+		    }
+		}
+
+		if (!duplicates.isEmpty()) {
+			err.addError("Duplicate labels: " + duplicates, "GoalModel::generalValidation()");
+		}
+		
+		if (!this.root.getRuns().matches("[1-9][0-9]*")) {
+			err.addError("Root goal '" + this.root.getLabel() + "'. Number of runs must be a positive natural number (found" + this.root.getRuns() + ").", "GoalModel::generalValidation()");
+		} else {
+			int rns = Integer.parseInt(this.root.getRuns());
+			if (rns > 1) {
+				rootIsMultiRun = true;
+			}
+		}
+		
+		if (!hasInitialization) {
+			err.addError("Initialization element missing.", "GoalModel::generalValidation()");
+		}
+		if (!hasExportedSet) {
+			err.addWarning("Exported set missing.", "GoalModel::generalValidation()");
+		}
+		
+		if (!hasCrossRun && rootIsMultiRun) {
+			err.addWarning("CrossRun set is missing for multi-run root.", "GoalModel::generalValidation()");		
+		}
+
+	}
+	
+	private void validateRelationship(GMNode origin, GMNode target, GMNode relationship) {
+		List<Class<?>> allowedTypes;
+		if ((relationship instanceof PRELink) || (relationship instanceof NPRLink)) {
+	        allowedTypes = List.of(GMPrecondition.class, GMGoal.class, GMTask.class);
+	        if (!allowedTypes.stream().anyMatch(c -> c.isInstance(origin))) {
+	        	err.addError("Element '" + origin.getLabel() + "' cannot be origin of PRE or NPR link. Allowed types: Precondition, Goal, Task.", "GoalModel::validateRelationship(GMNode,GMNode,GMNode)");
+	        }
+	        allowedTypes = List.of(GMGoal.class, GMTask.class, GMEffect.class);
+	        if (!allowedTypes.stream().anyMatch(c -> c.isInstance(target))) {
+	        	err.addError("Element '" + target.getLabel() + "' cannot be targeted of PRE or NPR link. Allowed types: Goal, Task, Effect.", "GoalModel::validateRelationship(GMNode,GMNode,GMNode)");
+	        }
+		}
+
+		if ((relationship instanceof Contribution)) {
+	        allowedTypes = List.of(GMPrecondition.class, GMGoal.class, GMTask.class, GMEffect.class, GMQuality.class);
+	        if (!allowedTypes.stream().anyMatch(c -> c.isInstance(origin))) {
+	        	err.addError("Element '" + origin.getLabel() + "' cannot be origin of a contribution link. Allowed types: Precondition, Goal, Task, Effect, Quality.", "GoalModel::validateRelationship(GMNode,GMNode,GMNode)");
+	        }
+	        allowedTypes = List.of(GMQuality.class);
+	        if (!allowedTypes.stream().anyMatch(c -> c.isInstance(target))) {
+	        	err.addError("Element '" + target.getLabel() + "' cannot be targeted of a contribution link. Allowed types: Quality", "GoalModel::validateRelationship(GMNode,GMNode,GMNode)");
+	        }
+		}
+
+		if ((relationship instanceof ANDDecomp) || (relationship instanceof ORDecomp)) {
+		        allowedTypes = List.of(GMGoal.class, GMTask.class);
+	        if (!allowedTypes.stream().anyMatch(c -> c.isInstance(origin))) {
+	        	err.addError("Element '" + origin.getLabel() + "' cannot be origin of a refinement link. Allowed types: Goal, Task", "GoalModel::validateRelationship(GMNode,GMNode,GMNode)");
+	        }
+	        allowedTypes = List.of(GMGoal.class);
+	        if (!allowedTypes.stream().anyMatch(c -> c.isInstance(target))) {
+	        	err.addError("Element '" + target.getLabel() + "' cannot be targeted of a refinement link. Allowed types: Goal", "GoalModel::validateRelationship(GMNode,GMNode,GMNode)");
+	        }
+		}
+
+		if ((relationship instanceof EffGroupLink)) {
+			allowedTypes = List.of(GMEffectGroup.class);
+			if (!allowedTypes.stream().anyMatch(c -> c.isInstance(origin))) {
+				err.addError("Element '" + origin.getLabel() + "' cannot be the origin of an effect link. Allowed types: Effect Group (disk)", "GoalModel::validateRelationship(GMNode,GMNode,GMNode)");
+			}
+			allowedTypes = List.of(GMEffect.class);
+			if (!allowedTypes.stream().anyMatch(c -> c.isInstance(target))) {
+				err.addError("Element '" + target.getLabel() + "' cannot be the target of an effect link. Allowed types: Effect", "GoalModel::validateRelationship(GMNode,GMNode,GMNode)");
+			}
+		}
+		
+		if ((relationship instanceof EffLink)) {
+			allowedTypes = List.of(GMTask.class);
+			if (!allowedTypes.stream().anyMatch(c -> c.isInstance(origin))) {
+				err.addError("Element '" + origin.getLabel() + "' cannot be the origin of an effect group link. Allowed types: Task.", "GoalModel::validateRelationship(GMNode,GMNode,GMNode)");
+			}
+			allowedTypes = List.of(GMEffectGroup.class);
+			if (!allowedTypes.stream().anyMatch(c -> c.isInstance(target))) {
+				err.addError("Element '" + target.getLabel() + "' cannot be the target of an effect group link. Allowed types: Effect Group (disk)", "GoalModel::validateRelationship(GMNode,GMNode,GMNode)");
+			}
+		}
+		
+	}
 	
 	private GMNode handleRelEndPoint(GraphElement e) {
 		
-		//TODO: Remove new GMNode
-		//TODO: Remove the setType
-		
-		GMNode gNode = new GMNode();
+		GMNode gNode;
 
 		if (e instanceof Goal) {
 			gNode = new GMGoal();
@@ -53,6 +175,11 @@ public class GoalModel {
 			gNode = new GMPrecondition();
 			((WithFormula) gNode).setDtxFormula(((Precondition) e).getDtxFormua());
 			((WithFormula) gNode).setFormula(((Precondition) e).getFormula());
+		} else {
+			err.addError("Unexpected relationship endpoint type: " + e.getClass().getSimpleName() + " (" + e.getLabel() + ")", "GoalModel::handleRelEndPoint()");
+			err.printAll();
+			System.exit(-1);
+			gNode = null;
 		}
 		
 		gNode.setId(e.getID());
@@ -154,7 +281,13 @@ public class GoalModel {
 				}
 				
 				//gmn, gmnOrigin, gmnTarget
-				//TODO: add relationship validation code here.
+				validateRelationship(gmnOrigin, gmnTarget, gmn);
+				
+				if (err.hasErrors()) {
+					err.printAll();
+					System.exit(-1);
+				}
+				
 				
 				if (gmn instanceof ORDecomp) {
 					((GMGoal) gmnTarget).addORChild(gmnOrigin);
@@ -200,12 +333,20 @@ public class GoalModel {
 
 		}//loop over elements in GraphElement Graph
 		
-		System.out.println("I am about to bypass and findroot");
-		
 		//Bypass effectGroups
 		byPassEffectGroups();
 	
 		findRoot();
+		
+		//Model now complete - perform remaining validation checks
+		generalValidation();
+		
+		if (err.hasErrors()) {
+			err.printAll();
+			System.exit(-1);
+		}
+		
+	
 	}
 
 	
@@ -232,30 +373,30 @@ public class GoalModel {
 	 * @throws Exception if multiple roots are found.
 	 */
 	private void findRoot() {
-		ArrayList<GMNode> declaredRoots = new ArrayList<GMNode>();
-		ArrayList<GMNode> declaredQRoots = new ArrayList<GMNode>();
+		ArrayList<GMGoal> declaredRoots = new ArrayList<GMGoal>();
+		ArrayList<GMQuality> declaredQRoots = new ArrayList<GMQuality>();
 		
-		ArrayList<GMNode> foundRoots = new ArrayList<GMNode>();
-		ArrayList<GMNode> foundQRoots = new ArrayList<GMNode>();
+		ArrayList<GMGoal> foundRoots = new ArrayList<GMGoal>();
+		ArrayList<GMQuality> foundQRoots = new ArrayList<GMQuality>();
 		
 		boolean hasFormula = false;
 		
 		for (GMNode n:goalModel) {
 			if ((n instanceof GMGoal)) {
 				if (((WithParent) n).getParent()==null) {
-					foundRoots.add(n);
+					foundRoots.add((GMGoal) n);
 				}
 				if (((GMGoal) n).isRoot()) {
-					declaredRoots.add(n);
+					declaredRoots.add((GMGoal) n);
 				}
 			}
 			
 			if ((n instanceof GMQuality)) {
 				if (n.getOutgoingContributions().isEmpty()) {
-					foundQRoots.add(n);
+					foundQRoots.add((GMQuality) n);
 				}
 				if (((GMQuality) n).isQRoot()) {
-					declaredQRoots.add(n);
+					declaredQRoots.add((GMQuality) n);
 				}
 				if ((((WithFormula) n).hasDtxFormula() || ((WithFormula) n).hasFormula())) {
 					hasFormula = true;
@@ -276,7 +417,7 @@ public class GoalModel {
 			}
 			if (foundRoots.size() == 1) {
 				err.addWarning("No root goal explicitly specified, one inferrred (" + foundRoots.get(0) + ") and will be adopted.", "GoalModel::findRoot()");
-				this.root = foundRoots.get(0);
+				this.root = (GMGoal) foundRoots.get(0);
 			}
 			if (foundRoots.size() > 1) {
 				err.addError("No root goal explicitly specified, too many inferrred (" + foundRoots + ").", "GoalModel::findRoot()");	
@@ -284,7 +425,7 @@ public class GoalModel {
 		}
 
 		if (declaredRoots.size() == 1) {
-			this.root = declaredRoots.get(0);
+			this.root = (GMGoal) declaredRoots.get(0);
 			
 			if (foundRoots.size() == 0) {
 				err.addWarning("Neither specified root goal (" + declaredRoots.get(0) + ") nor other goals are parentless." , "GoalModel::findRoot()");	
@@ -321,7 +462,7 @@ public class GoalModel {
 					err.addError("No root quality explicitly specified, one inferrred (" + foundQRoots.get(0) + ") but formulae have been detected. Please explicilty specify root quality goal.", "GoalModel::findRoot()");
 					} else {
 						err.addWarning("No root quality explicitly specified, one inferrred (" + foundQRoots.get(0) + ") and adopted.", "GoalModel::findRoot()");
-						this.qroot = foundQRoots.get(0);	
+						this.qroot = (GMQuality) foundQRoots.get(0);	
 					}
  			}
 			if (foundQRoots.size() > 1) {
@@ -330,7 +471,7 @@ public class GoalModel {
 		}
 
 		if (declaredQRoots.size() == 1) {
-			this.qroot = declaredQRoots.get(0);
+			this.qroot = (GMQuality) declaredQRoots.get(0);
 			
 			if ((foundQRoots.size() == 0) && !hasFormula) {
 				err.addWarning("Neither specified root quality (" + declaredQRoots.get(0) + ") nor other qualities are parentless." , "GoalModel::findRoot()");	

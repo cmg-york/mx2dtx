@@ -51,13 +51,13 @@ public class GraphElementFactory {
 		String label = cl.clean(e.getAttribute("label"));
 
 		if (!label.equals(e.getAttribute("label"))) {
-			err.addWarning("Label " + e.getAttribute("label") + " trimmed to " + label, "GraphElementFactory");
+			err.addWarning("Label " + e.getAttribute("label") + " trimmed to " + label, "GraphElementFactory::constructElement(Element)");
 		}
 
 
 		//Empty elements
 		if (mustHaveLabel.contains(type) && label.equals("")) {
-			err.addError("Element with ID " + e.getAttribute("id") + " of type '" + type + "' has empty label.", "GraphElementFactory");
+			err.addError("Element with ID " + e.getAttribute("id") + " of type '" + type + "' has empty label.", "GraphElementFactory::constructElement(Element)");
 		}
 
 		//Qualities and Preconditions:
@@ -67,15 +67,15 @@ public class GraphElementFactory {
 		if (oneOrTheOther.contains(type)) {
 			if (e.getAttribute("dtxFormula").equals("")) {
 				if (e.getAttribute("formula").equals("")) {
-					err.addInfo(type + " labeled as '" + label + "' has no custom formula. Label will be treated as the formula.", "GraphElementFactory");
+					err.addInfo(type + " labeled as '" + label + "' has no custom formula. Label will be treated as the formula.", "GraphElementFactory::constructElement(Element)");
 				} else {
-					err.addInfo(type + " labeled as '" + label + "' has custom formula which will be adopted. Label will be treated as identifier.", "GraphElementFactory");
+					err.addInfo(type + " labeled as '" + label + "' has custom formula which will be adopted. Label will be treated as identifier.", "GraphElementFactory::constructElement(Element)");
 				}
 			} else {
 				if (e.getAttribute("formula").equals("")) {
-					err.addInfo(type + " labeled as '" + label + "' has custom dtxformula which will be adopted. Label will be treated as the formula.", "GraphElementFactory");
+					err.addInfo(type + " labeled as '" + label + "' has custom dtxformula which will be adopted. Label will be treated as the formula.", "GraphElementFactory::constructElement(Element)");
 				} else {
-					err.addWarning(type + " labeled as '" + label + "' has both custom formula and custom dtxformula. Label will be treated as identifier and dtxformula will be adopted.", "GraphElementFactory");
+					err.addWarning(type + " labeled as '" + label + "' has both custom formula and custom dtxformula. Label will be treated as identifier and dtxformula will be adopted.", "GraphElementFactory::constructElement(Element)");
 					formula = "";
 				}				
 			}
@@ -108,7 +108,7 @@ public class GraphElementFactory {
 					!e.getAttribute("root").equalsIgnoreCase("false") &&
 					!e.getAttribute("root").equals("")
 					) {
-				err.addError(type + " " + label + ": unrecognizable 'root' attribute. Must be 'true' or 'false'", "GraphElementFactory");
+				err.addError(type + " " + label + ": unrecognizable 'root' attribute. Must be 'true' or 'false'", "GraphElementFactory::constructElement(Element)");
 			}
 			g = new Quality(
 					e.getAttribute("id"),
@@ -170,7 +170,7 @@ public class GraphElementFactory {
 			break;
 		case "effect":
 			if (!e.getAttribute("status").equalsIgnoreCase("attainment") && !e.getAttribute("status").equalsIgnoreCase("failure")) {
-				err.addError(type + " " + label + ": unrecognizable 'status' value. Must be one of 'attainment' or 'failure'", "GraphElementFactory");
+				err.addError(type + " " + label + ": unrecognizable 'status' value. Must be one of 'attainment' or 'failure'", "GraphElementFactory::constructElement(Element)");
 			}
 			g = new Effect(
 					e.getAttribute("id"),
@@ -205,7 +205,7 @@ public class GraphElementFactory {
 			break;
 		default:
 			err.addError("Concept type " + type + " unrecognized. Please check visual element with label " + e.getAttribute("label") + " and id " + e.getAttribute("id"), 
-					"GraphElementFactory");
+					"GraphElementFactory::constructElement(Element)");
 		}
 		return(g);
 	}
@@ -213,49 +213,49 @@ public class GraphElementFactory {
 	private Boolean validateLink(Element e, Node n) {
 		
 		if (n.getAttributes().getNamedItem("source") == null) { 
-			err.addError("Link with label " + e.getAttribute("label") + " and type " + e.getAttribute("concept") + " has no origin.", "GraphElementFactory");
+			err.addError("Link with label " + e.getAttribute("label") + " and type " + e.getAttribute("concept") + " has no origin.", "GraphElementFactory::constructElement(Element)");
 			return(false);
 		}
 
 		if (n.getAttributes().getNamedItem("target") == null) {
-			err.addError("Link with label " + e.getAttribute("label") + " and type " + e.getAttribute("concept") + " has no destination.", "GraphElementFactory");
+			err.addError("Link with label " + e.getAttribute("label") + " and type " + e.getAttribute("concept") + " has no destination.", "GraphElementFactory::constructElement(Element)");
 			return(false);
 		}
 
 		switch (e.getAttribute("concept")) {
 		case "andDecomp":
 			if (!e.getAttribute("label").equalsIgnoreCase("AND")) {
-				err.addWarning("AND-decomposition has incompatible label '" + e.getAttribute("label") + "'. Treated as AND-decomposition.", "GraphElementFactory");	
+				err.addWarning("AND-decomposition has incompatible label '" + e.getAttribute("label") + "'. Treated as AND-decomposition.", "GraphElementFactory::constructElement(Element)");	
 			}
 			break;
 		case "orDecomp":
 			if (!e.getAttribute("label").equalsIgnoreCase("OR")) {
-				err.addWarning("OR-decomposition has incompatible label '" + e.getAttribute("label") + "'. Treated as OR-decomposition.", "GraphElementFactory");	
+				err.addWarning("OR-decomposition has incompatible label '" + e.getAttribute("label") + "'. Treated as OR-decomposition.", "GraphElementFactory::constructElement(Element)");	
 			}
 			break;
 		case "precedenceLink":
 			if (!e.getAttribute("label").equalsIgnoreCase("pre")) {
-				err.addWarning("Precedence link has incompatible label '" + e.getAttribute("label") + "'. Treated as precedence link.", "GraphElementFactory");	
+				err.addWarning("Precedence link has incompatible label '" + e.getAttribute("label") + "'. Treated as precedence link.", "GraphElementFactory::constructElement(Element)");	
 			}
 			break;
 		case "negPrecedenceLink":
 			if (!e.getAttribute("label").equalsIgnoreCase("npr")) {
-				err.addWarning("Negative precedence link has incompatible label '" + e.getAttribute("label") + "'. Treated as negative precedence link.", "GraphElementFactory");	
+				err.addWarning("Negative precedence link has incompatible label '" + e.getAttribute("label") + "'. Treated as negative precedence link.", "GraphElementFactory::constructElement(Element)");	
 			}
 			break;
 		case "effectLink":
 			if (!e.getAttribute("label").equalsIgnoreCase("eff")) {
-				err.addWarning("Effect link has incompatible label '" + e.getAttribute("label") + "'. Treated as effect link.", "GraphElementFactory");	
+				err.addWarning("Effect link has incompatible label '" + e.getAttribute("label") + "'. Treated as effect link.", "GraphElementFactory::constructElement(Element)");	
 			}
 			break;
 		case "effectGroupLink":
 			if (!isNumeric(e.getAttribute("label"))) {
-				err.addWarning("Effect group appears to have a non-numeric label '" + e.getAttribute("label") + "'. Label must be a numeric.", "GraphElementFactory");	
+				err.addWarning("Effect group appears to have a non-numeric label '" + e.getAttribute("label") + "'. Label must be a numeric.", "GraphElementFactory::constructElement(Element)");	
 			}
 			break;
 		case "contributionLink":
 			if (!isNumeric(e.getAttribute("label"))) {
-				err.addError("FATAL: Contribution link with label '" + e.getAttribute("label") + "'. Label must be numeric.", "GraphElementFactory");	
+				err.addError("FATAL: Contribution link with label '" + e.getAttribute("label") + "'. Label must be numeric.", "GraphElementFactory::constructElement(Element)");	
 			}
 			break;
 		}
