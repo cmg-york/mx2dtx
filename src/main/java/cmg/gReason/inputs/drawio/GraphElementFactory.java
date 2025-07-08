@@ -83,7 +83,7 @@ public class GraphElementFactory {
 		
 		if (type.equals("precondition")) {
 			if (e.getAttribute("formula").equals("")) {
-					err.addInfo("Precondition labeled as '" + label + "' has no custom, formula. Label will be treated as the formula.", "GraphElementFactory::constructElement(Element)");
+					err.addInfo("Precondition labeled as '" + label + "' has no custom formula. Label will be treated as the formula.", "GraphElementFactory::constructElement(Element)");
 					formula = label; 
 			} else {
 					err.addInfo("Precondition labeled as '" + label + "' has a custom formula, which will be adopted. Label will be converted to identifier.", "GraphElementFactory::constructElement(Element)");

@@ -2,10 +2,8 @@ package cmg.gReason.outputs.istardtx;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import java.util.Map.Entry;
+import java.util.function.Function;
 
 import cmg.gReason.goalgraph.Contribution;
 import cmg.gReason.goalgraph.GMCrossRunSet;
@@ -19,6 +17,7 @@ import cmg.gReason.goalgraph.GMQuality;
 import cmg.gReason.goalgraph.GMTask;
 import cmg.gReason.goalgraph.GoalModel;
 import cmg.gReason.goalgraph.WithFormula;
+import cmg.gReason.inputs.drawio.ExportedSetParser;
 import cmg.gReason.inputs.drawio.InitializationParser;
 import cmg.gReason.outputs.common.Translator;
 
@@ -128,7 +127,7 @@ public class dtxTranslator extends Translator {
 						for (String truePred: ((GMEffect) eff).getTruePredicates()) {
 							effects += getIndent(4) + getXMLTurnsTrue(truePred) + "\n";
 						}
-						for (String falsePred: ((GMEffect) eff).getTruePredicates()) {
+						for (String falsePred: ((GMEffect) eff).getFalsePredicates()) {
 							effects += getIndent(4) + getXMLTurnsFalse(falsePred) + "\n";
 						}
 					//}
@@ -284,6 +283,7 @@ public class dtxTranslator extends Translator {
 			/* * 
 			 * E X P O R T S
 			 */
+				
 			} else if (n  instanceof GMExportedSet) {
 				exported += constructExportedSet(n.getLabel());
 			} 
@@ -411,72 +411,14 @@ public class dtxTranslator extends Translator {
 	}
 
 	
-	/*
-	 * Exported + 2 helpers
-	 */
-	
-	public String constructExportedSet(String label) {
-		String result = "";
-		
-        ArrayList<String> propositions = new ArrayList<>();
-        Map<String, List<String>> relations = new HashMap<>();
 
-        // Tokenize the input without splitting inside parentheses
-        List<String> tokens = splitTerms(label);
-
-        for (String token : tokens) {
-            token = token.trim();
-            if (token.matches("^[a-zA-Z_][a-zA-Z0-9_]*\\s*\\(.*\\)$")) {
-                String name = token.substring(0, token.indexOf("(")).trim();
-                String argsStr = token.substring(token.indexOf("(") + 1, token.length() - 1);
-                List<String> args = Arrays.asList(argsStr.split("\\s*,\\s*"));
-                relations.put(name, args);
-            } else {
-                propositions.add(token);
-            }
-        }
-
-		for (String prop : propositions) {
-			result += getIndent(2) + "<export continuous = \"false\">" + wrapWithIdentifier(prop) + "</export>\n";  
-		}
-		
-		for (Map.Entry<String, List<String>> entry : relations.entrySet()) {
-			result += getIndent(2) + "<export continuous = \"true\" minVal = \"" + entry.getValue().get(0) +
-					"\" maxVal = \"" + entry.getValue().get(1) + "\">" + 
-					wrapWithIdentifier(entry.getKey()) + "</export>\n";
-		}
-		
-		return result;
-	}
-
-	
-    // Splits top-level comma-separated terms, ignoring commas inside parentheses
-    public static List<String> splitTerms(String input) {
-        List<String> result = new ArrayList<>();
-        int depth = 0;
-        StringBuilder current = new StringBuilder();
-
-        for (char c : input.toCharArray()) {
-            if (c == ',' && depth == 0) {
-                result.add(current.toString());
-                current.setLength(0);
-            } else {
-                if (c == '(') depth++;
-                if (c == ')') depth--;
-                current.append(c);
-            }
-        }
-        if (current.length() > 0) {
-            result.add(current.toString());
-        }
-        return result;
-    }
-	
-    public String wrapWithIdentifier(String name) {
-    	return "<" + g.getIdentifierType(name) + ">" + name + "</" + this.g.getIdentifierType(name) + ">"; 
-    }
     
-
+	public String constructExportedSet(String label) {
+		ExportedSetParser parser = new ExportedSetParser();
+		Function<String, String> f = x -> this.wrapWithIdentifier(x);
+		parser.parseExportedSetLabel(label);
+		return parser.constructExportedSet(f, getIndent(2));
+	}
 	
 	
 
@@ -487,6 +429,9 @@ public class dtxTranslator extends Translator {
 	 * H E L P E R S   ( 2 / 2 )
 	 * Various text generation helpers
 	 */
+    public String wrapWithIdentifier(String name) {
+    	return "<" + g.getIdentifierType(name) + ">" + name + "</" + this.g.getIdentifierType(name) + ">"; 
+    }
 	
 	private String getXMLTask(String name, String description) {
 		return "<task name = \"" + name + "\" description = \"" + description + "\">";

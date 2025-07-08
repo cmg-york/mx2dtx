@@ -1,12 +1,20 @@
 package cmg.gReason.goalgraph;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
 
-import cmg.gReason.inputs.drawio.graphelementstructure.*;
+import cmg.gReason.inputs.drawio.graphelementstructure.CrossRunSet;
+import cmg.gReason.inputs.drawio.graphelementstructure.Effect;
+import cmg.gReason.inputs.drawio.graphelementstructure.EffectGroup;
+import cmg.gReason.inputs.drawio.graphelementstructure.ExportedSet;
+import cmg.gReason.inputs.drawio.graphelementstructure.Goal;
+import cmg.gReason.inputs.drawio.graphelementstructure.GraphElement;
+import cmg.gReason.inputs.drawio.graphelementstructure.InitializationSet;
+import cmg.gReason.inputs.drawio.graphelementstructure.Link;
+import cmg.gReason.inputs.drawio.graphelementstructure.Precondition;
+import cmg.gReason.inputs.drawio.graphelementstructure.Quality;
+import cmg.gReason.inputs.drawio.graphelementstructure.Task;
+
 import cmg.gReason.outputs.common.ErrorReporter;
 
 
@@ -19,6 +27,9 @@ import cmg.gReason.outputs.common.ErrorReporter;
 public class GoalModel {
 	
 	private ErrorReporter err = null;
+
+	private Validator validator = null;
+	
 	private IdentifierRegistry identifiers;
 	private ConditionExpressionParser parser;
 	
@@ -34,6 +45,7 @@ public class GoalModel {
 		identifiers = new IdentifierRegistry(this,e);
 		parser = new ConditionExpressionParser(identifiers);
 		identifiers.setParser(parser);
+		validator = new Validator(identifiers, e, this);
 	}
 		
 	public void buildIdentifierRegistry() {
@@ -56,148 +68,7 @@ public class GoalModel {
 		return identifiers;
 	}
 	
-	
 
-	private void predicateValidation() {
-		
-		//Predicate/variable appears in an effect and nowhere else. (Warning)
-		//Predicate/variable appears in a precondition but in no effect. (Error)
-		identifiers.validate();
-		
-		//Initializations, Exported Sets, Cross Must Mention existing predicates.
-	}
-	
-	
-	private void generalValidation() {
-		
-		Set<String> seen = new HashSet<>();
-		Set<String> duplicates = new HashSet<>();
-		boolean hasInitialization = false;
-		boolean hasExportedSet = false;
-		boolean hasCrossRun = false;
-		boolean rootIsMultiRun = false;
-		
-		for (GMNode node : goalModel) {
-		    String label = node.getLabel();
-		    if (!seen.add(label)) {
-		        duplicates.add(label);  // Set will ignore repeated duplicates
-		    }
-
-		    if (node instanceof GMGoal) {
-		    	if (((GMGoal) node).andChildren.isEmpty() && ((GMGoal) node).orChildren.isEmpty()) {
-		    		err.addError("Goal '" + node.getLabel() + "' has no children.", "GoalModel::generalValidation()");
-		    	}
-		    } else if (node instanceof GMTask) {
-		    	if (((GMTask) node).effects.isEmpty()) {
-		    		err.addError("Task '" + node.getLabel() + "' has no effects.", "GoalModel::generalValidation()");
-		    	}
-		    	
-		    	if (((GMTask) node).getParent() == null) {
-		    		err.addError("Task '" + node.getLabel() + "' has no parent.", "GoalModel::generalValidation()");
-		    	}
-		    } else if (node instanceof GMQuality) {
-		    	if (!((GMQuality) node).hasDtxFormula() && !((GMQuality) node).hasFormula() && ((GMQuality) node).inContr.isEmpty()) {
-		    		err.addError("Quality '" + node.getLabel() + "' has no formula nor incoming contribution links.", "GoalModel::generalValidation()");
-		    	}
-		    } else if (node instanceof GMPrecondition) {
-		    	if (((GMPrecondition) node).outPre.isEmpty() && ((GMPrecondition) node).outNegPre.isEmpty()) {
-		    		err.addError("Precondition with content '" + (node.getLabel().length() > 50 ? node.getLabel().substring(0, 50) : node.getLabel()) + "' has no outgoing pre or npr link.", "GoalModel::generalValidation()");
-		    	}
-
-		    } else if (node instanceof GMInitializationSet) {
-		    	hasInitialization = true;
-		    } else if (node instanceof GMCrossRunSet) {
-		    	hasCrossRun = true;
-		    } else if (node instanceof GMExportedSet) {
-		    	hasExportedSet = true;
-		    }
-		}
-
-		if (!duplicates.isEmpty()) {
-			err.addError("Duplicate labels: " + duplicates, "GoalModel::generalValidation()");
-		}
-		
-		if (!this.root.getRuns().matches("[1-9][0-9]*")) {
-			err.addError("Root goal '" + this.root.getLabel() + "'. Number of runs must be a positive natural number (found" + this.root.getRuns() + ").", "GoalModel::generalValidation()");
-		} else {
-			int rns = Integer.parseInt(this.root.getRuns());
-			if (rns > 1) {
-				rootIsMultiRun = true;
-			}
-		}
-		
-		if (!hasInitialization) {
-			err.addError("Initialization element missing.", "GoalModel::generalValidation()");
-		}
-		if (!hasExportedSet) {
-			err.addWarning("Exported set missing.", "GoalModel::generalValidation()");
-		}
-		
-		if (!hasCrossRun && rootIsMultiRun) {
-			err.addWarning("CrossRun set is missing for multi-run root.", "GoalModel::generalValidation()");		
-		}
-
-	}
-	
-	private void validateRelationship(GMNode origin, GMNode target, GMNode relationship) {
-		List<Class<?>> allowedTypes;
-		if ((relationship instanceof PRELink) || (relationship instanceof NPRLink)) {
-	        allowedTypes = List.of(GMPrecondition.class, GMGoal.class, GMTask.class);
-	        if (!allowedTypes.stream().anyMatch(c -> c.isInstance(origin))) {
-	        	err.addError("Element '" + origin.getLabel() + "' cannot be origin of PRE or NPR link. Allowed types: Precondition, Goal, Task.", "GoalModel::validateRelationship(GMNode,GMNode,GMNode)");
-	        }
-	        allowedTypes = List.of(GMGoal.class, GMTask.class, GMEffect.class);
-	        if (!allowedTypes.stream().anyMatch(c -> c.isInstance(target))) {
-	        	err.addError("Element '" + target.getLabel() + "' cannot be targeted of PRE or NPR link. Allowed types: Goal, Task, Effect.", "GoalModel::validateRelationship(GMNode,GMNode,GMNode)");
-	        }
-		}
-
-		if ((relationship instanceof Contribution)) {
-	        allowedTypes = List.of(GMPrecondition.class, GMGoal.class, GMTask.class, GMEffect.class, GMQuality.class);
-	        if (!allowedTypes.stream().anyMatch(c -> c.isInstance(origin))) {
-	        	err.addError("Element '" + origin.getLabel() + "' cannot be origin of a contribution link. Allowed types: Precondition, Goal, Task, Effect, Quality.", "GoalModel::validateRelationship(GMNode,GMNode,GMNode)");
-	        }
-	        allowedTypes = List.of(GMQuality.class);
-	        if (!allowedTypes.stream().anyMatch(c -> c.isInstance(target))) {
-	        	err.addError("Element '" + target.getLabel() + "' cannot be targeted of a contribution link. Allowed types: Quality", "GoalModel::validateRelationship(GMNode,GMNode,GMNode)");
-	        }
-		}
-
-		if ((relationship instanceof ANDDecomp) || (relationship instanceof ORDecomp)) {
-		        allowedTypes = List.of(GMGoal.class, GMTask.class);
-	        if (!allowedTypes.stream().anyMatch(c -> c.isInstance(origin))) {
-	        	err.addError("Element '" + origin.getLabel() + "' cannot be origin of a refinement link. Allowed types: Goal, Task", "GoalModel::validateRelationship(GMNode,GMNode,GMNode)");
-	        }
-	        allowedTypes = List.of(GMGoal.class);
-	        if (!allowedTypes.stream().anyMatch(c -> c.isInstance(target))) {
-	        	err.addError("Element '" + target.getLabel() + "' cannot be targeted of a refinement link. Allowed types: Goal", "GoalModel::validateRelationship(GMNode,GMNode,GMNode)");
-	        }
-		}
-
-		if ((relationship instanceof EffGroupLink)) {
-			allowedTypes = List.of(GMEffectGroup.class);
-			if (!allowedTypes.stream().anyMatch(c -> c.isInstance(origin))) {
-				err.addError("Element '" + origin.getLabel() + "' cannot be the origin of an effect link. Allowed types: Effect Group (disk)", "GoalModel::validateRelationship(GMNode,GMNode,GMNode)");
-			}
-			allowedTypes = List.of(GMEffect.class);
-			if (!allowedTypes.stream().anyMatch(c -> c.isInstance(target))) {
-				err.addError("Element '" + target.getLabel() + "' cannot be the target of an effect link. Allowed types: Effect", "GoalModel::validateRelationship(GMNode,GMNode,GMNode)");
-			}
-		}
-		
-		if ((relationship instanceof EffLink)) {
-			allowedTypes = List.of(GMTask.class);
-			if (!allowedTypes.stream().anyMatch(c -> c.isInstance(origin))) {
-				err.addError("Element '" + origin.getLabel() + "' cannot be the origin of an effect group link. Allowed types: Task.", "GoalModel::validateRelationship(GMNode,GMNode,GMNode)");
-			}
-			allowedTypes = List.of(GMEffectGroup.class);
-			if (!allowedTypes.stream().anyMatch(c -> c.isInstance(target))) {
-				err.addError("Element '" + target.getLabel() + "' cannot be the target of an effect group link. Allowed types: Effect Group (disk)", "GoalModel::validateRelationship(GMNode,GMNode,GMNode)");
-			}
-		}
-		
-	}
-	
 	private GMNode handleRelEndPoint(GraphElement e) {
 		
 		GMNode gNode;
@@ -240,7 +111,7 @@ public class GoalModel {
 		} else {
 			err.addError("Unexpected relationship endpoint type: " + e.getClass().getSimpleName() + " (" + e.getLabel() + ")", "GoalModel::handleRelEndPoint()");
 			err.printAll();
-			System.exit(-1);
+			//System.exit(-1);
 			gNode = null;
 		}
 		
@@ -314,6 +185,8 @@ public class GoalModel {
 	 */
 	public void createGoalGraph() {
 
+		
+		
 		for (GraphElement c:elements) {
 			
 			GMNode gmn = GMNodeFactory(c); 
@@ -343,11 +216,11 @@ public class GoalModel {
 				}
 				
 				//gmn, gmnOrigin, gmnTarget
-				validateRelationship(gmnOrigin, gmnTarget, gmn);
+				validator.validateRelationship(gmnOrigin, gmnTarget, gmn);
 				
 				if (err.hasErrors()) {
 					err.printAll();
-					System.exit(-1);
+					//System.exit(-1);
 				}
 				
 				
@@ -404,13 +277,12 @@ public class GoalModel {
 		buildIdentifierRegistry();
 		
 		//Model now complete - perform remaining validation checks
-		generalValidation();
-		
-		predicateValidation();
+		validator.generalValidation();
+		validator.predicateValidation();
 		
 		if (err.hasErrors()) {
 			err.printAll();
-			System.exit(-1);
+			//System.exit(-1);
 		}
 		
 	

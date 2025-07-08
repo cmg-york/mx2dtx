@@ -92,6 +92,15 @@ public class IdentifierRegistry {
 		return identifiers.get(name);
 	}
 
+	public String getIdentifierTypeBreak(String name) {
+		String result = null;
+		result = identifiers.get(name);
+		if (result == null) {
+			err.addError("Unregistered identifier '" + name + "'", "IdentifierRegistry::getIdentifierTypeBreak(String)");	
+		}
+		return identifiers.get(name);
+	}
+	
 	public String debugPrint() {
 		return identifiers.toString();
 	}
@@ -116,6 +125,12 @@ public class IdentifierRegistry {
 		return vars;
 	}
 
+	
+	public boolean contains(String pred) {
+		return(identifiers.containsKey(pred));
+	}
+	
+	
 	/**
 	 * Builds a registry of identifiers and their types. It first goes over all condition boxes, which it parses.
 	 * All ground elements of condition boxes are either predicates or variables. Once found, they are registered 
