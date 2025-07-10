@@ -51,15 +51,12 @@
       <effectGroup>
          <effect name = "deliveredInTimeA_Eff" description = "deliveredInTimeA" satisfying = "true" probability = "0.75">
             <turnsTrue>deliveredInTimeA</turnsTrue>
-            <turnsFalse>deliveredInTimeA</turnsFalse>
          </effect>
          <effect name = "neverDeliveredA_Eff" description = "neverDeliveredA" satisfying = "false" probability = "0.05">
             <turnsTrue>neverDeliveredA</turnsTrue>
-            <turnsFalse>neverDeliveredA</turnsFalse>
          </effect>
          <effect name = "deliveredLateA_Eff" description = "deliveredLateA" satisfying = "true" probability = "0.2">
             <turnsTrue>deliveredLateA</turnsTrue>
-            <turnsFalse>deliveredLateA</turnsFalse>
          </effect>
       </effectGroup>
    </task>
@@ -67,15 +64,12 @@
       <effectGroup>
          <effect name = "deliveredInTimeB_Eff" description = "deliveredInTimeB" satisfying = "true" probability = "0.5">
             <turnsTrue>deliveredInTimeB</turnsTrue>
-            <turnsFalse>deliveredInTimeB</turnsFalse>
          </effect>
          <effect name = "neverDeliveredB_Eff" description = "neverDeliveredB" satisfying = "false" probability = "0.15">
             <turnsTrue>neverDeliveredB</turnsTrue>
-            <turnsFalse>neverDeliveredB</turnsFalse>
          </effect>
          <effect name = "deliveredLateB_Eff" description = "deliveredLateB" satisfying = "true" probability = "0.35">
             <turnsTrue>deliveredLateB</turnsTrue>
-            <turnsFalse>deliveredLateB</turnsFalse>
          </effect>
       </effectGroup>
    </task>
@@ -88,26 +82,26 @@
 <qualities>
    <quality name = "cost" description = "Cost" root = "false">
       <add>
-         <multiply><numConst>0.5</numConst><qualID>cost</qualID></multiply>
-         <multiply><numConst>0.5</numConst><qualID>cost</qualID></multiply>
-         <multiply><numConst>0.5</numConst><qualID>cost</qualID></multiply>
-         <multiply><numConst>1.0</numConst><qualID>cost</qualID></multiply>
-         <multiply><numConst>1.0</numConst><qualID>cost</qualID></multiply>
-         <multiply><numConst>1.0</numConst><qualID>cost</qualID></multiply>
-      </add>
-   </quality>
-   <quality name = "overallQuality" description = "Overall Quality" root = "true">
-      <add>
-         <multiply><numConst>0.7</numConst><qualID>overallQuality</qualID></multiply>
-         <multiply><numConst>0.3</numConst><qualID>overallQuality</qualID></multiply>
+         <multiply><numConst>0.5</numConst><predicateID>deliveredInTimeA</predicateID></multiply>
+         <multiply><numConst>0.5</numConst><predicateID>deliveredLateA</predicateID></multiply>
+         <multiply><numConst>0.5</numConst><predicateID>neverDeliveredA</predicateID></multiply>
+         <multiply><numConst>1.0</numConst><predicateID>deliveredInTimeB</predicateID></multiply>
+         <multiply><numConst>1.0</numConst><predicateID>deliveredLateB</predicateID></multiply>
+         <multiply><numConst>1.0</numConst><predicateID>neverDeliveredB</predicateID></multiply>
       </add>
    </quality>
    <quality name = "happyCustomer" description = "Happy Customer" root = "false">
       <add>
-         <multiply><numConst>1.0</numConst><qualID>happyCustomer</qualID></multiply>
-         <multiply><numConst>0.7</numConst><qualID>happyCustomer</qualID></multiply>
-         <multiply><numConst>1.0</numConst><qualID>happyCustomer</qualID></multiply>
-         <multiply><numConst>0.7</numConst><qualID>happyCustomer</qualID></multiply>
+         <multiply><numConst>1.0</numConst><predicateID>deliveredInTimeA</predicateID></multiply>
+         <multiply><numConst>0.7</numConst><predicateID>deliveredLateA</predicateID></multiply>
+         <multiply><numConst>1.0</numConst><predicateID>deliveredInTimeB</predicateID></multiply>
+         <multiply><numConst>0.7</numConst><predicateID>deliveredLateB</predicateID></multiply>
+      </add>
+   </quality>
+   <quality name = "overallQuality" description = "Overall Quality" root = "true">
+      <add>
+         <multiply><numConst>0.7</numConst><qualID>cost</qualID></multiply>
+         <multiply><numConst>0.3</numConst><qualID>happyCustomer</qualID></multiply>
       </add>
    </quality>
 </qualities>

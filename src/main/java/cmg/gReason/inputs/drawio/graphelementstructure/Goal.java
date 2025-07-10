@@ -8,9 +8,10 @@ public class Goal extends Entity {
 			String label, 
 			String actor, 
 			String notes, 
+			String description,
 			String runNum,
 			boolean isRoot) {
-		super(id, label, actor, notes);
+		super(id, label, actor, notes, description);
 		this.runNum = runNum;
 		this.isRoot = isRoot;
 	}

@@ -2,6 +2,7 @@ package cmg.gReason.outputs.istardtx;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Map.Entry;
 import java.util.function.Function;
 
@@ -60,9 +61,9 @@ public class dtxTranslator extends Translator {
 	/**
 	 * Perform the translation of the {@linkplain GoalModel} object into a iStar-DT-X specification. 
 	 */
-	public void produceTranslation() {
+	public void produceTranslation(boolean timeStamp) {
 		//Performs the translation
-		spec = createSpec();
+		spec = createSpec(timeStamp);
 	}
 	
 
@@ -70,7 +71,12 @@ public class dtxTranslator extends Translator {
 	 * The main spec writing iteration.
 	 */
 	public String createSpec() {
-		
+		return(this.createSpec(true));
+	}
+	
+	
+	public String createSpec(boolean timeStamp) {
+				
 		String model;
 		String header = "\n\n\n<!--\n*** H E A D E R ***\n-->\n\n";
 		String options = "\n\n\n<!--\n*** O P T I O N S ***\n-->\n";
@@ -94,10 +100,12 @@ public class dtxTranslator extends Translator {
 				+ "         xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\r\n"
 				+ "         xsi:schemaLocation=\"https://example.org/istar-dt-x ../xsd/istar-rl-schema_v4.xsd\">";
 		
-		//header += "<header title = \"\"\n    author = \"\"\n    source = \"\"\n    lastUpdated = \"" + java.time.LocalDateTime.now()
-	    //.format(java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")) +  "\">\n</header>";
-		
-		header += "<header title = \"\"\n    author = \"\"\n    source = \"\"\n    lastUpdated = \"Test\">\n</header>";
+		if (timeStamp) {
+			header += "<header title = \"\"\n    author = \"\"\n    source = \"\"\n    lastUpdated = \"" + java.time.LocalDateTime.now()
+		    .format(java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")) +  "\">\n</header>";
+		} else {
+			header += "<header title = \"\"\n    author = \"\"\n    source = \"\"\n    lastUpdated = \"Test\">\n</header>";
+		}
 		
 		options += "<options continuous = \"false\"\n    infeasibleActionPenalty = \"100\">\n</options>";
 		
@@ -105,19 +113,21 @@ public class dtxTranslator extends Translator {
 		
 		
 		for (GMNode n:this.g.getGoalModel()) {
+
+
 			
 			/* * 
 			 * T A S K S  
 			 */
 			if (n instanceof GMTask) {
-				tasks += getIndent(1) + getXMLTask(n.getCamelLabel(),n.getLabel()) + "\n" ;
+				tasks += getIndent(1) + getXMLTask(n.getCamelLabel(),n.getDescription()) + "\n" ;
 				String effects = getIndent(2) + "<effectGroup>\n";
 
 				/* * 
 				 * E F F E C T S  
 				 */
 				for (GMNode eff:((GMTask) n).getEffects()) {
-					effects += getIndent(3) + getXMLEffect(eff.getCamelLabel(),eff.getLabel(),
+					effects += getIndent(3) + getXMLEffect(eff.getCamelLabel(),eff.getDescription(),
 							getEffectStatus(((GMEffect) eff).getEffectStatus()),String.valueOf(((GMEffect) eff).getInWeight())) + "\n";
 					
 					//A unique turns true on the label
@@ -129,6 +139,9 @@ public class dtxTranslator extends Translator {
 						}
 						for (String falsePred: ((GMEffect) eff).getFalsePredicates()) {
 							effects += getIndent(4) + getXMLTurnsFalse(falsePred) + "\n";
+						}
+						for (Entry<String, String> var: ((GMEffect) eff).getVariables().entrySet()) {
+							effects += getIndent(4) + getXMLVarSet(var.getKey(),var.getValue()) + "\n";
 						}
 					//}
 						
@@ -169,7 +182,7 @@ public class dtxTranslator extends Translator {
 			 */
 
 			} else if (n instanceof GMGoal) {
-				goals += getIndent(1) + getXMLGoal(n.getCamelLabel(),n.getLabel(),
+				goals += getIndent(1) + getXMLGoal(n.getCamelLabel(),n.getDescription(),
 						g.getRoot().equals(n) ? "true" : "false",
 						"false", ((GMGoal) n).getRuns()) + "\n" ;
 				if (!((GMGoal) n).getORChildren().isEmpty()) {
@@ -218,7 +231,7 @@ public class dtxTranslator extends Translator {
 				int indentAdd = 0;
 				
 				qualities += getIndent(1) + getXMLQuality(n.getCamelLabel(),
-						n.getLabel(),
+						n.getDescription(),
 						n.equals(g.getQRoot()) ? "true" : "false") + "\n" ;
 				
 				if (((WithFormula) n).hasDtxFormula()) {
@@ -260,10 +273,13 @@ public class dtxTranslator extends Translator {
 			} else if (n  instanceof GMPrecondition) {
 				
 				if (((WithFormula) n).hasDtxFormula()) {
-					//It is a named box
-					condBoxes += "<condBox name = \"" + n.getLabel() + "\">" + ((WithFormula) n).getDtxFormula() + "</condBox>\n";
+					//It is a named box with a formula already in DTX
+					condBoxes += "<condBox name = \"" + n.getCamelLabel() + "\">" + ((WithFormula) n).getDtxFormula() + "</condBox>\n";
+				} else if (((WithFormula) n).hasFormula()) {
+					//It is a named box but has a non-XML formula
+					condBoxes += "<condBox name = \"" + n.getCamelLabel() + "\">" + parser.parse(((WithFormula) n).getFormula()) + "</condBox>\n";
 				} else {
-					//Label has simple formula
+					//Label has the formula
 					condBoxes += "<condBox name = \"default" + cBoxCounter++ + "\" >\n" + getIndent(1) + parser.parse(n.getLabel()) + "</condBox>\n";	
 				}
 				 
@@ -356,7 +372,8 @@ public class dtxTranslator extends Translator {
 		for (GMNode pre:g) {
 			count++;
 			if (pre instanceof GMPrecondition) {
-				res += parseConditionFormula(pre.getLabel());
+				//res += parseConditionFormula(pre.getLabel());
+				res += ((GMPrecondition) pre).getDtxFormula();
 			} else {
 				res += "<" + this.g.getIdentifierType(pre.getCamelLabel()) + ">";
 				res += pre.getCamelLabel();
@@ -410,9 +427,7 @@ public class dtxTranslator extends Translator {
 		return result;
 	}
 
-	
 
-    
 	public String constructExportedSet(String label) {
 		ExportedSetParser parser = new ExportedSetParser();
 		Function<String, String> f = x -> this.wrapWithIdentifier(x);
@@ -472,6 +487,14 @@ public class dtxTranslator extends Translator {
 		return "<turnsFalse>" + name + "</turnsFalse>";
 	}
 
+	
+	private String getXMLVarSet(String key, String value) {
+		return "<set><variableID>" + key + "</variableID><numConst>" + value + "</numConst></set>";
+	}
+
+
+	
+	
 	
 	private String getXMLQuality(String name, String description, String root) {
 		return "<quality name = \"" + name + "\"" +

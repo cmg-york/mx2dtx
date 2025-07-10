@@ -33,7 +33,7 @@ public class mx2dtx {
 			//Produce the translation
 			writer.setOutFile(outputFile);
 			writer.setModel(model);
-			writer.translate();
+			writer.translate(true);
 			
 			if (err.hasAnything()) {
 				err.printAll();

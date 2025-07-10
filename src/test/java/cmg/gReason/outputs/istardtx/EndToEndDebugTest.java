@@ -19,8 +19,7 @@ class EndToEndDebugTest {
 
 	@Disabled
 	@Test
-	void test1() throws IOException {
-		mx2dtx mainClass = new mx2dtx();
+	void test_Order() throws IOException {
 		ErrorReporter err = new ErrorReporter();
 		DrawIOReader reader = new DrawIOReader(err);
 		GoalModel model = new GoalModel(err);
@@ -39,7 +38,7 @@ class EndToEndDebugTest {
 			String outputFile = "src/test/resources/Order.istardtx";
 			writer.setOutFile(outputFile);
 			writer.setModel(model);
-			writer.translate();
+			writer.translate(false);
 					
 		} catch (Exception e) {
 			System.err.println("[mx2dtx] Error: " + e.getMessage());
@@ -52,14 +51,94 @@ class EndToEndDebugTest {
         List<String> actualLines = Files.readAllLines(actual);
         List<String> expectedLines = Files.readAllLines(expected);
 
-        //assertEquals(expectedLines, actualLines, "Files do not match!");
+        assertEquals(expectedLines, actualLines, "Files do not match!");
 		
 	}
 
-	
+	@Disabled
 	@Test
-	void test2() throws IOException {
-		mx2dtx mainClass = new mx2dtx();
+	void test_Build() throws IOException {
+
+		ErrorReporter err = new ErrorReporter();
+		DrawIOReader reader = new DrawIOReader(err);
+		GoalModel model = new GoalModel(err);
+		Translator writer = new dtxTranslator();
+
+
+		try {
+			//Read from the XML
+			String inputFile = "src/test/resources/Build.drawio"; 
+			
+			reader.setInFile(inputFile);
+			model = reader.readXML();
+
+			//Produce the translation
+			
+			String outputFile = "src/test/resources/Build.istardtx";
+			writer.setOutFile(outputFile);
+			writer.setModel(model);
+			writer.translate(false);
+					
+		} catch (Exception e) {
+			System.err.println("[mx2dtx] Error: " + e.getMessage());
+			e.printStackTrace();
+			System.exit(1);
+		}
+		
+        Path actual = Path.of("src/test/resources/Build.istardtx");
+        Path expected = Path.of("src/test/resources/Build-Authoritative.istardtx");
+
+        List<String> actualLines = Files.readAllLines(actual);
+        List<String> expectedLines = Files.readAllLines(expected);
+
+        assertEquals(expectedLines, actualLines, "Files do not match!");
+
+	}
+
+	@Disabled
+	@Test
+	void test_Travel() throws IOException {
+
+		ErrorReporter err = new ErrorReporter();
+		DrawIOReader reader = new DrawIOReader(err);
+		GoalModel model = new GoalModel(err);
+		Translator writer = new dtxTranslator();
+
+
+		try {
+			//Read from the XML
+			String inputFile = "src/test/resources/OrganizeTravel.drawio"; 
+			
+			reader.setInFile(inputFile);
+			model = reader.readXML();
+
+			//Produce the translation
+			
+			String outputFile = "src/test/resources/OrganizeTravel.istardtx";
+			writer.setOutFile(outputFile);
+			writer.setModel(model);
+			writer.translate(false);
+					
+		} catch (Exception e) {
+			System.err.println("[mx2dtx] Error: " + e.getMessage());
+			e.printStackTrace();
+			System.exit(1);
+		}
+		
+        Path actual = Path.of("src/test/resources/OrganizeTravel.istardtx");
+        Path expected = Path.of("src/test/resources/OrganizeTravel-Authoritative.istardtx");
+
+        List<String> actualLines = Files.readAllLines(actual);
+        List<String> expectedLines = Files.readAllLines(expected);
+
+        assertEquals(expectedLines, actualLines, "Files do not match!");
+	}
+
+	
+
+	@Test
+	void test_OrderVer2() throws IOException {
+
 		ErrorReporter err = new ErrorReporter();
 		DrawIOReader reader = new DrawIOReader(err);
 		GoalModel model = new GoalModel(err);
@@ -78,23 +157,46 @@ class EndToEndDebugTest {
 			String outputFile = "src/test/resources/OrderVer2.istardtx";
 			writer.setOutFile(outputFile);
 			writer.setModel(model);
-			writer.translate();
+			writer.translate(false);
 					
 		} catch (Exception e) {
 			System.err.println("[mx2dtx] Error: " + e.getMessage());
 			e.printStackTrace();
 			System.exit(1);
 		}
-		
-		/*
-        Path actual = Path.of("src/test/resources/OrderVer2.istardtx");
-        Path expected = Path.of("src/test/resources/OrderVer2-Authoritative.istardtx");
-
-        List<String> actualLines = Files.readAllLines(actual);
-        List<String> expectedLines = Files.readAllLines(expected);
-
-        assertEquals(expectedLines, actualLines, "Files do not match!");
-		*/
 	}
+
+	
+	@Disabled
+	@Test
+	void test_Heating() throws IOException {
+
+		ErrorReporter err = new ErrorReporter();
+		DrawIOReader reader = new DrawIOReader(err);
+		GoalModel model = new GoalModel(err);
+		Translator writer = new dtxTranslator();
+
+
+		try {
+			//Read from the XML
+			String inputFile = "src/test/resources/Heating.drawio"; 
+			
+			reader.setInFile(inputFile);
+			model = reader.readXML();
+
+			//Produce the translation
+			
+			String outputFile = "src/test/resources/Heating.istardtx";
+			writer.setOutFile(outputFile);
+			writer.setModel(model);
+			writer.translate(false);
+					
+		} catch (Exception e) {
+			System.err.println("[mx2dtx] Error: " + e.getMessage());
+			e.printStackTrace();
+			System.exit(1);
+		}
+	}
+
 	
 }

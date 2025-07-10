@@ -13,7 +13,13 @@ public abstract class Translator {
 	 * sets it to a variable accessible through getSpec(). 
 	 * This is the starting point of your custom translator.
 	 */
-	protected abstract void produceTranslation();
+	protected abstract void produceTranslation(boolean timeStamp);
+
+	protected void produceTranslation() {
+		this.produceTranslation(true);
+	}
+
+	
 	
 	/**
 	 * Gets the specification string produced by produceTranslation
@@ -48,14 +54,14 @@ public abstract class Translator {
 	 * If output file has not been specified, prints output to screen. 
 	 * @throws Exception If the {@linkplain GoalModel} object has not been set.
 	 */
-	public void translate() throws Exception {
+	public void translate(boolean timeStamp) throws Exception {
 		
 		if (g == null)
 			throw new Exception("translate: GoalModel object is null");
 		
 		System.out.println("Translating...");
 		
-		produceTranslation();
+		produceTranslation(timeStamp);
 		
 		System.out.println("Outputing...");
 		if (outputManager.outFileEmpty()) {
@@ -65,5 +71,8 @@ public abstract class Translator {
 		}
 	}
 	
+	public void translate() throws Exception {
+		this.translate(true);
+	}
 	
 }

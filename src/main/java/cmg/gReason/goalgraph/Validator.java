@@ -101,7 +101,6 @@ public class Validator {
 		}
 		
 		
-		
 		if (export != null) {
 			ExportedSetParser p = new ExportedSetParser();
 			p.parseExportedSetLabel(export.getLabel());
@@ -111,27 +110,27 @@ public class Validator {
 
 			for (String prop : p.getPropositions()) {
 				if (!(identifiers.contains(prop))) {
-					err.addError("Unknown propositional element in cross run set '" + prop + "'. Continuous elements must be of the form 'identifier(minVal,maxVal)'", "GoalModel::generalValidation()");
+					err.addError("Unknown propositional element in exported set '" + prop + "'. Continuous elements must be of the form 'identifier(minVal,maxVal)'", "GoalModel::generalValidation()");
 				} else if (!allowedPropExports.contains(identifiers.getIdentifierTypeBreak(prop))) {
-					err.addError("Propositional element in cross run set '" + prop + "' - invalid type. Allowed: predicate, task, goal. Continuous elements must be of the form 'identifier(minVal,maxVal)'", "GoalModel::generalValidation()");
+					err.addError("Propositional element in exported set '" + prop + "' - invalid type. Allowed: predicate, task, goal. Continuous elements must be of the form 'identifier(minVal,maxVal)'", "GoalModel::generalValidation()");
 				}
 			}
 			
 			for (Entry<String, List<String>> entry : p.getRelations().entrySet()) {
 				if (!(identifiers.contains(entry.getKey()))) {
-					err.addError("Unknown relational element in cross run set '" + entry.getKey() + entry.getValue() + "'", "GoalModel::generalValidation()");
+					err.addError("Unknown relational element in exported set '" + entry.getKey() + entry.getValue() + "'", "GoalModel::generalValidation()");
 				} else {
 					if (!allowedRelExports.contains(identifiers.getIdentifierTypeBreak(entry.getKey()))) {
-						err.addError("Relational element in cross run set '" + entry.getKey() + entry.getValue() + "' - invalid type. Allowed: quality, variable.", "GoalModel::generalValidation()");
+						err.addError("Relational element in exported set '" + entry.getKey() + entry.getValue() + "' - invalid type. Allowed: quality, variable.", "GoalModel::generalValidation()");
 					}
 					if (entry.getValue().size()!=2) {
-						err.addError("Relational element in cross run set '" + entry.getKey() + entry.getValue() + "': invalid number of parameters. Must be 2 as in identifier(minVal,maxVal)", "GoalModel::generalValidation()");				
+						err.addError("Relational element in  exported set '" + entry.getKey() + entry.getValue() + "': invalid number of parameters. Must be 2 as in identifier(minVal,maxVal)", "GoalModel::generalValidation()");				
 					} else {
 						if (!isStrictlyNumeric(entry.getValue().get(0))) {
-							err.addError("Relational element in cross run set '" + entry.getKey() + entry.getValue() + "': invalid parameter type '" +  entry.getValue().get(0) + "'", "GoalModel::generalValidation()");				
+							err.addError("Relational element in  exported set '" + entry.getKey() + entry.getValue() + "': invalid parameter type '" +  entry.getValue().get(0) + "'", "GoalModel::generalValidation()");				
 						}
 						if (!isStrictlyNumeric(entry.getValue().get(1))) {
-							err.addError("Relational element in cross run set '" + entry.getKey() + entry.getValue() + "': invalid parameter type '" +  entry.getValue().get(1) + "'", "GoalModel::generalValidation()");				
+							err.addError("Relational element in  exported set '" + entry.getKey() + entry.getValue() + "': invalid parameter type '" +  entry.getValue().get(1) + "'", "GoalModel::generalValidation()");				
 						}
 					}
 				}
@@ -181,7 +180,7 @@ public class Validator {
 		    	}
 		    } else if (node instanceof GMPrecondition) {
 		    	if (((GMPrecondition) node).outPre.isEmpty() && ((GMPrecondition) node).outNegPre.isEmpty()) {
-		    		err.addError("Precondition with content '" + (node.getLabel().length() > 50 ? node.getLabel().substring(0, 50) : node.getLabel()) + "' has no outgoing pre or npr link.", "GoalModel::generalValidation()");
+		    		err.addWarning("Precondition with label '" + (node.getLabel().length() > 50 ? node.getLabel().substring(0, 50) : node.getLabel()) + "' has no outgoing pre or npr link.", "GoalModel::generalValidation()");
 		    	}
 
 		    } else if (node instanceof GMInitializationSet) {
@@ -194,7 +193,7 @@ public class Validator {
 		}
 
 		if (!duplicates.isEmpty()) {
-			err.addError("Duplicate labels: " + duplicates, "GoalModel::generalValidation()");
+			err.addWarning("Duplicate labels: " + duplicates, "GoalModel::generalValidation()");
 		}
 		
 		if (!((GMGoal) this.goalModel.getRoot()).getRuns().matches("[1-9][0-9]*")) {

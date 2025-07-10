@@ -41,157 +41,175 @@ public class GraphElementFactory {
 		TextCleaner cl = new TextCleaner();
 		GraphElement g = null;
 
-
 		List<String> mustHaveLabel = List.of("goal","task","quality","effect","precondition");
+
 
 		String type = e.getAttribute("concept");		
 
-		//Deal with label first
-		String label = cl.clean(e.getAttribute("label"));
+		//Process label first
+		String cleanLabel = cl.clean(e.getAttribute("label"));
+		String cleanCamelLabel = cl.toCamelCase(cleanLabel);
 
-		if (!label.equals(e.getAttribute("label"))) {
-			err.addWarning("Label " + e.getAttribute("label") + " trimmed to " + label, "GraphElementFactory::constructElement(Element)");
+		if (!cleanLabel.equals(e.getAttribute("label"))) {
+			err.addWarning("Label " + e.getAttribute("label") + " trimmed to " + cleanLabel, "GraphElementFactory::constructElement(Element)");
 		}
-
-
-		//Empty elements
-		if (mustHaveLabel.contains(type) && label.equals("")) {
+		
+		//Handle empty elements
+		if (mustHaveLabel.contains(type) && cleanLabel.equals("")) {
 			err.addError("Element with ID " + e.getAttribute("id") + " of type '" + type + "' has empty label.", "GraphElementFactory::constructElement(Element)");
 		}
 
-		//Qualities and Preconditions:
+		//Qualities, Preconditions, Init etc. elements:
 		String formula = cl.clean(e.getAttribute("formula"));
-		String dtxFormula = cl.clean(e.getAttribute("dtxformula"));
-
-		if (type.equals("quality")) {
-			if (e.getAttribute("dtxFormula").equals("")) {
-				if (e.getAttribute("formula").equals("")) {
-					err.addInfo(type + " labeled as '" + label + "' has no custom formula. Label will be treated as the formula.", "GraphElementFactory::constructElement(Element)");
-				} else {
-					err.addInfo(type + " labeled as '" + label + "' has custom formula which will be adopted. Label will be treated as identifier.", "GraphElementFactory::constructElement(Element)");
-				}
-			} else {
-				if (e.getAttribute("formula").equals("")) {
-					err.addInfo(type + " labeled as '" + label + "' has custom dtxformula which will be adopted. Label will be treated as the formula.", "GraphElementFactory::constructElement(Element)");
-				} else {
-					err.addWarning(type + " labeled as '" + label + "' has both custom formula and custom dtxformula. Label will be treated as identifier and dtxformula will be adopted.", "GraphElementFactory::constructElement(Element)");
-					formula = "";
-				}				
-			}
-		}
-
+		String dtxFormula = e.getAttribute("dtxFormula");
 		
-		if (type.equals("precondition")) {
-			if (e.getAttribute("formula").equals("")) {
-					err.addInfo("Precondition labeled as '" + label + "' has no custom formula. Label will be treated as the formula.", "GraphElementFactory::constructElement(Element)");
-					formula = label; 
-			} else {
-					err.addInfo("Precondition labeled as '" + label + "' has a custom formula, which will be adopted. Label will be converted to identifier.", "GraphElementFactory::constructElement(Element)");
-					label = cl.toCamelCase(label.length() > 20 ? label.substring(0, 20) : label);
-			}				
-			
-		}
 		
 		switch(type) {
 		/* Entities */
 		case "goal":
-			//String id, String label, String actor, String notes
 			g = new Goal(
 					e.getAttribute("id"),
-					label,
+					cleanCamelLabel,
 					e.getAttribute("actor"),
 					e.getAttribute("notes"),
+					cleanLabel,
 					e.getAttribute("runNum"),
 					Boolean.parseBoolean(e.getAttribute("isRoot"))
 					);
 			break;
+			
 		case "task":
 			g = new Task(
 					e.getAttribute("id"),
-					label,
+					cleanCamelLabel,
 					e.getAttribute("actor"),
-					e.getAttribute("notes")
+					e.getAttribute("notes"),
+					cleanLabel
 					);
 			break;
+			
 		case "quality":
+			//Do some error checking for qualities
 			if (!e.getAttribute("root").equalsIgnoreCase("true") && 
 					!e.getAttribute("root").equalsIgnoreCase("false") &&
 					!e.getAttribute("root").equals("")
 					) {
-				err.addError(type + " " + label + ": unrecognizable 'root' attribute. Must be 'true' or 'false'", "GraphElementFactory::constructElement(Element)");
+				err.addError(type + " " + cleanLabel + ": unrecognizable 'root' attribute. Must be 'true' or 'false'", "GraphElementFactory::constructElement(Element)");
 			}
+
+			if (e.getAttribute("dtxFormula").equals("")) {
+				if (e.getAttribute("formula").equals("")) {
+					err.addInfo("Quality labeled as '" + cleanLabel + "' has no custom formula. Value will be inferred by contribution links.", "GraphElementFactory::constructElement(Element)");
+				} else {
+					err.addInfo("Quality labeled as '" + cleanLabel + "' has custom formula which will be adopted. Label will be treated as identifier.", "GraphElementFactory::constructElement(Element)");
+				}
+			} else {
+				if (e.getAttribute("formula").equals("")) {
+					err.addInfo("Quality labeled as '" + cleanLabel + "' has custom dtxformula which will be adopted. Label will be treated as the formula.", "GraphElementFactory::constructElement(Element)");
+				} else {
+					err.addWarning("Quality labeled as '" + cleanLabel + "' has both custom formula and custom dtxformula. Label will be treated as identifier and dtxformula will be adopted.", "GraphElementFactory::constructElement(Element)");
+				}				
+			}
+
+			
 			g = new Quality(
 					e.getAttribute("id"),
-					label,
+					cleanCamelLabel,
 					e.getAttribute("actor"),
 					e.getAttribute("notes"),
+					cleanLabel,
 					formula,
 					dtxFormula,
-					Boolean.parseBoolean(e.getAttribute("isRoot"))
+					Boolean.parseBoolean(cl.clean(e.getAttribute("isRoot")))
 					);
+			System.out.println("Quality " + g.getLabel() + " root:" + cl.clean(e.getAttribute("isRoot")));
+			System.out.println("Quality " + g.getLabel() + " root:" + Boolean.parseBoolean(cl.clean(e.getAttribute("isRoot"))));
+			System.out.println("Quality " + g.getLabel() + " root:" + ((Quality) g).isQRoot());
 			break;
+			
 		case "precondition":
+			String preLabel = "";
+			if (e.getAttribute("formula").equals("")) {
+				//Formula is a label.
+				preLabel = cleanLabel;
+				err.addInfo("Precondition labeled as '" + cleanLabel + "' has no custom formula. Label will be treated as the formula.", "GraphElementFactory::constructElement(Element)");
+			} else {
+				//Precondition formula is an identifier
+				err.addInfo("Precondition labeled as '" + cleanLabel + "' has a custom formula, which will be adopted. Label will be converted to identifier.", "GraphElementFactory::constructElement(Element)");
+				preLabel = (cleanCamelLabel.length() > 20 ? cleanCamelLabel.substring(0, 20) : cleanCamelLabel);
+			}
+
 			g = new Precondition(
 					e.getAttribute("id"),
-					label,
+					preLabel,
 					e.getAttribute("actor"),
 					e.getAttribute("notes"),
+					cleanLabel,
 					formula,
 					dtxFormula
 					);
 			break;
+			
 		case "initialization":
 			g = new InitializationSet(
 					e.getAttribute("id"),
-					label,
+					cleanLabel,
 					e.getAttribute("actor"),
 					e.getAttribute("notes"),
+					cleanLabel,
 					formula,
 					dtxFormula
 					);
 			break;
+			
 		case "export":
 			g = new ExportedSet(
 					e.getAttribute("id"),
-					label,
+					cleanLabel,
 					e.getAttribute("actor"),
 					e.getAttribute("notes"),
+					cleanLabel,
 					formula,
 					dtxFormula
 					);
 			break;
+
 		case "crossrun":
 			g = new CrossRunSet(
 					e.getAttribute("id"),
-					label,
+					cleanLabel,
 					e.getAttribute("actor"),
 					e.getAttribute("notes"),
+					cleanLabel,
 					formula,
 					dtxFormula
 					);
 			break;		
+
 		case "effectGroup":
 			g = new EffectGroup(
 					e.getAttribute("id"),
-					label,
+					cleanLabel,
 					e.getAttribute("actor"),
 					e.getAttribute("notes")
 					);
 			break;
+		
 		case "effect":
 			if (!e.getAttribute("status").equalsIgnoreCase("attainment") && !e.getAttribute("status").equalsIgnoreCase("failure")) {
-				err.addError(type + " " + label + ": unrecognizable 'status' value. Must be one of 'attainment' or 'failure'", "GraphElementFactory::constructElement(Element)");
+				err.addError(type + " " + cleanLabel + ": unrecognizable 'status' value. Must be one of 'attainment' or 'failure'", "GraphElementFactory::constructElement(Element)");
 			}
+			
 			g = new Effect(
 					e.getAttribute("id"),
-					label,
+					cleanCamelLabel,
 					e.getAttribute("actor"),
 					e.getAttribute("notes"),
+					cleanLabel,
 					e.getAttribute("status"),
 					e.getAttribute("turnsTrue"),
 					e.getAttribute("turnsFalse")
 					);
-			
 			break;
 
 			/* Relationships */
@@ -208,7 +226,7 @@ public class GraphElementFactory {
 				String target = n.getAttributes().getNamedItem("target").getTextContent();
 				g = new Link(
 						e.getAttribute("id"),
-						label,
+						cleanLabel,
 						e.getAttribute("actor"),
 						e.getAttribute("notes"),
 						type,
@@ -216,6 +234,7 @@ public class GraphElementFactory {
 						target);
 			}
 			break;
+			
 		default:
 			err.addError("Concept type " + type + " unrecognized. Please check visual element with label " + e.getAttribute("label") + " and id " + e.getAttribute("id"), 
 					"GraphElementFactory::constructElement(Element)");
@@ -223,9 +242,9 @@ public class GraphElementFactory {
 		return(g);
 	}
 
-	
+
 	private Boolean validateLink(Element e, Node n) {
-		
+
 		if (n.getAttributes().getNamedItem("source") == null) { 
 			err.addError("Link with label " + e.getAttribute("label") + " and type " + e.getAttribute("concept") + " has no origin.", "GraphElementFactory::constructElement(Element)");
 			return(false);
@@ -273,12 +292,12 @@ public class GraphElementFactory {
 			}
 			break;
 		}
-		
+
 		return(true);
 	}
-	
-	
+
+
 	private boolean isNumeric(String str) {
-	    return str != null && str.matches("-?\\d+(\\.\\d+)?");
+		return str != null && str.matches("-?\\d+(\\.\\d+)?");
 	}
 }

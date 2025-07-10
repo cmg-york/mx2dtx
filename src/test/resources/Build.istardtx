@@ -34,10 +34,25 @@
 *** G O A L S ***
 -->
 <goals>
-   <goal name = "orderMaterial" description = "Order Material" root = "true" terminal = "false" episodeLength = "1">
+   <goal name = "orderMaterial" description = "Order Material" root = "false" terminal = "false" episodeLength = "1">
       <refinement type = "OR">
          <childTask ref = "orderFromSupplierA"/>
          <childTask ref = "orderFromSupplierB"/>
+      </refinement>
+   </goal>
+   <goal name = "assignWork" description = "Assign Work" root = "false" terminal = "false" episodeLength = "1">
+      <refinement type = "OR">
+         <childTask ref = "assignToSubcontractorA"/>
+         <childTask ref = "assignToSubcontractorB"/>
+      </refinement>
+      <pre>
+         <goalID>orderMaterial</goalID>
+      </pre>
+   </goal>
+   <goal name = "buildRoof" description = "Build Roof" root = "true" terminal = "false" episodeLength = "1">
+      <refinement type = "AND">
+         <childGoal ref = "orderMaterial"/>
+         <childGoal ref = "assignWork"/>
       </refinement>
    </goal>
 </goals>
@@ -73,6 +88,26 @@
          </effect>
       </effectGroup>
    </task>
+   <task name = "assignToSubcontractorA" description = "Assign to Subcontractor A">
+      <effectGroup>
+         <effect name = "goodQualityA_Eff" description = "goodQualityA" satisfying = "true" probability = "0.7">
+            <turnsTrue>goodQualityA</turnsTrue>
+         </effect>
+         <effect name = "badQualityA_Eff" description = "badQualityA" satisfying = "true" probability = "0.3">
+            <turnsTrue>badQualityA</turnsTrue>
+         </effect>
+      </effectGroup>
+   </task>
+   <task name = "assignToSubcontractorB" description = "Assign to Subcontractor B">
+      <effectGroup>
+         <effect name = "goodQualityB_Eff" description = "goodQualityB" satisfying = "true" probability = "0.5">
+            <turnsTrue>goodQualityB</turnsTrue>
+         </effect>
+         <effect name = "badQualityB_Eff" description = "badQualityB" satisfying = "true" probability = "0.5">
+            <turnsTrue>badQualityB</turnsTrue>
+         </effect>
+      </effectGroup>
+   </task>
 </tasks>
 
 
@@ -88,20 +123,24 @@
          <multiply><numConst>1.0</numConst><predicateID>deliveredInTimeB</predicateID></multiply>
          <multiply><numConst>1.0</numConst><predicateID>deliveredLateB</predicateID></multiply>
          <multiply><numConst>1.0</numConst><predicateID>neverDeliveredB</predicateID></multiply>
+         <multiply><numConst>0.5</numConst><predicateID>goodQualityB</predicateID></multiply>
+         <multiply><numConst>0.5</numConst><predicateID>badQualityB</predicateID></multiply>
       </add>
    </quality>
-   <quality name = "happyCustomer" description = "Happy Customer" root = "false">
+   <quality name = "reputation" description = "Reputation" root = "false">
       <add>
          <multiply><numConst>1.0</numConst><predicateID>deliveredInTimeA</predicateID></multiply>
          <multiply><numConst>0.7</numConst><predicateID>deliveredLateA</predicateID></multiply>
          <multiply><numConst>1.0</numConst><predicateID>deliveredInTimeB</predicateID></multiply>
          <multiply><numConst>0.7</numConst><predicateID>deliveredLateB</predicateID></multiply>
+         <multiply><numConst>1.0</numConst><predicateID>goodQualityA</predicateID></multiply>
+         <multiply><numConst>1.0</numConst><predicateID>goodQualityB</predicateID></multiply>
       </add>
    </quality>
    <quality name = "overallQuality" description = "Overall Quality" root = "true">
       <add>
          <multiply><numConst>0.7</numConst><qualID>cost</qualID></multiply>
-         <multiply><numConst>0.3</numConst><qualID>happyCustomer</qualID></multiply>
+         <multiply><numConst>0.3</numConst><qualID>reputation</qualID></multiply>
       </add>
    </quality>
 </qualities>
@@ -118,8 +157,8 @@
 *** I N I T I A L I Z AT I O N S ***
 -->
 <initializations>
-      <initialization element = "happyCustomer">0</initialization>
       <initialization element = "cost">0</initialization>
+      <initialization element = "reputation">0</initialization>
       <initialization element = "overallQuality">0</initialization>
 </initializations>
 
@@ -129,7 +168,7 @@
 -->
 <crossRuns>
       <crossRun><qualID>cost</qualID></crossRun>
-      <crossRun><qualID>happyCustomer</qualID></crossRun>
+      <crossRun><qualID>reputation</qualID></crossRun>
 </crossRuns>
 
 
@@ -143,6 +182,10 @@
       <export continuous = "false"><predicateID>deliveredLateB</predicateID></export>
       <export continuous = "false"><predicateID>neverDeliveredA</predicateID></export>
       <export continuous = "false"><predicateID>neverDeliveredB</predicateID></export>
+      <export continuous = "false"><predicateID>goodQualityA</predicateID></export>
+      <export continuous = "false"><predicateID>goodQualityB</predicateID></export>
+      <export continuous = "false"><predicateID>badQualityA</predicateID></export>
+      <export continuous = "false"><predicateID>badQualityB</predicateID></export>
 </exportedSet>
 
 
@@ -152,9 +195,13 @@
 <predicates>
    <predicate description = "">neverDeliveredB</predicate>
    <predicate description = "">deliveredInTimeB</predicate>
-   <predicate description = "">deliveredLateB</predicate>
    <predicate description = "">neverDeliveredA</predicate>
    <predicate description = "">deliveredInTimeA</predicate>
+   <predicate description = "">goodQualityA</predicate>
+   <predicate description = "">deliveredLateB</predicate>
+   <predicate description = "">badQualityB</predicate>
+   <predicate description = "">goodQualityB</predicate>
+   <predicate description = "">badQualityA</predicate>
    <predicate description = "">deliveredLateA</predicate>
 </predicates>
 

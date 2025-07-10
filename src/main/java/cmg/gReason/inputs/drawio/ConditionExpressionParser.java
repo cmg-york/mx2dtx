@@ -33,12 +33,19 @@ public class ConditionExpressionParser {
                                   .split("\\s+"));
     }
 
-    private static final Map<String, Integer> PRECEDENCE = Map.of(
-        "OR", 1,
-        "AND", 2,
-        "GT", 3, "LT", 3, "GE", 3, "LE", 3, "EQ", 3, "NEQ", 3,
-        "NOT", 4, "PREV", 4
-    );
+    private static final Map<String, Integer> PRECEDENCE = Map.ofEntries(
+    	    Map.entry("OR", 1),
+    	    Map.entry("AND", 2),
+    	    Map.entry("GT", 3),
+    	    Map.entry("LT", 3),
+    	    Map.entry("GE", 3),
+    	    Map.entry("LE", 3),
+    	    Map.entry("EQ", 3),
+    	    Map.entry("NEQ", 3),
+    	    Map.entry("NOT", 4),
+    	    Map.entry("PREV", 4),
+    	    Map.entry("PREVIOUS", 4)
+    	);
 
     private String parseExpression(int minPrecedence) {
         String left = parsePrimary();
@@ -75,7 +82,7 @@ public class ConditionExpressionParser {
         } else if (token.equals("NOT")) {
             String expr = parseExpression(PRECEDENCE.get(token));
             return "<" + token.toLowerCase() + ">" + expr + "</" + token.toLowerCase() + ">";
-        } else if (token.equals("PREV")) {
+        } else if (token.equals("PREV")||token.equals("PREVIOUS")) {
             String expr = parseExpression(PRECEDENCE.get(token));
             return "<previous>" + expr + "</previous>";
         } else {

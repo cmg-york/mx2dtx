@@ -14,7 +14,7 @@ public class Link extends GraphElement {
 			String source,
 			String target
 			) {
-		super(id, label, actor, notes);
+		super(id, label, actor, label, notes);
 		this.source = source;
 		this.target = target;
 		this.type = type;

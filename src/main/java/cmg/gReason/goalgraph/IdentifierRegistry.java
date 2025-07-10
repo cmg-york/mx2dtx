@@ -26,7 +26,7 @@ public class IdentifierRegistry {
 	
 	public void validate() {
 		
-		System.out.println("" + effectPredicates);
+		//System.out.println("" + effectPredicates);
 		
 		for (HashMap.Entry<String, Integer> entry : effectPredicates.entrySet()) {
 		    if (!identifiers.containsKey(entry.getKey())){
@@ -49,7 +49,7 @@ public class IdentifierRegistry {
 		    	err.addError("Predicate '" + entry.getKey() + "' does not appear in any effect.", "IdentifierRegistry::validate()");
 		    }
 			
-			if ((entry.getValue().equals("variableID")) && (!effectPredicates.containsKey(entry.getKey()))) {
+			if ((entry.getValue().equals("variableID")) && (!effectVariables.containsKey(entry.getKey()))) {
 		    	err.addError("Variable '" + entry.getKey() + "' does not appear in any effect.", "IdentifierRegistry::validate()");
 		    }
 
@@ -63,15 +63,18 @@ public class IdentifierRegistry {
 		}
 	}
 
+	public void addEffectPredicate(String predicateStr) {
+		effectPredicates.put(predicateStr, effectPredicates.getOrDefault(predicateStr, 0) + 1);
+	}
+	
 	public void addEffectVariables(HashMap<String, String> addThese) {
-		HashMap<String, Integer> target = new HashMap<String,Integer>();
 		for (HashMap.Entry<String, String> entry : addThese.entrySet()) {
 			String key = entry.getKey();
-			target.put(key, target.getOrDefault(key, 0) + 1);
+			effectVariables.put(key, effectVariables.getOrDefault(key, 0) + 1);
 		}
 	}
-
-
+	
+	
 	public void setModel(GoalModel g) {
 		this.model = g;
 	}
@@ -138,16 +141,7 @@ public class IdentifierRegistry {
 	 * to be a predicate or variable is now becoming a goal, task, etc.      
 	 */
 	public void build() {
-
-		// Collect items from condition boxes first
-		//for (GMNode n: this.model.getGoalModel()) {
-		//	if (n instanceof GMPrecondition) {
-		//		System.out.println("build to parse: " + n.getLabel());
-		//		parser.parse(n.getLabel());
-		//	}
-		//}		
-
-		//Everything that exists in conditions is now a predicate or a variable in the registry
+		//Everything that exists in conditions and effects is now a predicate or a variable in the registry
 		//The parse routine does it..
 
 		// Now collect all other items and add them or replace the existing ones with new type information

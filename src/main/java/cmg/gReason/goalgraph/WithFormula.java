@@ -10,8 +10,12 @@ public class WithFormula extends GMNode {
 	
 	public boolean hasDtxFormula() {
 		return( !(dtxFormula.equals("")) && !(dtxFormula == null) );
-	}	
+	}
 
+	public boolean hasAnyFormula() {
+		return( hasFormula() || hasDtxFormula() );
+	}
+	
 	public String getFormula() {
 		return formula;
 	}

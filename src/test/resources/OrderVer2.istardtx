@@ -49,16 +49,25 @@
 <tasks>
    <task name = "orderFromSupplierA" description = "Order From Supplier A">
       <effectGroup>
-         <effect name = "deliveredInTimeA_Eff" description = "deliveredInTimeA" satisfying = "true" probability = "0.75">
-            <turnsTrue>deliveredInTimeA</turnsTrue>
+         <effect name = "deliveredInTimeA_Eff" description = "Delivered In Time A" satisfying = "true" probability = "0.75">
+            <turnsTrue>aTruePredicate</turnsTrue>
+            <turnsTrue>anotherTruepredicate</turnsTrue>
+            <turnsFalse>falsePredicate</turnsFalse>
+            <turnsFalse>anotherfalsePredicate</turnsFalse>
+            <set><variableID>someVar</variableID><numConst>12</numConst></set>
          </effect>
          <effect name = "neverDeliveredA_Eff" description = "neverDeliveredA" satisfying = "false" probability = "0.05">
-            <turnsTrue>neverDeliveredA</turnsTrue>
+            <turnsTrue>signalONS</turnsTrue>
+            <turnsFalse>hvacOn</turnsFalse>
+            <turnsFalse>signalOffS</turnsFalse>
          </effect>
          <effect name = "deliveredLateA_Eff" description = "deliveredLateA" satisfying = "true" probability = "0.2">
             <turnsTrue>deliveredLateA</turnsTrue>
          </effect>
       </effectGroup>
+      <pre>
+         <predicateID>deliveredLateB</predicateID>
+      </pre>
    </task>
    <task name = "orderFromSupplierB" description = "Order From Supplier B">
       <effectGroup>
@@ -72,6 +81,9 @@
             <turnsTrue>deliveredLateB</turnsTrue>
          </effect>
       </effectGroup>
+      <pre>
+         <and><or><and><predicateID>hvacOn</predicateID><not><predicateID>signalOffS</predicateID></not></and><predicateID>signalONS</predicateID></or><or><predicateID>deliveredLateA</predicateID><predicateID>deliveredInTimeB</predicateID></or></and>
+      </pre>
    </task>
 </tasks>
 
@@ -104,6 +116,12 @@
          <multiply><numConst>0.3</numConst><qualID>happyCustomer</qualID></multiply>
       </add>
    </quality>
+   <quality name = "lonelyQuality" description = "lonelyQuality" root = "false">
+    <add>
+         <multiply><numConst>0.5</numConst><predicateID>deliveredLateA</predicateID></multiply>
+         <multiply><numConst>1.0</numConst><predicateID>neverDeliveredB</predicateID></multiply>
+      </add>
+   </quality>
 </qualities>
 
 
@@ -111,6 +129,10 @@
 *** CO N D I T I O N   B O X E S ***
 -->
 <condBoxes>
+<condBox name = "deliveredInTimeXANDD"><or><and><predicateID>hvacOn</predicateID><not><predicateID>signalOffS</predicateID></not></and><predicateID>signalONS</predicateID></or></condBox>
+<condBox name = "deliveredLateAORDeliveredInTimeB"><or><predicateID>deliveredLateA</predicateID><predicateID>deliveredInTimeB</predicateID></or></condBox>
+<condBox name = "deliveredLateB"><predicateID>deliveredLateB</predicateID></condBox>
+<condBox name = "lonely"><or><previous><predicateID>deliveredLateA</predicateID></previous><predicateID>neverDeliveredB</predicateID></or></condBox>
 </condBoxes>
 
 
@@ -118,8 +140,10 @@
 *** I N I T I A L I Z AT I O N S ***
 -->
 <initializations>
-      <initialization element = "happyCustomer">0</initialization>
+      <initialization element = "deliveredLateA">true</initialization>
+      <initialization element = "happyCustomer">10</initialization>
       <initialization element = "cost">0</initialization>
+      <initialization element = "someVar">100</initialization>
       <initialization element = "overallQuality">0</initialization>
 </initializations>
 
@@ -130,6 +154,9 @@
 <crossRuns>
       <crossRun><qualID>cost</qualID></crossRun>
       <crossRun><qualID>happyCustomer</qualID></crossRun>
+      <crossRun><variableID>someVar</variableID></crossRun>
+      <crossRun><predicateID>aTruePredicate</predicateID></crossRun>
+      <crossRun><predicateID>neverDeliveredB</predicateID></crossRun>
 </crossRuns>
 
 
@@ -137,12 +164,10 @@
 *** E X P O R T S ***
 -->
 <exportedSet>
-      <export continuous = "false"><predicateID>deliveredInTimeA</predicateID></export>
       <export continuous = "false"><predicateID>deliveredInTimeB</predicateID></export>
-      <export continuous = "false"><predicateID>deliveredLateA</predicateID></export>
-      <export continuous = "false"><predicateID>deliveredLateB</predicateID></export>
-      <export continuous = "false"><predicateID>neverDeliveredA</predicateID></export>
-      <export continuous = "false"><predicateID>neverDeliveredB</predicateID></export>
+      <export continuous = "true" minVal = "0" maxVal = "100"><qualID>cost</qualID></export>
+      <export continuous = "true" minVal = "0" maxVal = "200"><variableID>someVar</variableID></export>
+      <export continuous = "true" minVal = "0" maxVal = "1"><qualID>overallQuality</qualID></export>
 </exportedSet>
 
 
@@ -152,10 +177,15 @@
 <predicates>
    <predicate description = "">neverDeliveredB</predicate>
    <predicate description = "">deliveredInTimeB</predicate>
+   <predicate description = "">hvacOn</predicate>
+   <predicate description = "">falsePredicate</predicate>
    <predicate description = "">deliveredLateB</predicate>
-   <predicate description = "">neverDeliveredA</predicate>
-   <predicate description = "">deliveredInTimeA</predicate>
+   <predicate description = "">aTruePredicate</predicate>
+   <predicate description = "">signalONS</predicate>
+   <predicate description = "">anotherfalsePredicate</predicate>
    <predicate description = "">deliveredLateA</predicate>
+   <predicate description = "">anotherTruepredicate</predicate>
+   <predicate description = "">signalOffS</predicate>
 </predicates>
 
 
@@ -163,6 +193,7 @@
 *** V A R I A B L E S ***
 -->
 <variables>
+   <variable description = "">someVar</variable>
 </variables>
 
 </actor>

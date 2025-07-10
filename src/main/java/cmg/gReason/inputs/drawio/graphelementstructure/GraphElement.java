@@ -15,6 +15,7 @@ public class GraphElement {
 	private String label;
 	private String actor;
 	private String notes;
+	private String description;
 	
 	/**
 	 * 
@@ -28,11 +29,13 @@ public class GraphElement {
 			String id,
 			String label,
 			String actor,
-			String notes) {
+			String notes,
+			String description) {
 		this.id = id;
 		this.label = label;
 		this.actor = actor;
 		this.notes = notes;
+		this.description = description;
 	}
 	
 	public String getActor() {
@@ -59,6 +62,10 @@ public class GraphElement {
      */
 	public String getLabel() {
 		return label;
+	}
+
+	public String getDescription() {
+		return description;
 	}
 
 }

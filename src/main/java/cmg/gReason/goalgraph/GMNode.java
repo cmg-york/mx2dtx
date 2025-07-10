@@ -18,6 +18,8 @@ public class GMNode {
 	protected String id;
 	protected String label;
 	protected String actor;
+	protected String description;
+	
 	protected TextCleaner cleaner = new TextCleaner();
 	
 	//Goals, Tasks, Effects, Preconditions
@@ -77,8 +79,17 @@ public class GMNode {
 	public void setLabel(String label) {
 		this.label = label;
 	}
+	
+	
+    public String getDescription() {
+		return description;
+    }
 
-    /**
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	/**
      * Add a node as an outgoing contribution to this node.
      * 
      * @param e The contribution node to be added. A {@linkplain Contribution} object.
