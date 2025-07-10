@@ -23,10 +23,8 @@ iStarDT-V diagrams can be created in [draw.io](https://app.diagrams.net/), [mxGr
 
 ## Usage Notes
 
-- Effects contain unique predicates (rather than lists thereof).
 - Custom numeric formulae for qualities are supported only in iStarDT-X at this point. Prepare the formula in a text editor and paste within the `dtxFormula` attribute of qualities. Otherwise, ensure a tree-like hierarchy of qualities. Satisfaction level of a quality is the linear combination of the satisfaction levels of the origins multiplied by the contribution labels.
 - To reference goals, tasks and qualities in formulae or lists, use camel-case representation of the label in the corresponding element. For example goal `Have Meeting Scheduled` is referenced as `haveMeetingScheduled`.
-- Avoid special characters (including RC/LF) and formatting when labeling elements and forming lists and formulae.
 - Error checking of diagrams is minimal at this point. It is important that all links/connectors properly connect directly on the whole shapes. This can be achieved by dragging the end-point of the link on the target shape and drop it when the shape acquires a blue outline.
 
 ## Related Tool
