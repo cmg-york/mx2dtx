@@ -4,7 +4,7 @@
 ## Setting Up
 - Open draw.io
 - Create New Diagram -> Blank Diagram
-- Follow the steps described in [[Nina/gmGraphAdapter/README|README]] in order to load the iStarDT-V library. 
+- Follow the steps described in [[README.md|README]] in order to load the iStarDT-V library. 
 - Your working space should look as follows
 
 ![[workspace.png]]
