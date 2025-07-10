@@ -206,4 +206,35 @@ class EndToEndDebugTest {
 	}
 
 	
+	@Tag("this")
+	@Test
+	void test_SpecPrep() throws IOException {
+
+		ErrorReporter err = new ErrorReporter();
+		DrawIOReader reader = new DrawIOReader(err);
+		GoalModel model = new GoalModel(err);
+		Translator writer = new dtxTranslator();
+
+
+		try {
+			//Read from the XML
+			String inputFile = "src/test/resources/SpecPreparation.drawio"; 
+			
+			reader.setInFile(inputFile);
+			model = reader.readXML();
+
+			//Produce the translation
+			
+			String outputFile = "src/test/resources/SpecPreparation.istardtx";
+			writer.setOutFile(outputFile);
+			writer.setModel(model);
+			writer.translate(false);
+					
+		} catch (Exception e) {
+			System.err.println("[mx2dtx] Error: " + e.getMessage());
+			e.printStackTrace();
+			//System.exit(1);
+		}
+	}
+	
 }
