@@ -103,7 +103,6 @@ public class DrawIOReader {
 	 * FILE MANAGMENT 
 	 * 
 	 */
-
 	public void setInFile(String inFile) throws Exception {
 		File f = new File(inFile);
 		if (!f.exists() || f.isDirectory())

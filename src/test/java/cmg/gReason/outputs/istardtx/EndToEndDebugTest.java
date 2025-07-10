@@ -8,6 +8,7 @@ import java.nio.file.Path;
 import java.util.List;
 
 import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import cmg.gReason.goalgraph.GoalModel;
@@ -17,7 +18,6 @@ import cmg.gReason.outputs.common.Translator;
 
 class EndToEndDebugTest {
 
-	@Disabled
 	@Test
 	void test_Order() throws IOException {
 		ErrorReporter err = new ErrorReporter();
@@ -55,7 +55,6 @@ class EndToEndDebugTest {
 		
 	}
 
-	@Disabled
 	@Test
 	void test_Build() throws IOException {
 
@@ -95,7 +94,6 @@ class EndToEndDebugTest {
 
 	}
 
-	@Disabled
 	@Test
 	void test_Travel() throws IOException {
 
@@ -164,10 +162,19 @@ class EndToEndDebugTest {
 			e.printStackTrace();
 			System.exit(1);
 		}
+		
+        Path actual = Path.of("src/test/resources/OrderVer2.istardtx");
+        Path expected = Path.of("src/test/resources/OrderVer2-Authoritative.istardtx");
+
+        List<String> actualLines = Files.readAllLines(actual);
+        List<String> expectedLines = Files.readAllLines(expected);
+
+        assertEquals(expectedLines, actualLines, "Files do not match!");
+
 	}
 
 	
-	@Disabled
+	@Tag("this")
 	@Test
 	void test_Heating() throws IOException {
 

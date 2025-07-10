@@ -165,6 +165,8 @@
 -->
 <exportedSet>
       <export continuous = "false"><predicateID>deliveredInTimeB</predicateID></export>
+      <export continuous = "false"><goalID>orderMaterial</goalID></export>
+      <export continuous = "false"><taskID>orderFromSupplierA</taskID></export>
       <export continuous = "true" minVal = "0" maxVal = "100"><qualID>cost</qualID></export>
       <export continuous = "true" minVal = "0" maxVal = "200"><variableID>someVar</variableID></export>
       <export continuous = "true" minVal = "0" maxVal = "1"><qualID>overallQuality</qualID></export>

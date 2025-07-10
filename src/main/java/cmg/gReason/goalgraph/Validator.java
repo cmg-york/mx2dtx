@@ -31,7 +31,6 @@ public class Validator {
 
 	public void predicateValidation() {
 		
-		//Predicate/variable appears in an effect and nowhere else. (Warning)
 		//Predicate/variable appears in a precondition but in no effect. (Error)
 		identifiers.validate();
 		
@@ -61,19 +60,19 @@ public class Validator {
 			List<String> allowedInits = Arrays.asList("predicateID");
 			for (String prop : p.getPropositions()) {
 				if (!(identifiers.contains(prop))) {
-					err.addError("Unknown predicate in initialization '" + prop + "'", "GoalModel::generalValidation()");
+					err.addError("Unknown predicate in initialization '" + prop + "'", "GoalModel::predicateValidation()");
 				} else if (!allowedInits.contains(identifiers.getIdentifierTypeBreak(prop))) {
-					err.addError("Initialization identifier '" + prop + "' of invalid type. Types allowed: predicates.", "GoalModel::generalValidation()");
+					err.addError("Initialization identifier '" + prop + "' of invalid type. Types allowed: predicates.", "GoalModel::predicateValidation()");
 				}
 			}
 
 			allowedInits = Arrays.asList("variableID","qualID");
 			for (Entry<String, String> entry : p.getVariables().entrySet()) {
 				if (!identifiers.contains(entry.getKey())) {
-					err.addError("Unknown variable or quality in initialization '" + entry.getKey() + "'", "GoalModel::generalValidation()");
+					err.addError("Unknown variable or quality in initialization '" + entry.getKey() + "'", "GoalModel::predicateValidation()");
 				} else {
 					if (!allowedInits.contains(identifiers.getIdentifierTypeBreak(entry.getKey()))) {
-						err.addError("Initialization identifier '" + entry.getKey() + "' of invalid type. Types allowed: variables, qualities.", "GoalModel::generalValidation()");
+						err.addError("Initialization identifier '" + entry.getKey() + "' of invalid type. Types allowed: variables, qualities.", "GoalModel::predicateValidation()");
 					}
 					if (!(isStrictlyNumeric(entry.getValue()))) {
 						err.addError("Continuous initialization identifier '" + entry.getKey() + "' has illegal value type '" + entry.getValue() + "'. Numeric expected.", "GoalModel::generalValidation()");					
@@ -82,22 +81,22 @@ public class Validator {
 			}
 			
 		} else {
-			err.addWarning("No initialization element added.", "GoalModel::generalValidation()");
+			err.addWarning("No initialization element added.", "GoalModel::predicateValidation()");
 		}
 		
 		if (cross != null) {
 			ArrayList<String> crossList = new ArrayList<>(Arrays.asList(cross.getLabel().split("\\s*,\\s*")));
-			List<String> allowedCrosses = Arrays.asList("predicateID","variableID","qualID");
+			List<String> allowedCrosses = Arrays.asList("predicateID","variableID","qualID","preconditionID");
 			for (String prop : crossList) {
 				if (!(identifiers.contains(prop))) {
-					err.addError("Unknown element in cross run set '" + prop + "'", "GoalModel::generalValidation()");
+					err.addError("Unknown element in cross run set '" + prop + "'", "GoalModel::predicateValidation()");
 				} else if (!allowedCrosses.contains(identifiers.getIdentifierTypeBreak(prop))) {
 					err.addError("Cross run element '" + prop + "' is of invalid type. Allowed types: predicate, variable, quality", "GoalModel::generalValidation()");
 				}
 			}
 
 		} else {
-			err.addWarning("No cross run set has been added.", "GoalModel::generalValidation()");
+			err.addWarning("No cross run set has been added.", "GoalModel::predicateValidation()");
 		}
 		
 		
@@ -105,7 +104,7 @@ public class Validator {
 			ExportedSetParser p = new ExportedSetParser();
 			p.parseExportedSetLabel(export.getLabel());
 			//identifier must be: predicate, goal, task, variable, quality
-			List<String> allowedPropExports = Arrays.asList("predicateID","taskID","goalID");
+			List<String> allowedPropExports = Arrays.asList("predicateID","taskID","goalID","preconditionID");
 			List<String> allowedRelExports = Arrays.asList("variableID","qualID");
 
 			for (String prop : p.getPropositions()) {

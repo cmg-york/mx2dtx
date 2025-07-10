@@ -2,7 +2,6 @@ package cmg.gReason.outputs.istardtx;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.Map.Entry;
 import java.util.function.Function;
 
@@ -113,9 +112,7 @@ public class dtxTranslator extends Translator {
 		
 		
 		for (GMNode n:this.g.getGoalModel()) {
-
-
-			
+		
 			/* * 
 			 * T A S K S  
 			 */
@@ -349,18 +346,6 @@ public class dtxTranslator extends Translator {
 	 */
 	
 	
-	
-	/**
-	 * Translates a condition formula to the iStarDT-X equivalent
-	 * @param s The iStarDT-V condition formula
-	 * @return The iStarDT-X equivalent to the iStarDT-V formula
-	 */
-	private String parseConditionFormula(String s) {
-		String out = parser.parse(s);
-		return (out);
-	}
-	
-	
 	/**
 	 * Construct the iStarDT-X version of the precondition formula
 	 * @param g An arraylist of origins of PRE or NPR 
@@ -427,6 +412,10 @@ public class dtxTranslator extends Translator {
 		return result;
 	}
 
+	
+	/*
+	 * Exported Sets
+	 */
 
 	public String constructExportedSet(String label) {
 		ExportedSetParser parser = new ExportedSetParser();
@@ -435,10 +424,7 @@ public class dtxTranslator extends Translator {
 		return parser.constructExportedSet(f, getIndent(2));
 	}
 	
-	
 
-	
-	
 	
 	/**
 	 * H E L P E R S   ( 2 / 2 )
@@ -478,7 +464,6 @@ public class dtxTranslator extends Translator {
 		return "</effect>";
 	}
 
-
 	private String getXMLTurnsTrue(String name) {
 		return "<turnsTrue>" + name + "</turnsTrue>";
 	}
@@ -486,32 +471,24 @@ public class dtxTranslator extends Translator {
 	private String getXMLTurnsFalse(String name) {
 		return "<turnsFalse>" + name + "</turnsFalse>";
 	}
-
 	
 	private String getXMLVarSet(String key, String value) {
 		return "<set><variableID>" + key + "</variableID><numConst>" + value + "</numConst></set>";
 	}
-
-
-	
-	
 	
 	private String getXMLQuality(String name, String description, String root) {
 		return "<quality name = \"" + name + "\"" +
 			      " description = \"" + description + "\"" + 
 			      " root = \"" + root + "\">";
 	}
-
 	
 	private String getXMLQualityClose() {
 		return "</quality>";
 	}
-
 	
 	private String getEffectStatus(String in) {
 		return in.equals("failure") ? "false" : "true"; 
 	}
-	
 	
 	private String getIndent(int level) {
 		return " ".repeat(Math.max(0, level*3));

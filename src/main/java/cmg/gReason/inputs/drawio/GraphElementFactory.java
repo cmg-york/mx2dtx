@@ -10,7 +10,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
 /**
- * Creates objects of the type GraphElement.
+ * Creates objects of the type {@linkplain GraphElement}
  * 
  * @author Sotirios Liaskos
  */

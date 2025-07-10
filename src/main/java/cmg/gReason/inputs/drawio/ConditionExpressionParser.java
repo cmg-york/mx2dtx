@@ -20,12 +20,21 @@ public class ConditionExpressionParser {
     }
     
     
+    /**
+     * The main parser of Condition/Precondition objects. Initializes an {@linkplain IdentifierRegistry} with all
+     * the individuals in the formula as predicates or variables. The registry is updated as more information about 
+     * the predicates becomes known.  
+     * @param input A string with the formula
+     * @return An iStarDT-X representation of the formula.
+     */
     public String parse(String input) {
         this.tokens = tokenize(input);
         this.position = 0;
         return parseExpression(0);
     }
 
+    
+    
     private List<String> tokenize(String input) {
         return Arrays.asList(input.replace("(", " ( ")
                                   .replace(")", " ) ")
@@ -82,7 +91,7 @@ public class ConditionExpressionParser {
         } else if (token.equals("NOT")) {
             String expr = parseExpression(PRECEDENCE.get(token));
             return "<" + token.toLowerCase() + ">" + expr + "</" + token.toLowerCase() + ">";
-        } else if (token.equals("PREV")||token.equals("PREVIOUS")) {
+        } else if ( token.equals("PREV") || token.equals("PREVIOUS") ) {
             String expr = parseExpression(PRECEDENCE.get(token));
             return "<previous>" + expr + "</previous>";
         } else {
