@@ -1,4 +1,3 @@
-
 # Building iStarDT-V models
 
 ## Setting Up
@@ -100,7 +99,7 @@ Each can be selected from the library and dropped into the diagram.
 * Save the diagram as an uncompressed DRAWIO file
 * The file can be given as an input to the `mx2dtx` tool. See [README](../README.md) for directions.
 * The translator will generate several information, warning, and possibly error messages. Study those to correct any errors or omissions.
-* **Note:** the resulting iStarDT-X may contain features not supported yet by subsequent tools in the pipeline, including the [dtx2X](https://github.com/cmg-yorku/dtx2X) tool.. 
+* **Note:** the resulting iStarDT-X may contain features not supported yet by subsequent tools in the pipeline, including the [dtx2X](https://github.com/cmg-yorku/dtx2X) tool.
 
 ## Contact
 
