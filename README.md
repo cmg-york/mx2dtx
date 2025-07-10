@@ -10,7 +10,7 @@ iStar-DT both extends and subsets the iStar 2.0 modeling language to allow high-
 
 iStarDT-V diagrams can be created in [draw.io](https://app.diagrams.net/), [mxGraph](https://jgraph.github.io/mxgraph/) front-end, using a library of shapes specifically created for the purpose. In draw.io (we have tried version 14.1.8) go to `File --> Open Library` and select the [iStarDT-V.xml](https://github.com/cmg-york/mx2dtx/blob/main/src/main/resources/iStarDT-V.xml) file. Continue building the model exclusively using the library, and save the result in an uncompressed format. In version 14.1.8 of draw.io go to `File --> Properties` and uncheck `Compressed`. 
 ## How-to Page
-Detailed HOW-TO page can be found [here](doc/HOWTO.md)
+Detailed directions on how to build iStarDT-V models can be found in [this how-to guide](doc/HOWTO.md).
 ## Installing and using mx2dtx
 
 - Ensure you have maven, Java and git installed in your system. We have tested with Maven version 3.9.9 and Java 21.0.4.
