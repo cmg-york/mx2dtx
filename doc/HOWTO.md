@@ -7,7 +7,7 @@
 - Follow the steps described in [README](../README.md) in order to load the iStarDT-V library. 
 - Your working space should look as follows
 
-![Alt text](img/Workspace.png)
+![Alt text](img/workspace.png)
 
 - Go to File -> Properties
 - Make sure Compressed in unchecked
