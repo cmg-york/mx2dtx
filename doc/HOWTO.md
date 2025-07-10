@@ -7,7 +7,7 @@
 - Follow the steps described in [[Nina/gmGraphAdapter/README|README]] in order to load the iStarDT-V library. 
 - Your working space should look as follows
 
-![[Pasted image 20250710101101.png]]
+![[workspace.png]]
 
 - Go to File -> Properties
 - Make sure Compressed in unchecked
