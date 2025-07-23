@@ -73,7 +73,7 @@ public class GraphElementFactory {
 					e.getAttribute("actor"),
 					e.getAttribute("notes"),
 					cleanLabel,
-					e.getAttribute("runNum"),
+					e.getAttribute("runs"),
 					Boolean.parseBoolean(e.getAttribute("isRoot"))
 					);
 			break;

@@ -18,6 +18,13 @@ public class ConditionExpressionParser {
     }
     
     
+    /**
+     * The main parser of Condition/Precondition objects. Initializes an {@linkplain IdentifierRegistry} with all
+     * the individuals in the formula as predicates or variables. The registry is updated as more information about 
+     * the predicates becomes known.  
+     * @param input A string with the formula
+     * @return An iStarDT-X representation of the formula.
+     */
     public String parse(String input) {
         this.tokens = tokenize(input);
         this.position = 0;

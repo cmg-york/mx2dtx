@@ -1,7 +1,7 @@
 package cmg.gReason.outputs.common;
 
+import cmg.gReason.goalgraph.ConditionExpressionParser;
 import cmg.gReason.goalgraph.GoalModel;
-import cmg.gReason.inputs.drawio.ConditionExpressionParser;
 
 public abstract class Translator {
 	protected OutputManager outputManager;

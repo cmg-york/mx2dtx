@@ -1,0 +1,563 @@
+<mxfile host="Electron" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/27.0.9 Chrome/134.0.6998.205 Electron/35.4.0 Safari/537.36" version="27.0.9">
+  <diagram name="Page-1" id="OymFbvKfafajTAlSwp86">
+    <mxGraphModel dx="2276" dy="875" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <object label="Simulate Domain" concept="goal" actor="default" runs="1" isRoot="" id="OIlCNZJp0IuG_K4it0Jb-1">
+          <mxCell style="rounded=1;whiteSpace=wrap;html=1;arcSize=46;fillColor=#d5e8d4;strokeColor=#688F51;fontSize=15;strokeWidth=3;" vertex="1" parent="1">
+            <mxGeometry x="490" y="110" width="110" height="40" as="geometry" />
+          </mxCell>
+        </object>
+        <object label="Have iStarDT-X Spec Prepared" concept="goal" actor="default" runs="1" isRoot="" id="OIlCNZJp0IuG_K4it0Jb-2">
+          <mxCell style="rounded=1;whiteSpace=wrap;html=1;arcSize=46;fillColor=#d5e8d4;strokeColor=#688F51;fontSize=15;strokeWidth=3;" vertex="1" parent="1">
+            <mxGeometry x="170" y="290" width="180" height="50" as="geometry" />
+          </mxCell>
+        </object>
+        <object label="AND" concept="andDecomp" id="OIlCNZJp0IuG_K4it0Jb-5">
+          <mxCell style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontSize=20;endArrow=ERone;endFill=0;endSize=17;" edge="1" parent="1" source="OIlCNZJp0IuG_K4it0Jb-2" target="OIlCNZJp0IuG_K4it0Jb-1">
+            <mxGeometry relative="1" as="geometry">
+              <mxPoint x="260" y="240" as="sourcePoint" />
+              <mxPoint x="260" y="190" as="targetPoint" />
+            </mxGeometry>
+          </mxCell>
+        </object>
+        <object label="AND" concept="andDecomp" id="OIlCNZJp0IuG_K4it0Jb-6">
+          <mxCell style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontSize=20;endArrow=ERone;endFill=0;endSize=17;" edge="1" parent="1" source="OIlCNZJp0IuG_K4it0Jb-43" target="OIlCNZJp0IuG_K4it0Jb-1">
+            <mxGeometry relative="1" as="geometry">
+              <mxPoint x="520" y="270" as="sourcePoint" />
+              <mxPoint x="273" y="130" as="targetPoint" />
+            </mxGeometry>
+          </mxCell>
+        </object>
+        <object label="Draw iStarDT-V Model" concept="task" actor="default" id="OIlCNZJp0IuG_K4it0Jb-7">
+          <mxCell style="shape=hexagon;perimeter=hexagonPerimeter2;whiteSpace=wrap;html=1;fixedSize=1;strokeWidth=3;fontSize=15;size=20;fillColor=#d5e8d4;strokeColor=#688F51;" vertex="1" parent="1">
+            <mxGeometry x="-20" y="590" width="140" height="40" as="geometry" />
+          </mxCell>
+        </object>
+        <object label="AND" concept="andDecomp" id="OIlCNZJp0IuG_K4it0Jb-8">
+          <mxCell style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontSize=20;endArrow=ERone;endFill=0;endSize=17;" edge="1" parent="1" source="OIlCNZJp0IuG_K4it0Jb-7" target="OIlCNZJp0IuG_K4it0Jb-11">
+            <mxGeometry relative="1" as="geometry">
+              <mxPoint x="603" y="535" as="sourcePoint" />
+              <mxPoint x="583" y="355" as="targetPoint" />
+            </mxGeometry>
+          </mxCell>
+        </object>
+        <object label="Translate mxGraph To iStarDT-X" concept="task" actor="default" id="OIlCNZJp0IuG_K4it0Jb-9">
+          <mxCell style="shape=hexagon;perimeter=hexagonPerimeter2;whiteSpace=wrap;html=1;fixedSize=1;strokeWidth=3;fontSize=15;size=20;fillColor=#d5e8d4;strokeColor=#688F51;" vertex="1" parent="1">
+            <mxGeometry x="190" y="630" width="170" height="40" as="geometry" />
+          </mxCell>
+        </object>
+        <object label="AND" concept="andDecomp" id="OIlCNZJp0IuG_K4it0Jb-10">
+          <mxCell style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontSize=20;endArrow=ERone;endFill=0;endSize=17;" edge="1" parent="1" source="OIlCNZJp0IuG_K4it0Jb-9" target="OIlCNZJp0IuG_K4it0Jb-11">
+            <mxGeometry relative="1" as="geometry">
+              <mxPoint x="220" y="550" as="sourcePoint" />
+              <mxPoint x="290.43478260869574" y="490" as="targetPoint" />
+            </mxGeometry>
+          </mxCell>
+        </object>
+        <object label="Have Spec Visually Prepared" concept="goal" actor="default" runs="1" isRoot="" id="OIlCNZJp0IuG_K4it0Jb-11">
+          <mxCell style="rounded=1;whiteSpace=wrap;html=1;arcSize=46;fillColor=#d5e8d4;strokeColor=#688F51;fontSize=15;strokeWidth=3;" vertex="1" parent="1">
+            <mxGeometry x="40" y="450" width="130" height="50" as="geometry" />
+          </mxCell>
+        </object>
+        <object label="OR" concept="orDecomp" id="OIlCNZJp0IuG_K4it0Jb-12">
+          <mxCell style="orthogonalLoop=1;jettySize=auto;html=1;fontSize=20;endArrow=open;endFill=0;endSize=17;strokeColor=#000000;curved=1;rounded=0;" edge="1" parent="1" source="OIlCNZJp0IuG_K4it0Jb-11" target="OIlCNZJp0IuG_K4it0Jb-2">
+            <mxGeometry x="0.0383" y="2" relative="1" as="geometry">
+              <mxPoint x="380" y="310" as="sourcePoint" />
+              <mxPoint x="380" y="250" as="targetPoint" />
+              <mxPoint as="offset" />
+            </mxGeometry>
+          </mxCell>
+        </object>
+        <object label="Handcraft Spec" concept="task" actor="default" id="OIlCNZJp0IuG_K4it0Jb-14">
+          <mxCell style="shape=hexagon;perimeter=hexagonPerimeter2;whiteSpace=wrap;html=1;fixedSize=1;strokeWidth=3;fontSize=15;size=20;fillColor=#d5e8d4;strokeColor=#688F51;" vertex="1" parent="1">
+            <mxGeometry x="250" y="395" width="140" height="40" as="geometry" />
+          </mxCell>
+        </object>
+        <object label="OR" concept="orDecomp" id="OIlCNZJp0IuG_K4it0Jb-15">
+          <mxCell style="orthogonalLoop=1;jettySize=auto;html=1;fontSize=20;endArrow=open;endFill=0;endSize=17;strokeColor=#000000;curved=1;rounded=0;" edge="1" parent="1" source="OIlCNZJp0IuG_K4it0Jb-14" target="OIlCNZJp0IuG_K4it0Jb-2">
+            <mxGeometry x="0.0383" y="2" relative="1" as="geometry">
+              <mxPoint x="184" y="400" as="sourcePoint" />
+              <mxPoint x="241" y="350" as="targetPoint" />
+              <mxPoint as="offset" />
+            </mxGeometry>
+          </mxCell>
+        </object>
+        <object label="pre" concept="precedenceLink" id="OIlCNZJp0IuG_K4it0Jb-16">
+          <mxCell style="orthogonalLoop=1;jettySize=auto;html=1;fontSize=20;endArrow=open;endFill=0;endSize=7;elbow=vertical;curved=1;rounded=0;" edge="1" parent="1" source="OIlCNZJp0IuG_K4it0Jb-7" target="OIlCNZJp0IuG_K4it0Jb-9">
+            <mxGeometry x="-0.099" y="-7" relative="1" as="geometry">
+              <mxPoint x="415" y="630" as="sourcePoint" />
+              <mxPoint x="475" y="620" as="targetPoint" />
+              <Array as="points">
+                <mxPoint x="215" y="590" />
+              </Array>
+              <mxPoint as="offset" />
+            </mxGeometry>
+          </mxCell>
+        </object>
+        <object label="pre" concept="precedenceLink" id="OIlCNZJp0IuG_K4it0Jb-17">
+          <mxCell style="orthogonalLoop=1;jettySize=auto;html=1;fontSize=20;endArrow=open;endFill=0;endSize=7;elbow=vertical;curved=1;rounded=0;" edge="1" parent="1" source="OIlCNZJp0IuG_K4it0Jb-2" target="OIlCNZJp0IuG_K4it0Jb-43">
+            <mxGeometry x="-0.099" y="-7" relative="1" as="geometry">
+              <mxPoint x="350" y="370" as="sourcePoint" />
+              <mxPoint x="430" y="257.8947368421053" as="targetPoint" />
+              <Array as="points">
+                <mxPoint x="400" y="270" />
+              </Array>
+              <mxPoint as="offset" />
+            </mxGeometry>
+          </mxCell>
+        </object>
+        <object label="" concept="effectGroup" id="OIlCNZJp0IuG_K4it0Jb-24">
+          <mxCell style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;strokeWidth=2;fontSize=15;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="1">
+            <mxGeometry x="292.5" y="750" width="20" height="20" as="geometry" />
+          </mxCell>
+        </object>
+        <object label="eff" concept="effectLink" id="OIlCNZJp0IuG_K4it0Jb-25">
+          <mxCell style="orthogonalLoop=1;jettySize=auto;html=1;fontSize=20;endArrow=open;endFill=0;endSize=7;elbow=vertical;strokeColor=#000302;rounded=0;" edge="1" target="OIlCNZJp0IuG_K4it0Jb-24" parent="1" source="OIlCNZJp0IuG_K4it0Jb-9">
+            <mxGeometry relative="1" as="geometry">
+              <mxPoint x="387" y="700" as="sourcePoint" />
+              <mxPoint x="165" y="575" as="targetPoint" />
+            </mxGeometry>
+          </mxCell>
+        </object>
+        <object label="Spec Successfully Generated" concept="effect" status="attainment" actor="" turnsTrue="specCreated, happyModeler" turnsFalse="badMoodModeler" id="OIlCNZJp0IuG_K4it0Jb-26">
+          <mxCell style="ellipse;whiteSpace=wrap;html=1;strokeWidth=3;fontSize=15;fillColor=#e1d5e7;strokeColor=#0000FF;" vertex="1" parent="1">
+            <mxGeometry x="165" y="825" width="135" height="50" as="geometry" />
+          </mxCell>
+        </object>
+        <object label="0.95" concept="effectGroupLink" id="OIlCNZJp0IuG_K4it0Jb-28">
+          <mxCell style="endArrow=openThin;html=1;fontSize=15;endFill=0;elbow=vertical;curved=1;strokeColor=#000000;rounded=0;" edge="1" source="OIlCNZJp0IuG_K4it0Jb-24" target="OIlCNZJp0IuG_K4it0Jb-26" parent="1">
+            <mxGeometry x="-0.2" width="50" height="50" relative="1" as="geometry">
+              <mxPoint x="399.5" y="835" as="sourcePoint" />
+              <mxPoint x="399.5" y="885" as="targetPoint" />
+              <mxPoint as="offset" />
+            </mxGeometry>
+          </mxCell>
+        </object>
+        <object label="0.05" concept="effectGroupLink" id="OIlCNZJp0IuG_K4it0Jb-29">
+          <mxCell style="endArrow=openThin;html=1;fontSize=15;endFill=0;elbow=vertical;curved=1;strokeColor=#000000;rounded=0;" edge="1" source="OIlCNZJp0IuG_K4it0Jb-24" target="8wLKqJ9eaM9PoR_k7nTy-36" parent="1">
+            <mxGeometry x="-0.2" width="50" height="50" relative="1" as="geometry">
+              <mxPoint x="265.94527140110836" y="872.552187298723" as="sourcePoint" />
+              <mxPoint x="360.39029418228483" y="835.8728193570703" as="targetPoint" />
+              <mxPoint as="offset" />
+            </mxGeometry>
+          </mxCell>
+        </object>
+        <object label="" concept="effectGroup" id="OIlCNZJp0IuG_K4it0Jb-30">
+          <mxCell style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;strokeWidth=2;fontSize=15;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="1">
+            <mxGeometry x="310" y="480" width="20" height="20" as="geometry" />
+          </mxCell>
+        </object>
+        <object label="eff" concept="effectLink" id="OIlCNZJp0IuG_K4it0Jb-31">
+          <mxCell style="orthogonalLoop=1;jettySize=auto;html=1;fontSize=20;endArrow=open;endFill=0;endSize=7;elbow=vertical;strokeColor=#000302;rounded=0;" edge="1" target="OIlCNZJp0IuG_K4it0Jb-30" parent="1" source="OIlCNZJp0IuG_K4it0Jb-14">
+            <mxGeometry relative="1" as="geometry">
+              <mxPoint x="417" y="420" as="sourcePoint" />
+              <mxPoint x="195" y="295" as="targetPoint" />
+            </mxGeometry>
+          </mxCell>
+        </object>
+        <object label="0.8" concept="effectGroupLink" id="OIlCNZJp0IuG_K4it0Jb-34">
+          <mxCell style="endArrow=openThin;html=1;fontSize=15;endFill=0;elbow=vertical;curved=1;strokeColor=#000000;rounded=0;" edge="1" source="OIlCNZJp0IuG_K4it0Jb-30" target="8wLKqJ9eaM9PoR_k7nTy-37" parent="1">
+            <mxGeometry x="-0.2" width="50" height="50" relative="1" as="geometry">
+              <mxPoint x="517" y="510" as="sourcePoint" />
+              <mxPoint x="301.22672647341574" y="535.3532286715224" as="targetPoint" />
+              <mxPoint as="offset" />
+            </mxGeometry>
+          </mxCell>
+        </object>
+        <object label="0.2" concept="effectGroupLink" id="OIlCNZJp0IuG_K4it0Jb-35">
+          <mxCell style="endArrow=openThin;html=1;fontSize=15;endFill=0;elbow=vertical;curved=1;strokeColor=#000000;rounded=0;" edge="1" source="OIlCNZJp0IuG_K4it0Jb-30" target="8wLKqJ9eaM9PoR_k7nTy-38" parent="1">
+            <mxGeometry x="-0.2" width="50" height="50" relative="1" as="geometry">
+              <mxPoint x="383.44527140110836" y="547.552187298723" as="sourcePoint" />
+              <mxPoint x="378.33135237621536" y="565.5522539603596" as="targetPoint" />
+              <mxPoint as="offset" />
+            </mxGeometry>
+          </mxCell>
+        </object>
+        <object label="Translate to DT-Golog" concept="task" actor="default" id="OIlCNZJp0IuG_K4it0Jb-36">
+          <mxCell style="shape=hexagon;perimeter=hexagonPerimeter2;whiteSpace=wrap;html=1;fixedSize=1;strokeWidth=3;fontSize=15;size=20;fillColor=#d5e8d4;strokeColor=#688F51;" vertex="1" parent="1">
+            <mxGeometry x="610" y="390" width="140" height="40" as="geometry" />
+          </mxCell>
+        </object>
+        <object label="" concept="effectGroup" id="OIlCNZJp0IuG_K4it0Jb-37">
+          <mxCell style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;strokeWidth=2;fontSize=15;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="1">
+            <mxGeometry x="670" y="480" width="20" height="20" as="geometry" />
+          </mxCell>
+        </object>
+        <object label="eff" concept="effectLink" id="OIlCNZJp0IuG_K4it0Jb-38">
+          <mxCell style="orthogonalLoop=1;jettySize=auto;html=1;fontSize=20;endArrow=open;endFill=0;endSize=7;elbow=vertical;strokeColor=#000302;rounded=0;" edge="1" target="OIlCNZJp0IuG_K4it0Jb-37" parent="1" source="OIlCNZJp0IuG_K4it0Jb-36">
+            <mxGeometry relative="1" as="geometry">
+              <mxPoint x="600" y="500" as="sourcePoint" />
+              <mxPoint x="450" y="345" as="targetPoint" />
+            </mxGeometry>
+          </mxCell>
+        </object>
+        <object label="0.9" concept="effectGroupLink" id="OIlCNZJp0IuG_K4it0Jb-41">
+          <mxCell style="endArrow=openThin;html=1;fontSize=15;endFill=0;elbow=vertical;curved=1;strokeColor=#000000;rounded=0;" edge="1" source="OIlCNZJp0IuG_K4it0Jb-37" target="8wLKqJ9eaM9PoR_k7nTy-42" parent="1">
+            <mxGeometry x="-0.2" width="50" height="50" relative="1" as="geometry">
+              <mxPoint x="762" y="575" as="sourcePoint" />
+              <mxPoint x="649.8639392383648" y="600.2721215232715" as="targetPoint" />
+              <mxPoint as="offset" />
+            </mxGeometry>
+          </mxCell>
+        </object>
+        <object label="0.1" concept="effectGroupLink" id="OIlCNZJp0IuG_K4it0Jb-42">
+          <mxCell style="endArrow=openThin;html=1;fontSize=15;endFill=0;elbow=vertical;curved=1;strokeColor=#000000;rounded=0;" edge="1" source="OIlCNZJp0IuG_K4it0Jb-37" target="8wLKqJ9eaM9PoR_k7nTy-43" parent="1">
+            <mxGeometry x="-0.2" width="50" height="50" relative="1" as="geometry">
+              <mxPoint x="628.4452714011084" y="612.552187298723" as="sourcePoint" />
+              <mxPoint x="737.66603596821" y="630.6180565214729" as="targetPoint" />
+              <mxPoint as="offset" />
+            </mxGeometry>
+          </mxCell>
+        </object>
+        <object label="Have DT-Golog Spec Prepared" concept="goal" actor="default" runs="1" isRoot="" id="OIlCNZJp0IuG_K4it0Jb-43">
+          <mxCell style="rounded=1;whiteSpace=wrap;html=1;arcSize=46;fillColor=#d5e8d4;strokeColor=#688F51;fontSize=15;strokeWidth=3;" vertex="1" parent="1">
+            <mxGeometry x="480" y="270" width="180" height="50" as="geometry" />
+          </mxCell>
+        </object>
+        <object label="AND" concept="andDecomp" id="OIlCNZJp0IuG_K4it0Jb-44">
+          <mxCell style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontSize=20;endArrow=ERone;endFill=0;endSize=17;" edge="1" parent="1" source="OIlCNZJp0IuG_K4it0Jb-36" target="OIlCNZJp0IuG_K4it0Jb-43">
+            <mxGeometry relative="1" as="geometry">
+              <mxPoint x="620" y="430" as="sourcePoint" />
+              <mxPoint x="688" y="250" as="targetPoint" />
+            </mxGeometry>
+          </mxCell>
+        </object>
+        <object label="Visually Inspect iStarDT-X Spec" concept="task" actor="default" id="OIlCNZJp0IuG_K4it0Jb-45">
+          <mxCell style="shape=hexagon;perimeter=hexagonPerimeter2;whiteSpace=wrap;html=1;fixedSize=1;strokeWidth=3;fontSize=15;size=20;fillColor=#d5e8d4;strokeColor=#688F51;" vertex="1" parent="1">
+            <mxGeometry x="440" y="395" width="140" height="40" as="geometry" />
+          </mxCell>
+        </object>
+        <object label="AND" concept="andDecomp" id="OIlCNZJp0IuG_K4it0Jb-46">
+          <mxCell style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontSize=20;endArrow=ERone;endFill=0;endSize=17;" edge="1" parent="1" source="OIlCNZJp0IuG_K4it0Jb-45" target="OIlCNZJp0IuG_K4it0Jb-43">
+            <mxGeometry relative="1" as="geometry">
+              <mxPoint x="667" y="440" as="sourcePoint" />
+              <mxPoint x="596" y="330" as="targetPoint" />
+            </mxGeometry>
+          </mxCell>
+        </object>
+        <object label="AND" concept="andDecomp" id="OIlCNZJp0IuG_K4it0Jb-48">
+          <mxCell style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontSize=20;endArrow=ERone;endFill=0;endSize=17;" edge="1" parent="1" source="OIlCNZJp0IuG_K4it0Jb-59" target="OIlCNZJp0IuG_K4it0Jb-1">
+            <mxGeometry relative="1" as="geometry">
+              <mxPoint x="818.6046511627906" y="270" as="sourcePoint" />
+              <mxPoint x="467" y="120" as="targetPoint" />
+            </mxGeometry>
+          </mxCell>
+        </object>
+        <object label="pre" concept="precedenceLink" id="OIlCNZJp0IuG_K4it0Jb-49">
+          <mxCell style="orthogonalLoop=1;jettySize=auto;html=1;fontSize=20;endArrow=open;endFill=0;endSize=7;elbow=vertical;curved=1;rounded=0;" edge="1" parent="1" source="OIlCNZJp0IuG_K4it0Jb-45" target="OIlCNZJp0IuG_K4it0Jb-36">
+            <mxGeometry x="0.1191" y="11" relative="1" as="geometry">
+              <mxPoint x="-44" y="536" as="sourcePoint" />
+              <mxPoint x="105" y="570" as="targetPoint" />
+              <Array as="points">
+                <mxPoint x="580" y="480" />
+              </Array>
+              <mxPoint as="offset" />
+            </mxGeometry>
+          </mxCell>
+        </object>
+        <object label="" concept="effectGroup" id="OIlCNZJp0IuG_K4it0Jb-53">
+          <mxCell style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;strokeWidth=2;fontSize=15;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="1">
+            <mxGeometry x="480" y="480" width="20" height="20" as="geometry" />
+          </mxCell>
+        </object>
+        <object label="eff" concept="effectLink" id="OIlCNZJp0IuG_K4it0Jb-54">
+          <mxCell style="orthogonalLoop=1;jettySize=auto;html=1;fontSize=20;endArrow=open;endFill=0;endSize=7;elbow=vertical;strokeColor=#000302;rounded=0;" edge="1" target="OIlCNZJp0IuG_K4it0Jb-53" parent="1" source="OIlCNZJp0IuG_K4it0Jb-45">
+            <mxGeometry relative="1" as="geometry">
+              <mxPoint x="492" y="510" as="sourcePoint" />
+              <mxPoint x="270" y="385" as="targetPoint" />
+            </mxGeometry>
+          </mxCell>
+        </object>
+        <object label="0.9" concept="effectGroupLink" id="OIlCNZJp0IuG_K4it0Jb-57">
+          <mxCell style="endArrow=openThin;html=1;fontSize=15;endFill=0;elbow=vertical;curved=1;strokeColor=#000000;rounded=0;" edge="1" source="OIlCNZJp0IuG_K4it0Jb-53" target="8wLKqJ9eaM9PoR_k7nTy-39" parent="1">
+            <mxGeometry x="-0.2" width="50" height="50" relative="1" as="geometry">
+              <mxPoint x="582" y="615" as="sourcePoint" />
+              <mxPoint x="474.9827287912465" y="610.0690848350134" as="targetPoint" />
+              <mxPoint as="offset" />
+            </mxGeometry>
+          </mxCell>
+        </object>
+        <object label="0.1" concept="effectGroupLink" id="OIlCNZJp0IuG_K4it0Jb-58">
+          <mxCell style="endArrow=openThin;html=1;fontSize=15;endFill=0;elbow=vertical;curved=1;strokeColor=#000000;rounded=0;" edge="1" source="OIlCNZJp0IuG_K4it0Jb-53" target="8wLKqJ9eaM9PoR_k7nTy-41" parent="1">
+            <mxGeometry x="-0.2" width="50" height="50" relative="1" as="geometry">
+              <mxPoint x="448.44527140110836" y="652.552187298723" as="sourcePoint" />
+              <mxPoint x="562.2649901887389" y="533.3589941132433" as="targetPoint" />
+              <mxPoint as="offset" />
+            </mxGeometry>
+          </mxCell>
+        </object>
+        <object label="Run Simulation" concept="task" actor="default" id="OIlCNZJp0IuG_K4it0Jb-59">
+          <mxCell style="shape=hexagon;perimeter=hexagonPerimeter2;whiteSpace=wrap;html=1;fixedSize=1;strokeWidth=3;fontSize=15;size=20;fillColor=#d5e8d4;strokeColor=#688F51;" vertex="1" parent="1">
+            <mxGeometry x="760" y="295" width="140" height="40" as="geometry" />
+          </mxCell>
+        </object>
+        <object label="" concept="effectGroup" id="OIlCNZJp0IuG_K4it0Jb-60">
+          <mxCell style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;strokeWidth=2;fontSize=15;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="1">
+            <mxGeometry x="870" y="390" width="20" height="20" as="geometry" />
+          </mxCell>
+        </object>
+        <object label="eff" concept="effectLink" id="OIlCNZJp0IuG_K4it0Jb-61">
+          <mxCell style="orthogonalLoop=1;jettySize=auto;html=1;fontSize=20;endArrow=open;endFill=0;endSize=7;elbow=vertical;strokeColor=#000302;rounded=0;" edge="1" source="OIlCNZJp0IuG_K4it0Jb-59" target="OIlCNZJp0IuG_K4it0Jb-60" parent="1">
+            <mxGeometry relative="1" as="geometry">
+              <mxPoint x="800" y="370" as="sourcePoint" />
+              <mxPoint x="650" y="215" as="targetPoint" />
+            </mxGeometry>
+          </mxCell>
+        </object>
+        <object label="0.9" concept="effectGroupLink" id="OIlCNZJp0IuG_K4it0Jb-64">
+          <mxCell style="endArrow=openThin;html=1;fontSize=15;endFill=0;elbow=vertical;curved=1;strokeColor=#000000;rounded=0;" edge="1" source="OIlCNZJp0IuG_K4it0Jb-60" target="8wLKqJ9eaM9PoR_k7nTy-44" parent="1">
+            <mxGeometry x="-0.2" width="50" height="50" relative="1" as="geometry">
+              <mxPoint x="962" y="445" as="sourcePoint" />
+              <mxPoint x="962" y="495" as="targetPoint" />
+              <mxPoint as="offset" />
+            </mxGeometry>
+          </mxCell>
+        </object>
+        <object label="0.1" concept="effectGroupLink" id="OIlCNZJp0IuG_K4it0Jb-65">
+          <mxCell style="endArrow=openThin;html=1;fontSize=15;endFill=0;elbow=vertical;curved=1;strokeColor=#000000;rounded=0;" edge="1" source="OIlCNZJp0IuG_K4it0Jb-60" target="8wLKqJ9eaM9PoR_k7nTy-45" parent="1">
+            <mxGeometry x="-0.2" width="50" height="50" relative="1" as="geometry">
+              <mxPoint x="828.4452714011084" y="482.55218729872297" as="sourcePoint" />
+              <mxPoint x="937.66603596821" y="490.61805652147245" as="targetPoint" />
+              <mxPoint as="offset" />
+            </mxGeometry>
+          </mxCell>
+        </object>
+        <object label="haveDTGologSpecPrepared AND haveIStarDTXSpecPrepared" concept="precondition" usage="&#xa;&#xa;Use operators AND, OR, NOT, PREV, and GT (for &gt;), LT (for &lt;), GTE (for &gt;=), LTE (for &lt;=), EQ (for ==), NEQ (for !=). Ground atoms are predicates or camel-case representaitons of goals, task, predicates. DO NOT USE any formatting (boldface etc.). " formula="" notes="" dtxFormula="" id="6jv_gL2jJVAjb52CWJjo-1">
+          <mxCell style="rounded=0;whiteSpace=wrap;html=1;strokeWidth=3;fontSize=15;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1">
+            <mxGeometry x="705" y="140" width="255" height="50" as="geometry" />
+          </mxCell>
+        </object>
+        <object label="pre" concept="precedenceLink" id="6jv_gL2jJVAjb52CWJjo-2">
+          <mxCell style="orthogonalLoop=1;jettySize=auto;html=1;fontSize=20;endArrow=open;endFill=0;endSize=7;elbow=vertical;curved=1;rounded=0;" edge="1" parent="1" source="6jv_gL2jJVAjb52CWJjo-1" target="OIlCNZJp0IuG_K4it0Jb-59">
+            <mxGeometry x="-0.099" y="-7" relative="1" as="geometry">
+              <mxPoint x="348" y="300" as="sourcePoint" />
+              <mxPoint x="490" y="292" as="targetPoint" />
+              <Array as="points">
+                <mxPoint x="970" y="250" />
+              </Array>
+              <mxPoint as="offset" />
+            </mxGeometry>
+          </mxCell>
+        </object>
+        <object label="Avoid Labor" concept="quality" actor="default" formula="" note="" dtxFormula="" isRoot="" id="8wLKqJ9eaM9PoR_k7nTy-8">
+          <mxCell style="ellipse;shape=cloud;whiteSpace=wrap;html=1;strokeWidth=3;fontSize=15;fillColor=#d5e8d4;strokeColor=#688F51;" vertex="1" parent="1">
+            <mxGeometry x="-110" y="330" width="140" height="60" as="geometry" />
+          </mxCell>
+        </object>
+        <object label="0.7" concept="contributionLink" id="8wLKqJ9eaM9PoR_k7nTy-10">
+          <mxCell style="endArrow=classic;html=1;fontSize=15;elbow=vertical;curved=1;rounded=0;" edge="1" parent="1" source="OIlCNZJp0IuG_K4it0Jb-14" target="8wLKqJ9eaM9PoR_k7nTy-11">
+            <mxGeometry x="0.4468" y="-17" relative="1" as="geometry">
+              <mxPoint x="-40" y="405.04497206703894" as="sourcePoint" />
+              <mxPoint y="350" as="targetPoint" />
+              <Array as="points">
+                <mxPoint x="130" y="410" />
+              </Array>
+              <mxPoint as="offset" />
+            </mxGeometry>
+          </mxCell>
+        </object>
+        <object label="Become XML Wizard" concept="quality" actor="default" formula="" note="" dtxFormula="" isRoot="" id="8wLKqJ9eaM9PoR_k7nTy-11">
+          <mxCell style="ellipse;shape=cloud;whiteSpace=wrap;html=1;strokeWidth=3;fontSize=15;fillColor=#d5e8d4;strokeColor=#688F51;" vertex="1" parent="1">
+            <mxGeometry x="20" y="290" width="140" height="60" as="geometry" />
+          </mxCell>
+        </object>
+        <object label="0.8" concept="contributionLink" id="8wLKqJ9eaM9PoR_k7nTy-13">
+          <mxCell style="endArrow=classic;html=1;fontSize=15;elbow=vertical;curved=1;rounded=0;" edge="1" parent="1" source="OIlCNZJp0IuG_K4it0Jb-11" target="8wLKqJ9eaM9PoR_k7nTy-8">
+            <mxGeometry x="-0.0766" relative="1" as="geometry">
+              <mxPoint x="263" y="422" as="sourcePoint" />
+              <mxPoint x="79" y="359" as="targetPoint" />
+              <Array as="points">
+                <mxPoint x="-20" y="440" />
+              </Array>
+              <mxPoint as="offset" />
+            </mxGeometry>
+          </mxCell>
+        </object>
+        <object label="Overall Quality" concept="quality" actor="default" formula="" note="" dtxFormula="" isRoot="true" id="8wLKqJ9eaM9PoR_k7nTy-14">
+          <mxCell style="ellipse;shape=cloud;whiteSpace=wrap;html=1;strokeWidth=3;fontSize=15;fillColor=#d5e8d4;strokeColor=#688F51;" vertex="1" parent="1">
+            <mxGeometry x="-160" y="220" width="140" height="60" as="geometry" />
+          </mxCell>
+        </object>
+        <object label="0.4" concept="contributionLink" id="8wLKqJ9eaM9PoR_k7nTy-15">
+          <mxCell style="endArrow=classic;html=1;fontSize=15;elbow=vertical;curved=1;rounded=0;" edge="1" parent="1" source="8wLKqJ9eaM9PoR_k7nTy-8" target="8wLKqJ9eaM9PoR_k7nTy-14">
+            <mxGeometry x="0.3444" y="-11" relative="1" as="geometry">
+              <mxPoint x="50" y="467" as="sourcePoint" />
+              <mxPoint x="-23" y="400" as="targetPoint" />
+              <Array as="points">
+                <mxPoint x="-160" y="340" />
+              </Array>
+              <mxPoint as="offset" />
+            </mxGeometry>
+          </mxCell>
+        </object>
+        <object label="0.4" concept="contributionLink" id="8wLKqJ9eaM9PoR_k7nTy-16">
+          <mxCell style="endArrow=classic;html=1;fontSize=15;elbow=vertical;curved=1;rounded=0;" edge="1" parent="1" source="8wLKqJ9eaM9PoR_k7nTy-11" target="8wLKqJ9eaM9PoR_k7nTy-14">
+            <mxGeometry x="-0.0766" relative="1" as="geometry">
+              <mxPoint x="-95" y="359" as="sourcePoint" />
+              <mxPoint x="-102" y="288" as="targetPoint" />
+              <Array as="points">
+                <mxPoint x="40" y="260" />
+              </Array>
+              <mxPoint as="offset" />
+            </mxGeometry>
+          </mxCell>
+        </object>
+        <object label="pre" concept="precedenceLink" id="8wLKqJ9eaM9PoR_k7nTy-17">
+          <mxCell style="orthogonalLoop=1;jettySize=auto;html=1;fontSize=20;endArrow=open;endFill=0;endSize=7;elbow=vertical;curved=1;rounded=0;" edge="1" source="8wLKqJ9eaM9PoR_k7nTy-18" parent="1" target="8wLKqJ9eaM9PoR_k7nTy-42">
+            <mxGeometry x="-0.099" y="-7" relative="1" as="geometry">
+              <mxPoint x="178" y="920" as="sourcePoint" />
+              <mxPoint x="649.8639392383648" y="639.7278784767291" as="targetPoint" />
+              <Array as="points">
+                <mxPoint x="615" y="630" />
+              </Array>
+              <mxPoint as="offset" />
+            </mxGeometry>
+          </mxCell>
+        </object>
+        <object label="labeledPrecondition" concept="precondition" usage="&#xa;&#xa;Use operators AND, OR, NOT, PREV, and GT (for &gt;), LT (for &lt;), GTE (for &gt;=), LTE (for &lt;=), EQ (for ==), NEQ (for !=). Ground atoms are predicates or camel-case representaitons of goals, task, predicates. DO NOT USE any formatting (boldface etc.). " formula="handcraftingSuccessful OR &#xa;specCreated" notes="" dtxFormula="" id="8wLKqJ9eaM9PoR_k7nTy-18">
+          <mxCell style="rounded=0;whiteSpace=wrap;html=1;strokeWidth=3;fontSize=15;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1">
+            <mxGeometry x="525" y="690" width="180" height="30" as="geometry" />
+          </mxCell>
+        </object>
+        <mxCell id="8wLKqJ9eaM9PoR_k7nTy-19" value="" style="group" vertex="1" connectable="0" parent="1">
+          <mxGeometry x="1030" y="550" width="310" height="70" as="geometry" />
+        </mxCell>
+        <object label="drawingSuccessful, avoidLabor := -0.5,&amp;nbsp; becomeXMLWizard:= 0.8" concept="initialization" usage="Comma separated list of identifiers. Predicates as-is. Variables and qualities in the form [identifier] := [constant]" id="8wLKqJ9eaM9PoR_k7nTy-20">
+          <mxCell style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#7570b3;align=left;labelPosition=center;verticalLabelPosition=middle;verticalAlign=middle;horizontal=1;strokeWidth=3;spacingLeft=4;" vertex="1" parent="8wLKqJ9eaM9PoR_k7nTy-19">
+            <mxGeometry y="20" width="310" height="50" as="geometry" />
+          </mxCell>
+        </object>
+        <mxCell id="8wLKqJ9eaM9PoR_k7nTy-21" value="INIT" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#7570b3;strokeWidth=3;align=left;verticalAlign=middle;spacingLeft=4;fontFamily=Helvetica;fontSize=12;fontColor=default;horizontal=1;" vertex="1" parent="8wLKqJ9eaM9PoR_k7nTy-19">
+          <mxGeometry width="36" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="8wLKqJ9eaM9PoR_k7nTy-22" value="" style="group" vertex="1" connectable="0" parent="1">
+          <mxGeometry x="1030" y="630" width="310" height="70" as="geometry" />
+        </mxCell>
+        <object label="overallQuality(-1,1), haveIStarDTXSpecPrepared" concept="export" usage="Comma separated list of identifiers. Predicates, variables: as-is. Goals, tasks, qualities: camel-case representation." id="8wLKqJ9eaM9PoR_k7nTy-23">
+          <mxCell style="rounded=0;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;align=left;labelPosition=center;verticalLabelPosition=middle;verticalAlign=middle;horizontal=1;strokeWidth=3;spacingLeft=4;" vertex="1" parent="8wLKqJ9eaM9PoR_k7nTy-22">
+            <mxGeometry y="20" width="310" height="50" as="geometry" />
+          </mxCell>
+        </object>
+        <mxCell id="8wLKqJ9eaM9PoR_k7nTy-24" value="EXP" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=#d6b656;strokeWidth=3;align=left;verticalAlign=middle;spacingLeft=4;fontFamily=Helvetica;fontSize=12;fontColor=default;horizontal=1;fillColor=#fff2cc;" vertex="1" parent="8wLKqJ9eaM9PoR_k7nTy-22">
+          <mxGeometry width="39.55172413793103" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="8wLKqJ9eaM9PoR_k7nTy-25" value="" style="group" vertex="1" connectable="0" parent="1">
+          <mxGeometry x="1030" y="720" width="310" height="70" as="geometry" />
+        </mxCell>
+        <object label="overallQuality" concept="crossrun" usage="Comma separated list of identifiers. Predicates, variables (as-is), and qualities (camel-case representation)." id="8wLKqJ9eaM9PoR_k7nTy-26">
+          <mxCell style="rounded=0;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;align=left;labelPosition=center;verticalLabelPosition=middle;verticalAlign=middle;horizontal=1;strokeWidth=3;spacingLeft=4;" vertex="1" parent="8wLKqJ9eaM9PoR_k7nTy-25">
+            <mxGeometry y="20" width="310" height="50" as="geometry" />
+          </mxCell>
+        </object>
+        <mxCell id="8wLKqJ9eaM9PoR_k7nTy-27" value="CROSS" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=#9673a6;strokeWidth=3;align=left;verticalAlign=middle;spacingLeft=4;fontFamily=Helvetica;fontSize=12;fontColor=default;horizontal=1;fillColor=#e1d5e7;" vertex="1" parent="8wLKqJ9eaM9PoR_k7nTy-25">
+          <mxGeometry width="53" height="20" as="geometry" />
+        </mxCell>
+        <object label="Modeler Happiness" concept="quality" actor="default" formula="" note="" dtxFormula="&lt;add&gt;&#xa; &lt;multiply&gt;&#xa;  &lt;numConst&gt;0.2&lt;/numConst&gt;&#xa;  &lt;predicateID&gt;happyModeler&lt;/predicateID&gt;&#xa; &lt;/multiply&gt;&#xa; &lt;multiply&gt;&#xa;  &lt;numConst&gt;0.7&lt;/numConst&gt;&#xa;  &lt;predicateID&gt;veryHappyModeler&lt;/predicateID&gt;&#xa; &lt;/multiply&gt;&#xa;&lt;/add&gt;" isRoot="" id="8wLKqJ9eaM9PoR_k7nTy-28">
+          <mxCell style="ellipse;shape=cloud;whiteSpace=wrap;html=1;strokeWidth=3;fontSize=15;fillColor=#d5e8d4;strokeColor=#688F51;" vertex="1" parent="1">
+            <mxGeometry x="-250" y="410" width="120" height="60" as="geometry" />
+          </mxCell>
+        </object>
+        <object label="0.2" concept="contributionLink" id="8wLKqJ9eaM9PoR_k7nTy-29">
+          <mxCell style="endArrow=classic;html=1;fontSize=15;elbow=vertical;curved=1;rounded=0;" edge="1" parent="1" source="8wLKqJ9eaM9PoR_k7nTy-28" target="8wLKqJ9eaM9PoR_k7nTy-14">
+            <mxGeometry x="-0.5298" y="-2" relative="1" as="geometry">
+              <mxPoint x="-95" y="359" as="sourcePoint" />
+              <mxPoint x="-102" y="288" as="targetPoint" />
+              <Array as="points">
+                <mxPoint x="-230" y="310" />
+              </Array>
+              <mxPoint as="offset" />
+            </mxGeometry>
+          </mxCell>
+        </object>
+        <object label="" concept="effectGroup" id="8wLKqJ9eaM9PoR_k7nTy-30">
+          <mxCell style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;strokeWidth=2;fontSize=15;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="1">
+            <mxGeometry x="40" y="670" width="20" height="20" as="geometry" />
+          </mxCell>
+        </object>
+        <object label="eff" concept="effectLink" id="8wLKqJ9eaM9PoR_k7nTy-31">
+          <mxCell style="orthogonalLoop=1;jettySize=auto;html=1;fontSize=20;endArrow=open;endFill=0;endSize=7;elbow=vertical;strokeColor=#000302;rounded=0;" edge="1" target="8wLKqJ9eaM9PoR_k7nTy-30" parent="1" source="OIlCNZJp0IuG_K4it0Jb-7">
+            <mxGeometry relative="1" as="geometry">
+              <mxPoint x="60" y="630" as="sourcePoint" />
+              <mxPoint x="-155" y="485" as="targetPoint" />
+            </mxGeometry>
+          </mxCell>
+        </object>
+        <object label="Drawing Successful" concept="effect" status="attainment" actor="" turnsTrue="" turnsFalse="" id="8wLKqJ9eaM9PoR_k7nTy-32">
+          <mxCell style="ellipse;whiteSpace=wrap;html=1;strokeWidth=3;fontSize=15;fillColor=#e1d5e7;strokeColor=#0000FF;" vertex="1" parent="1">
+            <mxGeometry x="-70" y="720" width="100" height="40" as="geometry" />
+          </mxCell>
+        </object>
+        <object label="Drawing Failed" concept="effect" status="failure" actor="" turnsTrue="" turnsFalse="" id="8wLKqJ9eaM9PoR_k7nTy-33">
+          <mxCell style="ellipse;whiteSpace=wrap;html=1;strokeWidth=3;fontSize=15;fillColor=#e1d5e7;strokeColor=#d95f02;" vertex="1" parent="1">
+            <mxGeometry x="55" y="720" width="100" height="40" as="geometry" />
+          </mxCell>
+        </object>
+        <object label="0.95" concept="effectGroupLink" id="8wLKqJ9eaM9PoR_k7nTy-34">
+          <mxCell style="endArrow=openThin;html=1;fontSize=15;endFill=0;elbow=vertical;curved=1;strokeColor=#000000;rounded=0;" edge="1" source="8wLKqJ9eaM9PoR_k7nTy-30" target="8wLKqJ9eaM9PoR_k7nTy-32" parent="1">
+            <mxGeometry x="-0.2" width="50" height="50" relative="1" as="geometry">
+              <mxPoint x="157" y="715" as="sourcePoint" />
+              <mxPoint x="157" y="765" as="targetPoint" />
+              <mxPoint as="offset" />
+            </mxGeometry>
+          </mxCell>
+        </object>
+        <object label="0.05" concept="effectGroupLink" id="8wLKqJ9eaM9PoR_k7nTy-35">
+          <mxCell style="endArrow=openThin;html=1;fontSize=15;endFill=0;elbow=vertical;curved=1;strokeColor=#000000;rounded=0;" edge="1" source="8wLKqJ9eaM9PoR_k7nTy-30" target="8wLKqJ9eaM9PoR_k7nTy-33" parent="1">
+            <mxGeometry x="-0.2" width="50" height="50" relative="1" as="geometry">
+              <mxPoint x="23.445271401108357" y="752.552187298723" as="sourcePoint" />
+              <mxPoint x="-23.087749377225578" y="805.5924992853409" as="targetPoint" />
+              <mxPoint as="offset" />
+            </mxGeometry>
+          </mxCell>
+        </object>
+        <object label="Run Failed" concept="effect" status="failure" actor="" turnsTrue="" turnsFalse="" id="8wLKqJ9eaM9PoR_k7nTy-36">
+          <mxCell style="ellipse;whiteSpace=wrap;html=1;strokeWidth=3;fontSize=15;fillColor=#e1d5e7;strokeColor=#d95f02;" vertex="1" parent="1">
+            <mxGeometry x="320" y="825" width="100" height="40" as="geometry" />
+          </mxCell>
+        </object>
+        <object label="Handcrafting Successful" concept="effect" status="attainment" actor="" turnsTrue="" turnsFalse="" id="8wLKqJ9eaM9PoR_k7nTy-37">
+          <mxCell style="ellipse;whiteSpace=wrap;html=1;strokeWidth=3;fontSize=15;fillColor=#e1d5e7;strokeColor=#0000FF;" vertex="1" parent="1">
+            <mxGeometry x="240" y="540" width="100" height="40" as="geometry" />
+          </mxCell>
+        </object>
+        <object label="Handcrafting Failed" concept="effect" status="failure" actor="" turnsTrue="" turnsFalse="" id="8wLKqJ9eaM9PoR_k7nTy-38">
+          <mxCell style="ellipse;whiteSpace=wrap;html=1;strokeWidth=3;fontSize=15;fillColor=#e1d5e7;strokeColor=#d95f02;" vertex="1" parent="1">
+            <mxGeometry x="355" y="530" width="100" height="40" as="geometry" />
+          </mxCell>
+        </object>
+        <object label="Inspection Successful" concept="effect" status="attainment" actor="" turnsTrue="" turnsFalse="" id="8wLKqJ9eaM9PoR_k7nTy-39">
+          <mxCell style="ellipse;whiteSpace=wrap;html=1;strokeWidth=3;fontSize=15;fillColor=#e1d5e7;strokeColor=#0000FF;" vertex="1" parent="1">
+            <mxGeometry x="425" y="570" width="100" height="40" as="geometry" />
+          </mxCell>
+        </object>
+        <object label="Inspection Found Issues" concept="effect" status="failure" actor="" turnsTrue="" turnsFalse="" id="8wLKqJ9eaM9PoR_k7nTy-41">
+          <mxCell style="ellipse;whiteSpace=wrap;html=1;strokeWidth=3;fontSize=15;fillColor=#e1d5e7;strokeColor=#d95f02;" vertex="1" parent="1">
+            <mxGeometry x="525" y="530" width="100" height="40" as="geometry" />
+          </mxCell>
+        </object>
+        <object label="Translation Successful" concept="effect" status="attainment" actor="" turnsTrue="" turnsFalse="" id="8wLKqJ9eaM9PoR_k7nTy-42">
+          <mxCell style="ellipse;whiteSpace=wrap;html=1;strokeWidth=3;fontSize=15;fillColor=#e1d5e7;strokeColor=#0000FF;" vertex="1" parent="1">
+            <mxGeometry x="600" y="570" width="110" height="40" as="geometry" />
+          </mxCell>
+        </object>
+        <object label="Translation Failed" concept="effect" status="failure" actor="" turnsTrue="" turnsFalse="" id="8wLKqJ9eaM9PoR_k7nTy-43">
+          <mxCell style="ellipse;whiteSpace=wrap;html=1;strokeWidth=3;fontSize=15;fillColor=#e1d5e7;strokeColor=#d95f02;" vertex="1" parent="1">
+            <mxGeometry x="700" y="530" width="100" height="40" as="geometry" />
+          </mxCell>
+        </object>
+        <object label="Simulation Successful" concept="effect" status="attainment" actor="" turnsTrue="" turnsFalse="" id="8wLKqJ9eaM9PoR_k7nTy-44">
+          <mxCell style="ellipse;whiteSpace=wrap;html=1;strokeWidth=3;fontSize=15;fillColor=#e1d5e7;strokeColor=#0000FF;" vertex="1" parent="1">
+            <mxGeometry x="750" y="450" width="110" height="40" as="geometry" />
+          </mxCell>
+        </object>
+        <object label="Simulation Failed" concept="effect" status="failure" actor="" turnsTrue="" turnsFalse="" id="8wLKqJ9eaM9PoR_k7nTy-45">
+          <mxCell style="ellipse;whiteSpace=wrap;html=1;strokeWidth=3;fontSize=15;fillColor=#e1d5e7;strokeColor=#d95f02;" vertex="1" parent="1">
+            <mxGeometry x="880" y="460" width="100" height="40" as="geometry" />
+          </mxCell>
+        </object>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

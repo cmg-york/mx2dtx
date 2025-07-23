@@ -126,22 +126,16 @@ public class dtxTranslator extends Translator {
 				for (GMNode eff:((GMTask) n).getEffects()) {
 					effects += getIndent(3) + getXMLEffect(eff.getCamelLabel(),eff.getDescription(),
 							getEffectStatus(((GMEffect) eff).getEffectStatus()),String.valueOf(((GMEffect) eff).getInWeight())) + "\n";
-					
-					//A unique turns true on the label
-					//if (((GMEffect) eff).useLabel()) {
-					//	effects += getIndent(4) + getXMLTurnsTrue(eff.getCamelLabel()) + "\n";
-					//} else { //Has lists of trues and falses
-						for (String truePred: ((GMEffect) eff).getTruePredicates()) {
-							effects += getIndent(4) + getXMLTurnsTrue(truePred) + "\n";
-						}
-						for (String falsePred: ((GMEffect) eff).getFalsePredicates()) {
-							effects += getIndent(4) + getXMLTurnsFalse(falsePred) + "\n";
-						}
-						for (Entry<String, String> var: ((GMEffect) eff).getVariables().entrySet()) {
-							effects += getIndent(4) + getXMLVarSet(var.getKey(),var.getValue()) + "\n";
-						}
-					//}
-						
+
+					for (String truePred: ((GMEffect) eff).getTruePredicates()) {
+						effects += getIndent(4) + getXMLTurnsTrue(truePred) + "\n";
+					}
+					for (String falsePred: ((GMEffect) eff).getFalsePredicates()) {
+						effects += getIndent(4) + getXMLTurnsFalse(falsePred) + "\n";
+					}
+					for (Entry<String, String> var: ((GMEffect) eff).getVariables().entrySet()) {
+						effects += getIndent(4) + getXMLVarSet(var.getKey(),var.getValue()) + "\n";
+					}
 						
 					if (eff.getIncomingPrecedences().size()>0) { 
 						effects += getIndent(3) + "<pre>" + "\n";
@@ -248,7 +242,12 @@ public class dtxTranslator extends Translator {
 						String term = cont.getContributionOrigin().getCamelLabel();
 						
 						if (cont.getContributionOrigin() instanceof GMEffect) {
-							term = "<predicateID>" + term + "</predicateID>"; 
+							if (((GMEffect) cont.getContributionOrigin()).useLabel()) {
+								term = "<predicateID>" + term + "</predicateID>";
+							} else {
+								term = "<effectID>" + term + "</effectID>";
+							}
+							 
 						} else if (cont.getContributionOrigin()  instanceof GMGoal) {
 							term = "<goalID>" + term + "</goalID>";
 						} else if (cont.getContributionOrigin()  instanceof GMTask) { 
@@ -271,13 +270,13 @@ public class dtxTranslator extends Translator {
 				
 				if (((WithFormula) n).hasDtxFormula()) {
 					//It is a named box with a formula already in DTX
-					condBoxes += "<condBox name = \"" + n.getCamelLabel() + "\">" + ((WithFormula) n).getDtxFormula() + "</condBox>\n";
+					condBoxes += "<condBox name = \"" + n.getCamelLabel() + "_Cond\">" + ((WithFormula) n).getDtxFormula() + "</condBox>\n";
 				} else if (((WithFormula) n).hasFormula()) {
 					//It is a named box but has a non-XML formula
-					condBoxes += "<condBox name = \"" + n.getCamelLabel() + "\">" + parser.parse(((WithFormula) n).getFormula()) + "</condBox>\n";
+					condBoxes += "<condBox name = \"" + n.getCamelLabel() + "_Cond\">" + parser.parse(((WithFormula) n).getFormula()) + "</condBox>\n";
 				} else {
 					//Label has the formula
-					condBoxes += "<condBox name = \"default" + cBoxCounter++ + "\" >\n" + getIndent(1) + parser.parse(n.getLabel()) + "</condBox>\n";	
+					condBoxes += "<condBox name = \"default" + cBoxCounter++ + "_Cond\" >\n" + getIndent(1) + parser.parse(n.getLabel()) + "</condBox>\n";	
 				}
 				 
 			

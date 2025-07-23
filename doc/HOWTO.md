@@ -95,6 +95,11 @@ Each can be selected from the library and dropped into the diagram.
 ### Specifying Roots
 * The diagram must contain a root goal and a root quality. While the translator will do its best to guess which one this is, it is optimal if it is explicitly specified.
 * Simply select the goal/quality, `Right Click -> Edit Data...` and then set `isRoot` to `true`.
+### Specifying Numbers of Runs
+* By default, the model is single-run, i.e., one trajectory of effects that satisfies the root is one episode.
+* To make an episode multi-run:
+	* Locate the root goal and `Right Click -> Edit Data...` 
+	* Set `runs` to the desired number of runs.
 ### Saving and Translating
 * Save the diagram as an uncompressed DRAWIO file
 * The file can be given as an input to the `mx2dtx` tool. See [README](../README.md) for directions.

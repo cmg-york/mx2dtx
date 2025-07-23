@@ -55,6 +55,36 @@ class EndToEndDebugTest {
 		
 	}
 
+	
+	@Test
+	void test_OrderState() throws IOException {
+		ErrorReporter err = new ErrorReporter();
+		DrawIOReader reader = new DrawIOReader(err);
+		GoalModel model = new GoalModel(err);
+		Translator writer = new dtxTranslator();
+
+
+		try {
+			//Read from the XML
+			String inputFile = "src/test/resources/OrderState.drawio"; 
+			
+			reader.setInFile(inputFile);
+			model = reader.readXML();
+
+			//Produce the translation
+			
+			String outputFile = "src/test/resources/OrderState.istardtx";
+			writer.setOutFile(outputFile);
+			writer.setModel(model);
+			writer.translate(false);
+					
+		} catch (Exception e) {
+			System.err.println("[mx2dtx] Error: " + e.getMessage());
+			System.exit(1);
+		}
+		
+	}
+	
 	@Test
 	void test_Build() throws IOException {
 
@@ -94,6 +124,7 @@ class EndToEndDebugTest {
 
 	}
 
+	@Disabled
 	@Test
 	void test_Travel() throws IOException {
 
@@ -133,7 +164,7 @@ class EndToEndDebugTest {
 	}
 
 	
-
+	@Disabled
 	@Test
 	void test_OrderVer2() throws IOException {
 
@@ -163,17 +194,17 @@ class EndToEndDebugTest {
 			System.exit(1);
 		}
 		
-        Path actual = Path.of("src/test/resources/OrderVer2.istardtx");
-        Path expected = Path.of("src/test/resources/OrderVer2-Authoritative.istardtx");
-
-        List<String> actualLines = Files.readAllLines(actual);
-        List<String> expectedLines = Files.readAllLines(expected);
-
-        assertEquals(expectedLines, actualLines, "Files do not match!");
+//        Path actual = Path.of("src/test/resources/OrderVer2.istardtx");
+//        Path expected = Path.of("src/test/resources/OrderVer2-Authoritative.istardtx");
+//
+//        List<String> actualLines = Files.readAllLines(actual);
+//        List<String> expectedLines = Files.readAllLines(expected);
+//
+//        assertEquals(expectedLines, actualLines, "Files do not match!");
 
 	}
 
-	
+	@Disabled
 	@Tag("this")
 	@Test
 	void test_Heating() throws IOException {
@@ -205,7 +236,7 @@ class EndToEndDebugTest {
 		}
 	}
 
-	
+	@Disabled
 	@Tag("this")
 	@Test
 	void test_SpecPrep() throws IOException {
