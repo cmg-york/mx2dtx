@@ -106,7 +106,7 @@ public class dtxTranslator extends Translator {
 			header += "<header title = \"\"\n    author = \"\"\n    source = \"\"\n    lastUpdated = \"Test\">\n</header>";
 		}
 		
-		options += "<options continuous = \"false\"\n    infeasibleActionPenalty = \"100\">\n</options>";
+		options += "<options continuous = \"true\"\n    infeasibleActionPenalty = \"100\">\n</options>";
 		
 		actor = "<actor name=\"default\" description=\"\">";
 		

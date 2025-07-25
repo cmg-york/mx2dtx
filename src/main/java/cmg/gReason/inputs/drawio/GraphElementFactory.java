@@ -122,9 +122,9 @@ public class GraphElementFactory {
 					dtxFormula,
 					Boolean.parseBoolean(cl.clean(e.getAttribute("isRoot")))
 					);
-			System.out.println("Quality " + g.getLabel() + " root:" + cl.clean(e.getAttribute("isRoot")));
-			System.out.println("Quality " + g.getLabel() + " root:" + Boolean.parseBoolean(cl.clean(e.getAttribute("isRoot"))));
-			System.out.println("Quality " + g.getLabel() + " root:" + ((Quality) g).isQRoot());
+			//System.out.println("Quality " + g.getLabel() + " root:" + cl.clean(e.getAttribute("isRoot")));
+			//System.out.println("Quality " + g.getLabel() + " root:" + Boolean.parseBoolean(cl.clean(e.getAttribute("isRoot"))));
+			//System.out.println("Quality " + g.getLabel() + " root:" + ((Quality) g).isQRoot());
 			break;
 			
 		case "precondition":

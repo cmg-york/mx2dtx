@@ -44,7 +44,7 @@ public class IdentifierRegistry {
 		}
 
 		for (HashMap.Entry<String, String> entry : identifiers.entrySet()) {
-			System.out.println(entry.getKey() + " = " + entry.getValue());
+			//System.out.println(entry.getKey() + " = " + entry.getValue());
 			if ((entry.getValue().equals("predicateID")) && (!effectPredicates.containsKey(entry.getKey()))) {
 		    	err.addError("Predicate '" + entry.getKey() + "' does not appear in any effect.", "IdentifierRegistry::validate()");
 		    }

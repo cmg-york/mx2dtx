@@ -205,7 +205,7 @@ public class Validator {
 		}
 		
 		if (!hasInitialization) {
-			err.addError("Initialization element missing.", "GoalModel::generalValidation()");
+			err.addWarning("Initialization element missing.", "GoalModel::generalValidation()");
 		}
 		if (!hasExportedSet) {
 			err.addWarning("Exported set missing.", "GoalModel::generalValidation()");

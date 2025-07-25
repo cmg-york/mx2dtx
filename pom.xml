@@ -88,13 +88,18 @@
           				<goals>
             				<goal>run</goal>
           				</goals>
-          				<configuration>
-            				<target>
-             					<copy todir="../istar-unmarshal/src/test/resources/dtx2dtg">
-                					<fileset dir="src/test/resources" includes="**/*.istardtx" excludes="**/*-Authoritative.*" />
-              					</copy>
-            				</target>
-          				</configuration>
+				      <configuration>
+				        <target name="conditionally-copy-files">
+				          <copy todir="../istar-unmarshal/src/test/resources/dtx2dtg"
+				                failonerror="false">
+				            <fileset dir="src/test/resources"
+				                     includes="**/*.istardtx"
+				                     excludes="**/*-Authoritative.*"
+				                     erroronmissingdir="false"
+				                     />
+				          </copy>
+				        </target>
+				      </configuration>
         			</execution>
       			</executions>
     		</plugin>
