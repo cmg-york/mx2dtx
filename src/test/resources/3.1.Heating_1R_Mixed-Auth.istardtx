@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<iStarDT xmlns="https://example.org/istar-dt-x"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="https://example.org/istar-dt-x ../xsd/istar-rl-schema_v4.xsd">
+
+
+<!--
+*** H E A D E R ***
+-->
+
+<header title = ""
+    author = ""
+    source = ""
+    lastUpdated = "Test">
+</header>
+
+
+<!--
+*** O P T I O N S ***
+-->
+<options continuous = "true"
+    infeasibleActionPenalty = "100">
+</options>
+
+
+<!--
+*** A C T O R S ***
+-->
+<actors>
+<actor name="default" description="">
+
+
+<!--
+*** G O A L S ***
+-->
+<goals>
+   <goal name = "controlHeater" description = "Control Heater" root = "true" terminal = "false" episodeLength = "1">
+      <refinement type = "OR">
+         <childTask ref = "sendOnSignal"/>
+         <childTask ref = "sendOffSignal"/>
+      </refinement>
+   </goal>
+</goals>
+
+
+<!--
+*** T A S K S ***
+-->
+<tasks>
+   <task name = "sendOnSignal" description = "Send On Signal">
+      <effectGroup>
+         <effect name = "signalOnS_Eff" description = "signalOnS" satisfying = "true" probability = "0.95">
+            <turnsTrue>signalOnS</turnsTrue>
+         </effect>
+         <effect name = "signalOnF_Eff" description = "signalOnF" satisfying = "false" probability = "0.05">
+            <turnsTrue>signalOnF</turnsTrue>
+         </effect>
+      </effectGroup>
+   </task>
+   <task name = "sendOffSignal" description = "Send Off Signal">
+      <effectGroup>
+         <effect name = "signalOffS_Eff" description = "signalOffS" satisfying = "true" probability = "0.95">
+            <turnsTrue>signalOffS</turnsTrue>
+         </effect>
+         <effect name = "signalOffF_Eff" description = "signalOffF" satisfying = "false" probability = "0.05">
+            <turnsTrue>signalOffF</turnsTrue>
+         </effect>
+      </effectGroup>
+   </task>
+</tasks>
+
+
+<!--
+*** Q U A L I T I E S ***
+-->
+<qualities>
+   <quality name = "cost" description = "Cost" root = "false">
+<subtract>
+<left><numConst>0</numConst></left>
+<right><multiply>
+ <numConst>0.06</numConst>
+ <qualID>runningTime</qualID>
+</multiply></right>
+</subtract>
+   </quality>
+   <quality name = "comfort" description = "Comfort" root = "false">
+<multiply>
+ <subtract>
+  <left><qualID>roomTemperature</qualID></left>
+  <right><numConst>23</numConst></right>
+ </subtract>
+ <subtract>
+<left>
+  <qualID>roomTemperature</qualID>
+</left>
+  <right>
+<numConst>23</numConst>
+</right>
+ </subtract>
+ <numConst>-0.1</numConst>
+</multiply>
+   </quality>
+   <quality name = "overallQuality" description = "Overall Quality" root = "true">
+      <add>
+         <multiply><numConst>0.3</numConst><qualID>cost</qualID></multiply>
+         <multiply><numConst>0.7</numConst><qualID>comfort</qualID></multiply>
+      </add>
+   </quality>
+   <quality name = "roomTemperature" description = "Room Temperature" root = "false">
+<add>
+ <numConst>0.5</numConst>
+ <multiply>
+  <numConst>0.9</numConst>
+  <previous>
+   <qualID>roomTemperature</qualID>
+  </previous>
+ </multiply>
+ <multiply>
+  <conditionID>hvacOn</conditionID>
+  <add>
+   <multiply>
+    <numConst>0.05</numConst>
+    <previous>
+     <qualID>roomTemperature</qualID>
+    </previous>  
+   </multiply>
+   <numConst>1.75</numConst>
+  </add>
+ </multiply>
+</add>
+   </quality>
+   <quality name = "runningTime" description = "Running Time" root = "false">
+<add>
+ <previous><qualID>runningTime</qualID></previous>
+ <multiply>
+  <numConst>10</numConst>
+  <conditionID>hvacOn</conditionID>
+ </multiply>
+</add>
+   </quality>
+</qualities>
+
+
+<!--
+*** CO N D I T I O N   B O X E S ***
+-->
+<condBoxes>
+<condBox name = "hvacOn"><or><and><previous><conditionID>hvacOn</conditionID></previous><not><predicateID>signalOffS</predicateID></not></and><predicateID>signalOnS</predicateID></or></condBox>
+</condBoxes>
+
+
+<!--
+*** I N I T I A L I Z AT I O N S ***
+-->
+<initializations>
+      <initialization element = "roomTemperature">30</initialization>
+      <initialization element = "runningTime">0</initialization>
+</initializations>
+
+
+<!--
+*** C R O S S   R U N S  ***
+-->
+<crossRuns>
+      <crossRun><qualID>roomTemperature</qualID></crossRun>
+      <crossRun><qualID>runningTime</qualID></crossRun>
+      <crossRun><conditionID>hvacOn</conditionID></crossRun>
+</crossRuns>
+
+
+<!--
+*** E X P O R T S ***
+-->
+<exportedSet>
+      <export continuous = "false"><conditionID>hvacOn</conditionID></export>
+      <export continuous = "true" minVal = "-10" maxVal = "100"><qualID>roomTemperature</qualID></export>
+      <export continuous = "true" minVal = "0" maxVal = "100"><qualID>runningTime</qualID></export>
+</exportedSet>
+
+
+<!--
+*** P R E D I C A T E S ***
+-->
+<predicates>
+   <predicate description = "">signalOnF</predicate>
+   <predicate description = "">signalOffF</predicate>
+   <predicate description = "">signalOnS</predicate>
+   <predicate description = "">signalOffS</predicate>
+</predicates>
+
+
+<!--
+*** V A R I A B L E S ***
+-->
+<variables>
+</variables>
+
+</actor>
+</actors>
+</iStarDT>

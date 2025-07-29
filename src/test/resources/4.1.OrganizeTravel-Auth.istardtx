@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<iStarDT xmlns="https://example.org/istar-dt-x"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="https://example.org/istar-dt-x ../xsd/istar-rl-schema_v4.xsd">
+
+
+<!--
+*** H E A D E R ***
+-->
+
+<header title = ""
+    author = ""
+    source = ""
+    lastUpdated = "Test">
+</header>
+
+
+<!--
+*** O P T I O N S ***
+-->
+<options continuous = "true"
+    infeasibleActionPenalty = "100">
+</options>
+
+
+<!--
+*** A C T O R S ***
+-->
+<actors>
+<actor name="default" description="">
+
+
+<!--
+*** G O A L S ***
+-->
+<goals>
+   <goal name = "travelOrganized" description = "Travel Organized" root = "true" terminal = "false" episodeLength = "1">
+      <refinement type = "AND">
+         <childGoal ref = "ticketsBooked"/>
+         <childGoal ref = "authorizationObtained"/>
+      </refinement>
+   </goal>
+   <goal name = "ticketsBooked" description = "Tickets Booked" root = "false" terminal = "false" episodeLength = "1">
+      <refinement type = "OR">
+         <childTask ref = "bookRefundableTickets"/>
+         <childTask ref = "bookNonRefundableTickets"/>
+      </refinement>
+   </goal>
+   <goal name = "authorizationSigned" description = "Authorization Signed" root = "false" terminal = "false" episodeLength = "1">
+      <refinement type = "OR">
+         <childTask ref = "committeeAuthorizes"/>
+         <childTask ref = "headAuthorizes"/>
+      </refinement>
+      <pre>
+         <goalID>applicationPrepared</goalID>
+      </pre>
+   </goal>
+   <goal name = "authorizationObtained" description = "Authorization Obtained" root = "false" terminal = "false" episodeLength = "1">
+      <refinement type = "AND">
+         <childGoal ref = "authorizationSigned"/>
+         <childGoal ref = "applicationPrepared"/>
+      </refinement>
+   </goal>
+   <goal name = "applicationPrepared" description = "Application Prepared" root = "false" terminal = "false" episodeLength = "1">
+      <refinement type = "OR">
+         <childTask ref = "fillInPaperForm"/>
+         <childTask ref = "fillInOnlineForm"/>
+      </refinement>
+      <pre>
+         <goalID>ticketsBooked</goalID>
+      </pre>
+   </goal>
+</goals>
+
+
+<!--
+*** T A S K S ***
+-->
+<tasks>
+   <task name = "bookRefundableTickets" description = "Book Refundable Tickets">
+      <effectGroup>
+         <effect name = "refTixSucc_Eff" description = "refTixSucc" satisfying = "true" probability = "0.95">
+            <turnsTrue>refTixSucc</turnsTrue>
+         </effect>
+         <effect name = "refTixFailed_Eff" description = "refTixFailed" satisfying = "false" probability = "0.05">
+            <turnsTrue>refTixFailed</turnsTrue>
+         </effect>
+      </effectGroup>
+   </task>
+   <task name = "bookNonRefundableTickets" description = "Book NonRefundable Tickets">
+      <effectGroup>
+         <effect name = "nonRefTixSucc_Eff" description = "nonRefTixSucc" satisfying = "true" probability = "0.95">
+            <turnsTrue>nonRefTixSucc</turnsTrue>
+         </effect>
+         <effect name = "nonRefTixFailed_Eff" description = "nonRefTixFailed" satisfying = "false" probability = "0.05">
+            <turnsTrue>nonRefTixFailed</turnsTrue>
+         </effect>
+      </effectGroup>
+   </task>
+   <task name = "committeeAuthorizes" description = "Committee Authorizes">
+      <effectGroup>
+         <effect name = "cmtGranted_Eff" description = "cmtGranted" satisfying = "true" probability = "0.9">
+            <turnsTrue>cmtGranted</turnsTrue>
+         </effect>
+         <effect name = "cmtDenied_Eff" description = "cmtDenied" satisfying = "false" probability = "0.1">
+            <turnsTrue>cmtDenied</turnsTrue>
+         </effect>
+      </effectGroup>
+   </task>
+   <task name = "headAuthorizes" description = "Head Authorizes">
+      <effectGroup>
+         <effect name = "headGranted_Eff" description = "headGranted" satisfying = "true" probability = "0.7">
+            <turnsTrue>headGranted</turnsTrue>
+         </effect>
+         <effect name = "headDenied_Eff" description = "headDenied" satisfying = "false" probability = "0.3">
+            <turnsTrue>headDenied</turnsTrue>
+         </effect>
+      </effectGroup>
+   </task>
+   <task name = "fillInPaperForm" description = "Fill in Paper Form">
+      <effectGroup>
+         <effect name = "paperSubmitted_Eff" description = "paperSubmitted" satisfying = "true" probability = "0.7">
+            <turnsTrue>paperSubmitted</turnsTrue>
+         </effect>
+         <effect name = "paperLost_Eff" description = "paperLost" satisfying = "false" probability = "0.1">
+            <turnsTrue>paperLost</turnsTrue>
+         </effect>
+         <effect name = "paperSubmittedWithProblems_Eff" description = "paperSubmittedWithProblems" satisfying = "true" probability = "0.2">
+            <turnsTrue>paperSubmittedWithProblems</turnsTrue>
+         </effect>
+      </effectGroup>
+   </task>
+   <task name = "fillInOnlineForm" description = "Fill in Online Form">
+      <effectGroup>
+         <effect name = "onlineSubmitted_Eff" description = "onlineSubmitted" satisfying = "true" probability = "0.89">
+            <turnsTrue>onlineSubmitted</turnsTrue>
+         </effect>
+         <effect name = "onlineLost_Eff" description = "onlineLost" satisfying = "false" probability = "0.01">
+            <turnsTrue>onlineLost</turnsTrue>
+         </effect>
+         <effect name = "onlineSubmittedWithProblems_Eff" description = "onlineSubmittedWithProblems" satisfying = "true" probability = "0.1">
+            <turnsTrue>onlineSubmittedWithProblems</turnsTrue>
+         </effect>
+      </effectGroup>
+   </task>
+</tasks>
+
+
+<!--
+*** Q U A L I T I E S ***
+-->
+<qualities>
+   <quality name = "avoidMoneyLoss" description = "Avoid Money Loss" root = "false">
+      <multiply><numConst>1.0</numConst><predicateID>refTixSucc</predicateID></multiply>
+   </quality>
+   <quality name = "privacy" description = "Privacy" root = "false">
+      <multiply><numConst>0.8</numConst><taskID>headAuthorizes</taskID></multiply>
+   </quality>
+   <quality name = "overallQuality" description = "Overall Quality" root = "true">
+      <add>
+         <multiply><numConst>0.7</numConst><qualID>avoidMoneyLoss</qualID></multiply>
+         <multiply><numConst>0.3</numConst><qualID>privacy</qualID></multiply>
+         <multiply><numConst>0.1</numConst><qualID>applicationEfficiency</qualID></multiply>
+      </add>
+   </quality>
+   <quality name = "applicationEfficiency" description = "ApplicationEfficiency" root = "false">
+      <add>
+         <multiply><numConst>0.7</numConst><predicateID>paperSubmitted</predicateID></multiply>
+         <multiply><numConst>0.4</numConst><predicateID>paperSubmittedWithProblems</predicateID></multiply>
+         <multiply><numConst>1.0</numConst><predicateID>onlineSubmitted</predicateID></multiply>
+         <multiply><numConst>0.1</numConst><predicateID>onlineSubmittedWithProblems</predicateID></multiply>
+      </add>
+   </quality>
+</qualities>
+
+
+<!--
+*** CO N D I T I O N   B O X E S ***
+-->
+<condBoxes>
+</condBoxes>
+
+
+<!--
+*** I N I T I A L I Z AT I O N S ***
+-->
+<initializations>
+</initializations>
+
+
+<!--
+*** C R O S S   R U N S  ***
+-->
+<crossRuns>
+      <crossRun><qualID>avoidMoneyLoss</qualID></crossRun>
+      <crossRun><qualID>privacy</qualID></crossRun>
+      <crossRun><qualID>applicationEfficiency</qualID></crossRun>
+</crossRuns>
+
+
+<!--
+*** E X P O R T S ***
+-->
+<exportedSet>
+      <export continuous = "false"><goalID>ticketsBooked</goalID></export>
+      <export continuous = "false"><goalID>applicationPrepared</goalID></export>
+      <export continuous = "false"><goalID>authorizationSigned</goalID></export>
+</exportedSet>
+
+
+<!--
+*** P R E D I C A T E S ***
+-->
+<predicates>
+   <predicate description = "">nonRefTixFailed</predicate>
+   <predicate description = "">paperSubmitted</predicate>
+   <predicate description = "">onlineLost</predicate>
+   <predicate description = "">headGranted</predicate>
+   <predicate description = "">nonRefTixSucc</predicate>
+   <predicate description = "">paperLost</predicate>
+   <predicate description = "">paperSubmittedWithProblems</predicate>
+   <predicate description = "">refTixSucc</predicate>
+   <predicate description = "">onlineSubmitted</predicate>
+   <predicate description = "">onlineSubmittedWithProblems</predicate>
+   <predicate description = "">cmtGranted</predicate>
+   <predicate description = "">cmtDenied</predicate>
+   <predicate description = "">headDenied</predicate>
+   <predicate description = "">refTixFailed</predicate>
+</predicates>
+
+
+<!--
+*** V A R I A B L E S ***
+-->
+<variables>
+</variables>
+
+</actor>
+</actors>
+</iStarDT>

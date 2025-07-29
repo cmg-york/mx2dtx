@@ -1,12 +1,12 @@
-<mxfile host="Electron" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/28.0.4 Chrome/138.0.7204.97 Electron/37.2.1 Safari/537.36" compressed="false" version="28.0.4">
+<mxfile host="Electron" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/28.0.6 Chrome/138.0.7204.100 Electron/37.2.3 Safari/537.36" compressed="false" version="28.0.6">
   <diagram id="UxMqaiS_ZeVZrvt0yCDw" name="Page-1">
     <mxGraphModel dx="2526" dy="875" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1100" pageHeight="850" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
-        <object label="Order Material" concept="goal" actor="default" runs="1" isRoot="" id="s7Z0I-bON0rsUeWnYovQ-43">
+        <object label="Order Material" concept="goal" actor="default" id="s7Z0I-bON0rsUeWnYovQ-43">
           <mxCell style="rounded=1;whiteSpace=wrap;html=1;arcSize=46;fillColor=#d5e8d4;strokeColor=#688F51;fontSize=15;strokeWidth=3;" parent="1" vertex="1">
-            <mxGeometry x="275" y="180" width="90" height="40" as="geometry" />
+            <mxGeometry x="275" y="170" width="95" height="50" as="geometry" />
           </mxCell>
         </object>
         <object label="Order From Supplier A" concept="task" actor="default" id="s7Z0I-bON0rsUeWnYovQ-47">
@@ -50,12 +50,12 @@
             </mxGeometry>
           </mxCell>
         </object>
-        <object label="Delivered In Time A" concept="effect" status="attainment" actor="" turnsTrue="aTruePredicate,anotherTruepredicate, someVar := 12" turnsFalse="falsePredicate,anotherfalsePredicate, someVar := 12" id="s7Z0I-bON0rsUeWnYovQ-53">
+        <object label="deliveredInTimeA" concept="effect" status="attainment" actor="" id="s7Z0I-bON0rsUeWnYovQ-53">
           <mxCell style="ellipse;whiteSpace=wrap;html=1;strokeWidth=3;fontSize=15;fillColor=#e1d5e7;strokeColor=#0000FF;" parent="1" vertex="1">
             <mxGeometry x="-10" y="460" width="150" height="40" as="geometry" />
           </mxCell>
         </object>
-        <object label="neverDeliveredA" concept="effect" status="failure" actor="" turnsTrue="signalONS" turnsFalse="hvacOn, signalOffS" id="s7Z0I-bON0rsUeWnYovQ-54">
+        <object label="neverDeliveredA" concept="effect" status="failure" actor="" id="s7Z0I-bON0rsUeWnYovQ-54">
           <mxCell style="ellipse;whiteSpace=wrap;html=1;strokeWidth=3;fontSize=15;fillColor=#e1d5e7;strokeColor=#d95f02;" parent="1" vertex="1">
             <mxGeometry x="200" y="480" width="140" height="40" as="geometry" />
           </mxCell>
@@ -91,12 +91,12 @@
             </mxGeometry>
           </mxCell>
         </object>
-        <object label="deliveredInTimeB" concept="effect" status="attainment" actor="" turnsTrue="" turnsFalse="" id="s7Z0I-bON0rsUeWnYovQ-59">
+        <object label="deliveredInTimeB" concept="effect" status="attainment" actor="" id="s7Z0I-bON0rsUeWnYovQ-59">
           <mxCell style="ellipse;whiteSpace=wrap;html=1;strokeWidth=3;fontSize=15;fillColor=#e1d5e7;strokeColor=#0000FF;" parent="1" vertex="1">
             <mxGeometry x="285" y="430" width="125" height="40" as="geometry" />
           </mxCell>
         </object>
-        <object label="neverDeliveredB" concept="effect" status="failure" actor="" turnsTrue="" id="s7Z0I-bON0rsUeWnYovQ-60">
+        <object label="neverDeliveredB" concept="effect" status="failure" actor="" id="s7Z0I-bON0rsUeWnYovQ-60">
           <mxCell style="ellipse;whiteSpace=wrap;html=1;strokeWidth=3;fontSize=15;fillColor=#e1d5e7;strokeColor=#d95f02;" parent="1" vertex="1">
             <mxGeometry x="530" y="450" width="130" height="40" as="geometry" />
           </mxCell>
@@ -130,20 +130,20 @@
               <mxPoint x="435" y="580.094972067039" as="sourcePoint" />
               <mxPoint x="488.31698548120585" y="580.0294873246582" as="targetPoint" />
               <Array as="points">
-                <mxPoint y="570" />
+                <mxPoint x="30" y="570" />
               </Array>
               <mxPoint as="offset" />
             </mxGeometry>
           </mxCell>
         </object>
-        <object label="Happy Customer" concept="quality" actor="default" id="s7Z0I-bON0rsUeWnYovQ-86">
+        <object label="Reputation" concept="quality" actor="default" id="s7Z0I-bON0rsUeWnYovQ-86">
           <mxCell style="ellipse;shape=cloud;whiteSpace=wrap;html=1;strokeWidth=3;fontSize=15;fillColor=#d5e8d4;strokeColor=#688F51;" parent="1" vertex="1">
             <mxGeometry x="440" y="640" width="100" height="60" as="geometry" />
           </mxCell>
         </object>
-        <object label="Overall Quality" concept="quality" actor="default" isRoot="true" id="s7Z0I-bON0rsUeWnYovQ-89">
+        <object label="Overall Quality" concept="quality" actor="default" id="s7Z0I-bON0rsUeWnYovQ-89">
           <mxCell style="ellipse;shape=cloud;whiteSpace=wrap;html=1;strokeWidth=3;fontSize=15;fillColor=#d5e8d4;strokeColor=#688F51;" parent="1" vertex="1">
-            <mxGeometry x="262.5" y="730" width="97.5" height="60" as="geometry" />
+            <mxGeometry x="262.5" y="730" width="115" height="60" as="geometry" />
           </mxCell>
         </object>
         <object label="0.7" concept="contributionLink" id="s7Z0I-bON0rsUeWnYovQ-90">
@@ -163,13 +163,10 @@
             <mxGeometry relative="1" as="geometry">
               <mxPoint x="403.4482365811225" y="642.2988243874149" as="sourcePoint" />
               <mxPoint x="510" y="670" as="targetPoint" />
-              <Array as="points">
-                <mxPoint x="420" y="740" />
-              </Array>
             </mxGeometry>
           </mxCell>
         </object>
-        <object label="deliveredLateA" concept="effect" status="attainment" actor="" turnsTrue="" id="vVbBvmcP8cE8SM1TlQaR-1">
+        <object label="deliveredLateA" concept="effect" status="attainment" actor="" id="vVbBvmcP8cE8SM1TlQaR-1">
           <mxCell style="ellipse;whiteSpace=wrap;html=1;strokeWidth=3;fontSize=15;fillColor=#e1d5e7;strokeColor=#0000FF;" parent="1" vertex="1">
             <mxGeometry x="50" y="540" width="150" height="40" as="geometry" />
           </mxCell>
@@ -183,7 +180,7 @@
             </mxGeometry>
           </mxCell>
         </object>
-        <object label="deliveredLateB" concept="effect" status="attainment" actor="" turnsTrue="" turnsFalse="" id="vVbBvmcP8cE8SM1TlQaR-3">
+        <object label="deliveredLateB" concept="effect" status="attainment" actor="" id="vVbBvmcP8cE8SM1TlQaR-3">
           <mxCell style="ellipse;whiteSpace=wrap;html=1;strokeWidth=3;fontSize=15;fillColor=#e1d5e7;strokeColor=#0000FF;" parent="1" vertex="1">
             <mxGeometry x="410" y="490" width="120" height="40" as="geometry" />
           </mxCell>
@@ -248,7 +245,7 @@
         <object label="1.0" concept="contributionLink" id="vVbBvmcP8cE8SM1TlQaR-9">
           <mxCell style="endArrow=classic;html=1;fontSize=15;elbow=vertical;curved=1;strokeColor=#000000;" parent="1" source="s7Z0I-bON0rsUeWnYovQ-60" target="s7Z0I-bON0rsUeWnYovQ-84" edge="1">
             <mxGeometry x="-0.1022" y="-24" relative="1" as="geometry">
-              <mxPoint x="600" y="530" as="sourcePoint" />
+              <mxPoint x="466.98417253092384" y="539.5237412036154" as="sourcePoint" />
               <mxPoint x="169.23877091453505" y="664.7850562824508" as="targetPoint" />
               <Array as="points">
                 <mxPoint x="400" y="640" />
@@ -295,118 +292,245 @@
         </object>
         <object label="0.7" concept="contributionLink" id="vVbBvmcP8cE8SM1TlQaR-13">
           <mxCell style="endArrow=classic;html=1;fontSize=15;elbow=vertical;curved=1;strokeColor=#000000;" parent="1" source="vVbBvmcP8cE8SM1TlQaR-3" target="s7Z0I-bON0rsUeWnYovQ-86" edge="1">
-            <mxGeometry x="0.1313" y="-12" relative="1" as="geometry">
+            <mxGeometry x="0.6258" y="-3" relative="1" as="geometry">
               <mxPoint x="368.85932908865243" y="479.666898123636" as="sourcePoint" />
               <mxPoint x="477.7629447379031" y="653.1302248916327" as="targetPoint" />
               <Array as="points">
-                <mxPoint x="540" y="580" />
+                <mxPoint x="530" y="610" />
               </Array>
               <mxPoint as="offset" />
             </mxGeometry>
           </mxCell>
         </object>
-        <mxCell id="druUEQYMw-QrY05D8Slh-2" value="" style="group" parent="1" vertex="1" connectable="0">
-          <mxGeometry x="40" y="790" width="310" height="70" as="geometry" />
+        <object label="Assign Work" concept="goal" actor="default" id="vVbBvmcP8cE8SM1TlQaR-14">
+          <mxCell style="rounded=1;whiteSpace=wrap;html=1;arcSize=46;fillColor=#d5e8d4;strokeColor=#688F51;fontSize=15;strokeWidth=3;" parent="1" vertex="1">
+            <mxGeometry x="770" y="180" width="100" height="50" as="geometry" />
+          </mxCell>
+        </object>
+        <object label="Assign to Subcontractor A" concept="task" actor="default" id="vVbBvmcP8cE8SM1TlQaR-15">
+          <mxCell style="shape=hexagon;perimeter=hexagonPerimeter2;whiteSpace=wrap;html=1;fixedSize=1;strokeWidth=3;fontSize=15;size=20;fillColor=#d5e8d4;strokeColor=#688F51;" parent="1" vertex="1">
+            <mxGeometry x="720" y="330" width="150" height="50" as="geometry" />
+          </mxCell>
+        </object>
+        <object label="Assign to Subcontractor B" concept="task" actor="default" id="vVbBvmcP8cE8SM1TlQaR-16">
+          <mxCell style="shape=hexagon;perimeter=hexagonPerimeter2;whiteSpace=wrap;html=1;fixedSize=1;strokeWidth=3;fontSize=15;size=20;fillColor=#d5e8d4;strokeColor=#688F51;" parent="1" vertex="1">
+            <mxGeometry x="890" y="330" width="150" height="50" as="geometry" />
+          </mxCell>
+        </object>
+        <object label="OR" concept="orDecomp" id="vVbBvmcP8cE8SM1TlQaR-18">
+          <mxCell style="orthogonalLoop=1;jettySize=auto;html=1;fontSize=20;endArrow=open;endFill=0;endSize=17;strokeColor=#000000;curved=1;" parent="1" source="vVbBvmcP8cE8SM1TlQaR-15" target="vVbBvmcP8cE8SM1TlQaR-14" edge="1">
+            <mxGeometry x="0.0383" y="2" relative="1" as="geometry">
+              <mxPoint x="375" y="300" as="sourcePoint" />
+              <mxPoint x="340" y="230" as="targetPoint" />
+              <mxPoint as="offset" />
+            </mxGeometry>
+          </mxCell>
+        </object>
+        <object label="OR" concept="orDecomp" id="vVbBvmcP8cE8SM1TlQaR-19">
+          <mxCell style="orthogonalLoop=1;jettySize=auto;html=1;fontSize=20;endArrow=open;endFill=0;endSize=17;strokeColor=#000000;curved=1;" parent="1" source="vVbBvmcP8cE8SM1TlQaR-16" target="vVbBvmcP8cE8SM1TlQaR-14" edge="1">
+            <mxGeometry x="0.0383" y="2" relative="1" as="geometry">
+              <mxPoint x="576.086956521739" y="310" as="sourcePoint" />
+              <mxPoint x="614.130434782609" y="240" as="targetPoint" />
+              <mxPoint as="offset" />
+            </mxGeometry>
+          </mxCell>
+        </object>
+        <object label="Build Roof" concept="goal" actor="default" runs="1" id="vVbBvmcP8cE8SM1TlQaR-20">
+          <mxCell style="rounded=1;whiteSpace=wrap;html=1;arcSize=46;fillColor=#d5e8d4;strokeColor=#688F51;fontSize=15;strokeWidth=3;" parent="1" vertex="1">
+            <mxGeometry x="420" y="40" width="100" height="50" as="geometry" />
+          </mxCell>
+        </object>
+        <object label="AND" concept="andDecomp" id="vVbBvmcP8cE8SM1TlQaR-21">
+          <mxCell style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontSize=20;endArrow=ERone;endFill=0;endSize=17;" parent="1" source="s7Z0I-bON0rsUeWnYovQ-43" target="vVbBvmcP8cE8SM1TlQaR-20" edge="1">
+            <mxGeometry relative="1" as="geometry">
+              <mxPoint x="360" y="150" as="sourcePoint" />
+              <mxPoint x="360" y="100" as="targetPoint" />
+            </mxGeometry>
+          </mxCell>
+        </object>
+        <object label="AND" concept="andDecomp" id="vVbBvmcP8cE8SM1TlQaR-22">
+          <mxCell style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontSize=20;endArrow=ERone;endFill=0;endSize=17;" parent="1" source="vVbBvmcP8cE8SM1TlQaR-14" target="vVbBvmcP8cE8SM1TlQaR-20" edge="1">
+            <mxGeometry relative="1" as="geometry">
+              <mxPoint x="360.86538461538476" y="180" as="sourcePoint" />
+              <mxPoint x="451.6346153846157" y="100" as="targetPoint" />
+            </mxGeometry>
+          </mxCell>
+        </object>
+        <object label="" concept="effectGroup" id="vVbBvmcP8cE8SM1TlQaR-23">
+          <mxCell style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;strokeWidth=2;fontSize=15;fillColor=#e1d5e7;strokeColor=#9673a6;" parent="1" vertex="1">
+            <mxGeometry x="770" y="440" width="20" height="20" as="geometry" />
+          </mxCell>
+        </object>
+        <object label="eff" concept="effectLink" id="vVbBvmcP8cE8SM1TlQaR-24">
+          <mxCell style="orthogonalLoop=1;jettySize=auto;html=1;fontSize=20;endArrow=open;endFill=0;endSize=7;elbow=vertical;strokeColor=#000302;rounded=0;" parent="1" source="vVbBvmcP8cE8SM1TlQaR-15" target="vVbBvmcP8cE8SM1TlQaR-23" edge="1">
+            <mxGeometry relative="1" as="geometry">
+              <mxPoint x="870" y="430" as="sourcePoint" />
+              <mxPoint x="655" y="285" as="targetPoint" />
+            </mxGeometry>
+          </mxCell>
+        </object>
+        <object label="goodQualityA" concept="effect" status="attainment" actor="" id="vVbBvmcP8cE8SM1TlQaR-25">
+          <mxCell style="ellipse;whiteSpace=wrap;html=1;strokeWidth=3;fontSize=15;fillColor=#e1d5e7;strokeColor=#0000FF;" parent="1" vertex="1">
+            <mxGeometry x="675" y="500" width="120" height="40" as="geometry" />
+          </mxCell>
+        </object>
+        <object label="0.7" concept="effectGroupLink" id="vVbBvmcP8cE8SM1TlQaR-27">
+          <mxCell style="endArrow=openThin;html=1;fontSize=15;endFill=0;elbow=vertical;curved=1;strokeColor=#000000;rounded=0;" parent="1" source="vVbBvmcP8cE8SM1TlQaR-23" target="vVbBvmcP8cE8SM1TlQaR-25" edge="1">
+            <mxGeometry x="-0.2" width="50" height="50" relative="1" as="geometry">
+              <mxPoint x="904.5" y="480" as="sourcePoint" />
+              <mxPoint x="904.5" y="530" as="targetPoint" />
+              <mxPoint as="offset" />
+            </mxGeometry>
+          </mxCell>
+        </object>
+        <object label="0.3" concept="effectGroupLink" id="vVbBvmcP8cE8SM1TlQaR-28">
+          <mxCell style="endArrow=openThin;html=1;fontSize=15;endFill=0;elbow=vertical;curved=1;strokeColor=#000000;rounded=0;" parent="1" source="vVbBvmcP8cE8SM1TlQaR-23" target="vVbBvmcP8cE8SM1TlQaR-29" edge="1">
+            <mxGeometry x="-0.2" width="50" height="50" relative="1" as="geometry">
+              <mxPoint x="770.9452714011084" y="517.552187298723" as="sourcePoint" />
+              <mxPoint x="871.8477948828681" y="507.83275503699645" as="targetPoint" />
+              <mxPoint as="offset" />
+            </mxGeometry>
+          </mxCell>
+        </object>
+        <object label="badQualityA" concept="effect" status="attainment" actor="" id="vVbBvmcP8cE8SM1TlQaR-29">
+          <mxCell style="ellipse;whiteSpace=wrap;html=1;strokeWidth=3;fontSize=15;fillColor=#e1d5e7;strokeColor=#0000FF;" parent="1" vertex="1">
+            <mxGeometry x="790" y="530" width="120" height="40" as="geometry" />
+          </mxCell>
+        </object>
+        <object label="pre" concept="precedenceLink" id="vVbBvmcP8cE8SM1TlQaR-30">
+          <mxCell style="orthogonalLoop=1;jettySize=auto;html=1;fontSize=20;endArrow=open;endFill=0;endSize=7;elbow=vertical;curved=1;rounded=0;" parent="1" source="s7Z0I-bON0rsUeWnYovQ-43" target="vVbBvmcP8cE8SM1TlQaR-14" edge="1">
+            <mxGeometry x="-0.0498" y="-2" relative="1" as="geometry">
+              <mxPoint x="460" y="220" as="sourcePoint" />
+              <mxPoint x="520" y="210" as="targetPoint" />
+              <Array as="points">
+                <mxPoint x="510" y="150" />
+              </Array>
+              <mxPoint as="offset" />
+            </mxGeometry>
+          </mxCell>
+        </object>
+        <object label="" concept="effectGroup" id="vVbBvmcP8cE8SM1TlQaR-31">
+          <mxCell style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;strokeWidth=2;fontSize=15;fillColor=#e1d5e7;strokeColor=#9673a6;" parent="1" vertex="1">
+            <mxGeometry x="1025" y="450" width="20" height="20" as="geometry" />
+          </mxCell>
+        </object>
+        <object label="eff" concept="effectLink" id="vVbBvmcP8cE8SM1TlQaR-32">
+          <mxCell style="orthogonalLoop=1;jettySize=auto;html=1;fontSize=20;endArrow=open;endFill=0;endSize=7;elbow=vertical;strokeColor=#000302;rounded=0;" parent="1" source="vVbBvmcP8cE8SM1TlQaR-16" target="vVbBvmcP8cE8SM1TlQaR-31" edge="1">
+            <mxGeometry relative="1" as="geometry">
+              <mxPoint x="1046.0526315789475" y="390" as="sourcePoint" />
+              <mxPoint x="910" y="295" as="targetPoint" />
+            </mxGeometry>
+          </mxCell>
+        </object>
+        <object label="goodQualityB" concept="effect" status="attainment" actor="" id="vVbBvmcP8cE8SM1TlQaR-33">
+          <mxCell style="ellipse;whiteSpace=wrap;html=1;strokeWidth=3;fontSize=15;fillColor=#e1d5e7;strokeColor=#0000FF;" parent="1" vertex="1">
+            <mxGeometry x="930" y="510" width="120" height="40" as="geometry" />
+          </mxCell>
+        </object>
+        <object label="0.5" concept="effectGroupLink" id="vVbBvmcP8cE8SM1TlQaR-34">
+          <mxCell style="endArrow=openThin;html=1;fontSize=15;endFill=0;elbow=vertical;curved=1;strokeColor=#000000;rounded=0;" parent="1" source="vVbBvmcP8cE8SM1TlQaR-31" target="vVbBvmcP8cE8SM1TlQaR-33" edge="1">
+            <mxGeometry x="-0.2" width="50" height="50" relative="1" as="geometry">
+              <mxPoint x="1159.5" y="490" as="sourcePoint" />
+              <mxPoint x="1159.5" y="540" as="targetPoint" />
+              <mxPoint as="offset" />
+            </mxGeometry>
+          </mxCell>
+        </object>
+        <object label="0.5" concept="effectGroupLink" id="vVbBvmcP8cE8SM1TlQaR-35">
+          <mxCell style="endArrow=openThin;html=1;fontSize=15;endFill=0;elbow=vertical;curved=1;strokeColor=#000000;rounded=0;" parent="1" source="vVbBvmcP8cE8SM1TlQaR-31" target="vVbBvmcP8cE8SM1TlQaR-36" edge="1">
+            <mxGeometry x="-0.2" width="50" height="50" relative="1" as="geometry">
+              <mxPoint x="1025.9452714011084" y="527.552187298723" as="sourcePoint" />
+              <mxPoint x="1126.8477948828681" y="517.8327550369964" as="targetPoint" />
+              <mxPoint as="offset" />
+            </mxGeometry>
+          </mxCell>
+        </object>
+        <object label="badQualityB" concept="effect" status="attainment" actor="" id="vVbBvmcP8cE8SM1TlQaR-36">
+          <mxCell style="ellipse;whiteSpace=wrap;html=1;strokeWidth=3;fontSize=15;fillColor=#e1d5e7;strokeColor=#0000FF;" parent="1" vertex="1">
+            <mxGeometry x="1045" y="540" width="120" height="40" as="geometry" />
+          </mxCell>
+        </object>
+        <object label="0.5" concept="contributionLink" id="vVbBvmcP8cE8SM1TlQaR-39">
+          <mxCell style="endArrow=classic;html=1;fontSize=15;elbow=vertical;curved=1;strokeColor=#000000;" parent="1" source="vVbBvmcP8cE8SM1TlQaR-33" target="s7Z0I-bON0rsUeWnYovQ-84" edge="1">
+            <mxGeometry x="-0.152" y="-34" relative="1" as="geometry">
+              <mxPoint x="728.59" y="740" as="sourcePoint" />
+              <mxPoint x="861.4171054107231" y="762.8462201493539" as="targetPoint" />
+              <Array as="points">
+                <mxPoint x="360" y="930" />
+              </Array>
+              <mxPoint as="offset" />
+            </mxGeometry>
+          </mxCell>
+        </object>
+        <object label="0.5" concept="contributionLink" id="vVbBvmcP8cE8SM1TlQaR-40">
+          <mxCell style="endArrow=classic;html=1;fontSize=15;elbow=vertical;curved=1;strokeColor=#000000;entryX=0.55;entryY=0.95;entryDx=0;entryDy=0;entryPerimeter=0;" parent="1" source="vVbBvmcP8cE8SM1TlQaR-36" target="s7Z0I-bON0rsUeWnYovQ-84" edge="1">
+            <mxGeometry x="-0.0379" y="-45" relative="1" as="geometry">
+              <mxPoint x="981.0263340389897" y="558.9736659610103" as="sourcePoint" />
+              <mxPoint x="893.6496665156219" y="793.5680197766583" as="targetPoint" />
+              <Array as="points">
+                <mxPoint x="360" y="970" />
+              </Array>
+              <mxPoint x="1" y="-1" as="offset" />
+            </mxGeometry>
+          </mxCell>
+        </object>
+        <object label="1.0" concept="contributionLink" id="vVbBvmcP8cE8SM1TlQaR-41">
+          <mxCell style="endArrow=classic;html=1;fontSize=15;elbow=vertical;curved=1;strokeColor=#000000;" parent="1" source="vVbBvmcP8cE8SM1TlQaR-25" target="s7Z0I-bON0rsUeWnYovQ-86" edge="1">
+            <mxGeometry x="0.6258" y="-3" relative="1" as="geometry">
+              <mxPoint x="491.76696810829117" y="539.6116135138191" as="sourcePoint" />
+              <mxPoint x="518.5695338177052" y="652.145699273442" as="targetPoint" />
+              <Array as="points">
+                <mxPoint x="650" y="620" />
+              </Array>
+              <mxPoint as="offset" />
+            </mxGeometry>
+          </mxCell>
+        </object>
+        <object label="1.0" concept="contributionLink" id="vVbBvmcP8cE8SM1TlQaR-42">
+          <mxCell style="endArrow=classic;html=1;fontSize=15;elbow=vertical;curved=1;strokeColor=#000000;" parent="1" source="vVbBvmcP8cE8SM1TlQaR-33" target="s7Z0I-bON0rsUeWnYovQ-86" edge="1">
+            <mxGeometry x="0.1871" y="-11" relative="1" as="geometry">
+              <mxPoint x="728.6438456526416" y="549.2425345263041" as="sourcePoint" />
+              <mxPoint x="544.3457042083492" y="666.1419674348908" as="targetPoint" />
+              <Array as="points">
+                <mxPoint x="670" y="670" />
+              </Array>
+              <mxPoint as="offset" />
+            </mxGeometry>
+          </mxCell>
+        </object>
+        <mxCell id="bpKcQjSValFsViCiSuQe-1" value="" style="group" parent="1" vertex="1" connectable="0">
+          <mxGeometry x="50" y="860" width="310" height="70" as="geometry" />
         </mxCell>
-        <object label="cost:=0, overallQuality:=0, happyCustomer:=10, deliveredLateA, someVar:=100" concept="initialization" usage="Comma separated list of identifiers. Predicates as-is, goals, tasks, through camel-case representation. Variables and qualities are of the form [identifier] := [constant]" id="s7Z0I-bON0rsUeWnYovQ-39">
-          <mxCell style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#7570b3;align=left;labelPosition=center;verticalLabelPosition=middle;verticalAlign=middle;horizontal=1;strokeWidth=3;spacingLeft=4;" parent="druUEQYMw-QrY05D8Slh-2" vertex="1">
+        <object label="cost:=0, overallQuality:=0, reputation:=0" concept="initialization" usage="Comma separated list of identifiers. Predicates as-is. Variables and qualities in the form [identifier] := [constant]" id="bpKcQjSValFsViCiSuQe-2">
+          <mxCell style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#7570b3;align=left;labelPosition=center;verticalLabelPosition=middle;verticalAlign=middle;horizontal=1;strokeWidth=3;spacingLeft=4;" parent="bpKcQjSValFsViCiSuQe-1" vertex="1">
             <mxGeometry y="20" width="310" height="50" as="geometry" />
           </mxCell>
         </object>
-        <mxCell id="druUEQYMw-QrY05D8Slh-1" value="INIT" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#7570b3;strokeWidth=3;align=left;verticalAlign=middle;spacingLeft=4;fontFamily=Helvetica;fontSize=12;fontColor=default;horizontal=1;" parent="druUEQYMw-QrY05D8Slh-2" vertex="1">
+        <mxCell id="bpKcQjSValFsViCiSuQe-3" value="INIT" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#7570b3;strokeWidth=3;align=left;verticalAlign=middle;spacingLeft=4;fontFamily=Helvetica;fontSize=12;fontColor=default;horizontal=1;" parent="bpKcQjSValFsViCiSuQe-1" vertex="1">
           <mxGeometry width="36" height="20" as="geometry" />
         </mxCell>
-        <mxCell id="druUEQYMw-QrY05D8Slh-5" value="" style="group" parent="1" vertex="1" connectable="0">
-          <mxGeometry x="-90" y="900" width="290" height="70" as="geometry" />
+        <mxCell id="bpKcQjSValFsViCiSuQe-4" value="" style="group" parent="1" vertex="1" connectable="0">
+          <mxGeometry x="630" y="840" width="205" height="70" as="geometry" />
         </mxCell>
-        <object label="deliveredInTimeB,cost(0,100), overallQuality(0,1),someVar(0,200),orderMaterial,&lt;div&gt;orderFromSupplierA&lt;/div&gt;" concept="export" usage="Comma separated list of identifiers. Predicates, variables: as-is. Goals, tasks, qualities: camel-case representation." id="s7Z0I-bON0rsUeWnYovQ-40">
-          <mxCell style="rounded=0;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;align=left;labelPosition=center;verticalLabelPosition=middle;verticalAlign=middle;horizontal=1;strokeWidth=3;spacingLeft=4;" parent="druUEQYMw-QrY05D8Slh-5" vertex="1">
-            <mxGeometry y="20" width="290" height="50" as="geometry" />
+        <object label="cost, reputation" concept="crossrun" usage="Comma separated list of identifiers. Predicates, variables (as-is), and qualities (camel-case representation)." id="bpKcQjSValFsViCiSuQe-5">
+          <mxCell style="rounded=0;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;align=left;labelPosition=center;verticalLabelPosition=middle;verticalAlign=middle;horizontal=1;strokeWidth=3;spacingLeft=4;" parent="bpKcQjSValFsViCiSuQe-4" vertex="1">
+            <mxGeometry y="20" width="205" height="50" as="geometry" />
           </mxCell>
         </object>
-        <mxCell id="druUEQYMw-QrY05D8Slh-4" value="EXP" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=#d6b656;strokeWidth=3;align=left;verticalAlign=middle;spacingLeft=4;fontFamily=Helvetica;fontSize=12;fontColor=default;horizontal=1;fillColor=#fff2cc;" parent="druUEQYMw-QrY05D8Slh-5" vertex="1">
-          <mxGeometry width="37" height="20" as="geometry" />
-        </mxCell>
-        <mxCell id="druUEQYMw-QrY05D8Slh-7" value="" style="group" parent="1" vertex="1" connectable="0">
-          <mxGeometry x="470" y="780" width="205" height="80" as="geometry" />
-        </mxCell>
-        <object label="cost, happyCustomer,&amp;nbsp; someVar,aTruePredicate, neverDeliveredB" concept="crossrun" usage="Comma separated list of identifiers. Predicates, variable as-is, goals, tasks, qualities, through camel-case representation." id="s7Z0I-bON0rsUeWnYovQ-41">
-          <mxCell style="rounded=0;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;align=left;labelPosition=center;verticalLabelPosition=middle;verticalAlign=middle;horizontal=1;strokeWidth=3;spacingLeft=4;" parent="druUEQYMw-QrY05D8Slh-7" vertex="1">
-            <mxGeometry y="20" width="205" height="60" as="geometry" />
-          </mxCell>
-        </object>
-        <mxCell id="druUEQYMw-QrY05D8Slh-6" value="CROSS" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=#9673a6;strokeWidth=3;align=left;verticalAlign=middle;spacingLeft=4;fontFamily=Helvetica;fontSize=12;fontColor=default;horizontal=1;fillColor=#e1d5e7;" parent="druUEQYMw-QrY05D8Slh-7" vertex="1">
+        <mxCell id="bpKcQjSValFsViCiSuQe-6" value="CROSS" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=#9673a6;strokeWidth=3;align=left;verticalAlign=middle;spacingLeft=4;fontFamily=Helvetica;fontSize=12;fontColor=default;horizontal=1;fillColor=#e1d5e7;" parent="bpKcQjSValFsViCiSuQe-4" vertex="1">
           <mxGeometry width="53" height="20" as="geometry" />
         </mxCell>
-        <object label="deliveredInTimeX AND deliveredInTimeY" concept="precondition" usage="&#xa;&#xa;Use operators AND, OR, NOT, PREV, and GT (for &gt;), LT (for &lt;), GTE (for &gt;=), LTE (for &lt;=), EQ (for ==), NEQ (for !=). Ground atoms are predicates or camel-case representaitons of goals, task, predicates. DO NOT USE any formatting (boldface etc.). " formula="PREV(hvacOn) AND NOT signalOffS OR signalONS" notes="PREVIOUS(hvacOn) AND NOT signalOffS OR signalONS" dtxFormula="" id="druUEQYMw-QrY05D8Slh-19">
-          <mxCell style="rounded=0;whiteSpace=wrap;html=1;strokeWidth=3;fontSize=15;fillColor=#f8cecc;strokeColor=#b85450;" parent="1" vertex="1">
-            <mxGeometry x="500" y="230" width="180" height="50" as="geometry" />
+        <mxCell id="bpKcQjSValFsViCiSuQe-7" value="" style="group" parent="1" vertex="1" connectable="0">
+          <mxGeometry x="370" y="950" width="360" height="90" as="geometry" />
+        </mxCell>
+        <object label="deliveredInTimeA,deliveredInTimeB,&lt;div&gt;deliveredLateA,deliveredLateB,&lt;/div&gt;&lt;div&gt;neverDeliveredA,neverDeliveredB,&lt;/div&gt;&lt;div&gt;goodQualityA,goodQualityB,badQualityA,badQualityB&lt;/div&gt;" concept="export" usage="Comma separated list of identifiers. Predicates, variables: as-is. Goals, tasks, qualities: camel-case representation." id="bpKcQjSValFsViCiSuQe-8">
+          <mxCell style="rounded=0;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;align=left;labelPosition=center;verticalLabelPosition=middle;verticalAlign=middle;horizontal=1;strokeWidth=3;spacingLeft=4;" parent="bpKcQjSValFsViCiSuQe-7" vertex="1">
+            <mxGeometry y="25.71428571428571" width="360" height="64.28571428571428" as="geometry" />
           </mxCell>
         </object>
-        <object label="pre" concept="precedenceLink" id="druUEQYMw-QrY05D8Slh-20">
-          <mxCell style="orthogonalLoop=1;jettySize=auto;html=1;fontSize=20;endArrow=open;endFill=0;endSize=7;elbow=vertical;curved=1;rounded=0;" parent="1" source="druUEQYMw-QrY05D8Slh-19" target="s7Z0I-bON0rsUeWnYovQ-48" edge="1">
-            <mxGeometry x="-0.099" y="-7" relative="1" as="geometry">
-              <mxPoint x="220" y="440" as="sourcePoint" />
-              <mxPoint x="280" y="430" as="targetPoint" />
-              <Array as="points">
-                <mxPoint x="560" y="330" />
-              </Array>
-              <mxPoint as="offset" />
-            </mxGeometry>
-          </mxCell>
-        </object>
-        <object label="deliveredLateA OR deliveredInTimeB" concept="precondition" usage="&#xa;&#xa;Use operators AND, OR, NOT, PREV, and GT (for &gt;), LT (for &lt;), GTE (for &gt;=), LTE (for &lt;=), EQ (for ==), NEQ (for !=). Ground atoms are predicates or camel-case representaitons of goals, task, predicates. DO NOT USE any formatting (boldface etc.). " formula="" notes="" dtxFormula="" id="druUEQYMw-QrY05D8Slh-21">
-          <mxCell style="rounded=0;whiteSpace=wrap;html=1;strokeWidth=3;fontSize=15;fillColor=#f8cecc;strokeColor=#b85450;" parent="1" vertex="1">
-            <mxGeometry x="420" y="140" width="180" height="50" as="geometry" />
-          </mxCell>
-        </object>
-        <object label="pre" concept="precedenceLink" id="druUEQYMw-QrY05D8Slh-22">
-          <mxCell style="orthogonalLoop=1;jettySize=auto;html=1;fontSize=20;endArrow=open;endFill=0;endSize=7;elbow=vertical;curved=1;rounded=0;" parent="1" source="druUEQYMw-QrY05D8Slh-21" target="s7Z0I-bON0rsUeWnYovQ-48" edge="1">
-            <mxGeometry x="-0.099" y="-7" relative="1" as="geometry">
-              <mxPoint x="590" y="290" as="sourcePoint" />
-              <mxPoint x="446" y="330" as="targetPoint" />
-              <Array as="points" />
-              <mxPoint as="offset" />
-            </mxGeometry>
-          </mxCell>
-        </object>
-        <object label="deliveredLateB" concept="precondition" usage="&#xa;&#xa;Use operators AND, OR, NOT, PREV, and GT (for &gt;), LT (for &lt;), GTE (for &gt;=), LTE (for &lt;=), EQ (for ==), NEQ (for !=). Ground atoms are predicates or camel-case representaitons of goals, task, predicates. DO NOT USE any formatting (boldface etc.). " formula="" notes="" dtxFormula="" id="druUEQYMw-QrY05D8Slh-23">
-          <mxCell style="rounded=0;whiteSpace=wrap;html=1;strokeWidth=3;fontSize=15;fillColor=#f8cecc;strokeColor=#b85450;" parent="1" vertex="1">
-            <mxGeometry y="190" width="140" height="40" as="geometry" />
-          </mxCell>
-        </object>
-        <object label="pre" concept="precedenceLink" id="druUEQYMw-QrY05D8Slh-24">
-          <mxCell style="orthogonalLoop=1;jettySize=auto;html=1;fontSize=20;endArrow=open;endFill=0;endSize=7;elbow=vertical;curved=1;rounded=0;" parent="1" source="druUEQYMw-QrY05D8Slh-23" target="s7Z0I-bON0rsUeWnYovQ-47" edge="1">
-            <mxGeometry x="-0.099" y="-7" relative="1" as="geometry">
-              <mxPoint x="-320" y="415" as="sourcePoint" />
-              <mxPoint x="-104" y="295" as="targetPoint" />
-              <Array as="points">
-                <mxPoint x="60" y="310" />
-              </Array>
-              <mxPoint as="offset" />
-            </mxGeometry>
-          </mxCell>
-        </object>
-        <object label="lonely" concept="precondition" usage="&#xa;&#xa;Use operators AND, OR, NOT, PREV, and GT (for &gt;), LT (for &lt;), GTE (for &gt;=), LTE (for &lt;=), EQ (for ==), NEQ (for !=). Ground atoms are predicates or camel-case representaitons of goals, task, predicates. DO NOT USE any formatting (boldface etc.). " formula="PREV(deliveredLateA) OR neverDeliveredB" notes="" dtxFormula="" id="hS7i1rel9Kx-ZFXhyUu0-1">
-          <mxCell style="rounded=0;whiteSpace=wrap;html=1;strokeWidth=3;fontSize=15;fillColor=#f8cecc;strokeColor=#b85450;" parent="1" vertex="1">
-            <mxGeometry x="-180" y="350" width="140" height="40" as="geometry" />
-          </mxCell>
-        </object>
-        <object label="lonelyQuality" concept="quality" actor="default" isRoot="false" dtxFormula="    &lt;add&gt;&#xa;         &lt;multiply&gt;&lt;numConst&gt;0.5&lt;/numConst&gt;&lt;predicateID&gt;deliveredLateA&lt;/predicateID&gt;&lt;/multiply&gt;&#xa;         &lt;multiply&gt;&lt;numConst&gt;1.0&lt;/numConst&gt;&lt;predicateID&gt;neverDeliveredB&lt;/predicateID&gt;&lt;/multiply&gt;&#xa;      &lt;/add&gt;" id="hS7i1rel9Kx-ZFXhyUu0-2">
-          <mxCell style="ellipse;shape=cloud;whiteSpace=wrap;html=1;strokeWidth=3;fontSize=15;fillColor=#d5e8d4;strokeColor=#688F51;" parent="1" vertex="1">
-            <mxGeometry x="-200" y="550" width="115" height="60" as="geometry" />
-          </mxCell>
-        </object>
-        <object label="pre" concept="precedenceLink" id="vKBnDbJoSSFo43Gklwk9-1">
-          <mxCell style="orthogonalLoop=1;jettySize=auto;html=1;fontSize=20;endArrow=open;endFill=0;endSize=7;elbow=vertical;curved=1;rounded=0;" edge="1" parent="1" source="hS7i1rel9Kx-ZFXhyUu0-1" target="s7Z0I-bON0rsUeWnYovQ-53">
-            <mxGeometry x="0.0488" y="-3" relative="1" as="geometry">
-              <mxPoint x="78" y="240" as="sourcePoint" />
-              <mxPoint x="179" y="330" as="targetPoint" />
-              <Array as="points" />
-              <mxPoint as="offset" />
-            </mxGeometry>
-          </mxCell>
-        </object>
+        <mxCell id="bpKcQjSValFsViCiSuQe-9" value="EXP" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=#d6b656;strokeWidth=3;align=left;verticalAlign=middle;spacingLeft=4;fontFamily=Helvetica;fontSize=12;fontColor=default;horizontal=1;fillColor=#fff2cc;" parent="bpKcQjSValFsViCiSuQe-7" vertex="1">
+          <mxGeometry width="37" height="25.71428571428571" as="geometry" />
+        </mxCell>
       </root>
     </mxGraphModel>
   </diagram>
