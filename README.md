@@ -14,19 +14,21 @@ Detailed directions on how to build iStarDT-V models can be found in [this how-t
 ## Installing and using mx2dtx
 
 - Ensure you have maven, Java and git installed in your system. We have tested with Maven version 3.9.9 and Java 21.0.4.
-- Clone the repository: `git clone https://github.com/cmg-york/mx2dtx`
+- Clone the repository: `git clone https://github.com/cmg-yorku/mx2dtx`
 - `cd mx2dtx`
 - `mvn compile` to compile
 - Run with `mvn exec:java -Dexec.args="-f [drawio input file] -o [iStarDT-X output file]"` to convert your diagram. The `-o` option is optional - if omitted, the output will be printed to standard output.
 - Use `-h` option to see usage information and available options. **NOTE:** if you are using Windows PowerShell, add `--%` between `exec:java` and `-Dexec`
-- If you want to run from native java call: `java -cp target/classes cmg.gReason.outputs.istardtx.mx2dtx -f [drawio input file] -o [iStarDT-X output file]`
-- Example models can be found in `src/main/resources` and `src/test/resources`
+- If you want to run from native java call:
+	- `mvn package`
+	- `java -jar .\target\g2dt-[X].jar -f [drawio input file] -o [iStarDT-X output file]`, where `\[X\]` is the version information (check the folder) 
+- Example models can be found in `src/test/resources`
 
 ## Usage Notes
 
-- Custom numeric formulae for qualities are supported only in iStarDT-X at this point. Prepare the formula in a text editor and paste within the `dtxFormula` attribute of qualities. Otherwise, ensure a tree-like hierarchy of qualities. Satisfaction level of a quality is the linear combination of the satisfaction levels of the origins multiplied by the contribution labels.
+- Custom numeric formulae for qualities are supported only in iStarDT-X format at this point. Prepare the formula in a text editor and paste within the `dtxFormula` attribute of qualities. Otherwise, ensure a tree-like hierarchy of qualities. Satisfaction level of a quality is the linear combination of the satisfaction levels of the origins multiplied by the contribution labels.
 - To reference goals, tasks and qualities in formulae or lists, use camel-case representation of the label in the corresponding element. For example goal `Have Meeting Scheduled` is referenced as `haveMeetingScheduled`.
-- It is important that all links/connectors properly connect directly on the whole shapes. This can be achieved by dragging the end-point of the link on the target shape and drop it when the shape acquires a blue outline.
+- It is important that all links/connectors properly connect directly on the whole shapes. This can be achieved by dragging the end-point of the link on the target shape and drop it when the shape acquires a blue outline. See more details in [this how-to guide](doc/HOWTO.md).
 
 ## Related Tool
 
