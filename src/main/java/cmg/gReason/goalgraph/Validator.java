@@ -4,9 +4,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
-import java.util.logging.ErrorManager;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import cmg.gReason.inputs.drawio.ExportedSetParser;
 import cmg.gReason.inputs.drawio.InitializationParser;
@@ -86,7 +85,7 @@ public class Validator {
 		
 		if (cross != null) {
 			ArrayList<String> crossList = new ArrayList<>(Arrays.asList(cross.getLabel().split("\\s*,\\s*")));
-			List<String> allowedCrosses = Arrays.asList("predicateID","variableID","qualID","preconditionID");
+			List<String> allowedCrosses = Arrays.asList("predicateID","variableID","qualID","conditionID");
 			for (String prop : crossList) {
 				if (!(identifiers.contains(prop))) {
 					err.addError("Unknown element in cross run set '" + prop + "'", "GoalModel::predicateValidation()");
@@ -104,7 +103,7 @@ public class Validator {
 			ExportedSetParser p = new ExportedSetParser();
 			p.parseExportedSetLabel(export.getLabel());
 			//identifier must be: predicate, goal, task, variable, quality
-			List<String> allowedPropExports = Arrays.asList("predicateID","taskID","goalID","preconditionID");
+			List<String> allowedPropExports = Arrays.asList("predicateID","taskID","goalID","conditionID");
 			List<String> allowedRelExports = Arrays.asList("variableID","qualID");
 
 			for (String prop : p.getPropositions()) {

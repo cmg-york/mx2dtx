@@ -61,7 +61,7 @@ public class DrawIOReader {
 			Document doc = (Document) db.parse(new File(inFile));
 			m = new GoalModel(err);
 			
-			System.out.println("Reading XML file...");
+			System.out.println("Reading mxGraph spec...");
 
 			NodeList list = doc.getElementsByTagName("object");
 			for (int temp = 0; temp < list.getLength(); temp++) {
@@ -87,7 +87,7 @@ public class DrawIOReader {
 	}
 	
 	public GoalModel generateGoalGraph(GoalModel m) {
-		System.out.println("Creating goal graph...");
+		System.out.println("Creating and validating model...");
 		try {
 			m.createGoalGraph();
 		} catch (Exception e) {
@@ -107,7 +107,10 @@ public class DrawIOReader {
 		File f = new File(inFile);
 		if (!f.exists() || f.isDirectory())
 			throw new Exception("Input file not found:" + inFile);
-		this.inFile = inFile;
+		else {
+			this.inFile = inFile;
+			System.out.println("Opening file for translation: " + inFile);
+		}
 	}
 
 }

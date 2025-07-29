@@ -24,7 +24,14 @@ public class mx2dtx {
 		
 
 		try {
+
+			System.out.println("Before processArgs");
 			mainClass.processArgs(args);
+			System.out.println("After processArgs");
+			
+
+			System.out.println("\n\n mx2dtx  \n");
+			System.out.flush();
 			
 			//Read from the XML
 			reader.setInFile(inputFile);

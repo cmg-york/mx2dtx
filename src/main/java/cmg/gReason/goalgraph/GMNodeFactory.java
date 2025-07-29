@@ -128,7 +128,7 @@ public class GMNodeFactory {
 				//It is a named formula
 				preFormula = ((WithFormula) gNode).getFormula();
 				//Note: the label below has been cleaned and camelized at reading
-				identifiers.addIdentifier(e.getLabel(), "preconditionID");
+				identifiers.addIdentifier(e.getLabel(), "conditionID");
 				identifiers.addEffectPredicate(((WithFormula) gNode).getLabel());
 			} else {
 				//The label is the formula

@@ -152,8 +152,10 @@ public class IdentifierRegistry {
 				addIdentifier(n.getCamelLabel(),"goalID");
 			} else if (n instanceof GMQuality) {
 				addIdentifier(n.getCamelLabel(),"qualID");
+			} else if (n instanceof GMPrecondition) {
+				addIdentifier(n.getCamelLabel(),"conditionID");
 			} else if (n instanceof GMEffect) {
-
+				//addIdentifier(n.getCamelLabel(),"effectID");
 			}
 		}
 

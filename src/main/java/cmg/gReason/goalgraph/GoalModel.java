@@ -3,19 +3,9 @@ package cmg.gReason.goalgraph;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import cmg.gReason.inputs.drawio.graphelementstructure.CrossRunSet;
 import cmg.gReason.inputs.drawio.graphelementstructure.Effect;
-import cmg.gReason.inputs.drawio.graphelementstructure.EffectGroup;
-import cmg.gReason.inputs.drawio.graphelementstructure.ElementWithFormula;
-import cmg.gReason.inputs.drawio.graphelementstructure.ExportedSet;
-import cmg.gReason.inputs.drawio.graphelementstructure.Goal;
 import cmg.gReason.inputs.drawio.graphelementstructure.GraphElement;
-import cmg.gReason.inputs.drawio.graphelementstructure.InitializationSet;
 import cmg.gReason.inputs.drawio.graphelementstructure.Link;
-import cmg.gReason.inputs.drawio.graphelementstructure.Precondition;
-import cmg.gReason.inputs.drawio.graphelementstructure.Quality;
-import cmg.gReason.inputs.drawio.graphelementstructure.Task;
-
 import cmg.gReason.outputs.common.ErrorReporter;
 
 
@@ -204,9 +194,7 @@ public class GoalModel {
 				}
 				if (((GMQuality) n).isQRoot()) {
 					declaredQRoots.add((GMQuality) n);
-					System.out.println("Quality " + n.getCamelLabel() + " is declared root.");
 				} else {
-					System.out.println("Quality " + n.getCamelLabel() + " is not declared root.");
 				}
 				if ((((WithFormula) n).hasDtxFormula() || ((WithFormula) n).hasFormula())) {
 					hasFormula = true;
