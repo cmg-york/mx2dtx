@@ -145,7 +145,7 @@
 *** CO N D I T I O N   B O X E S ***
 -->
 <condBoxes>
-<condBox name = "hvacOn"><or><and><previous><conditionID>hvacOn</conditionID></previous><not><predicateID>signalOffS</predicateID></not></and><predicateID>signalOnS</predicateID></or></condBox>
+<condBox name = "hvacOn" description = "Condition Box"><or><and><previous><conditionID>hvacOn</conditionID></previous><not><predicateID>signalOffS</predicateID></not></and><predicateID>signalOnS</predicateID></or></condBox>
 </condBoxes>
 
 

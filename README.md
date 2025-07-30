@@ -21,7 +21,7 @@ Detailed directions on how to build iStarDT-V models can be found in [this how-t
 - Use `-h` option to see usage information and available options. **NOTE:** if you are using Windows PowerShell, add `--%` between `exec:java` and `-Dexec`
 - If you want to run from native java call:
 	- `mvn package`
-	- `java -jar .\target\g2dt-[X].jar -f [drawio input file] -o [iStarDT-X output file]`, where `\[X\]` is the version information (check the folder) 
+	- `java -jar .\target\g2dt-[X].jar -f [drawio input file] -o [iStarDT-X output file]`, where `[X]` is the version information (check the folder) 
 - Example models can be found in `src/test/resources`
 
 ## Usage Notes

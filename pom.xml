@@ -1,7 +1,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <groupId>cmg.gReason</groupId>
-  <artifactId>g2dt</artifactId>
+  <groupId>ca.yorku.cmg.istardt.reader</groupId>
+  <artifactId>mx2dtx</artifactId>
   <version>0.0.1-SNAPSHOT</version>
     
     <properties>
@@ -10,6 +10,13 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <junit.version>5.9.2</junit.version>
     </properties>
+
+    <scm>
+        <connection>scm:git:https://github.com/cmg-york/mx2dtx.git</connection>
+        <developerConnection>scm:git:https://github.com/cmg-york/mx2dtx.git</developerConnection>
+        <url>https://github.com/cmg-york/mx2dtx.git</url>
+        <tag>HEAD</tag>
+    </scm>
 
     <dependencies>
         <!-- JUnit 5 dependencies -->
@@ -88,19 +95,19 @@
           				<goals>
             				<goal>run</goal>
           				</goals>
-	<!--			      <configuration>
+<!--			      <configuration>
 				        <target name="conditionally-copy-files">
 				          <copy todir="../istar-unmarshal/src/test/resources/dtx2dtg"
 				                failonerror="false">
 				            <fileset dir="src/test/resources"
 				                     includes="**/*.istardtx"
-				                     excludes="**/*-Authoritative.*"
+				                     excludes="**/*-Auth.*"
 				                     erroronmissingdir="false"
 				                     />
 				          </copy>
 				        </target>
 				      </configuration>
-	-->
+-->
         			</execution>
       			</executions>
     		</plugin>
@@ -129,8 +136,9 @@
 			      <artifactId>maven-release-plugin</artifactId>
 			      <version>3.1.1</version> <!-- Or the latest version -->
 			      <configuration>
-			        <pushChanges>false</pushChanges> <!-- Disable automatic push -->
-			        <localCheckout>true</localCheckout> <!-- Prevents fetch/push -->
+			        <!-- <pushChanges>false</pushChanges> 
+			        <localCheckout>true</localCheckout>
+			        --> 
 			        <tagNameFormat>@{project.artifactId}-@{project.version}</tagNameFormat>
 			      </configuration>
 			    </plugin>

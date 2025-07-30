@@ -270,14 +270,14 @@ public class dtxTranslator extends Translator {
 				
 				if (((WithFormula) n).hasDtxFormula()) {
 					//It is a named box with a formula already in DTX
-					condBoxes += "<condBox name = \"" + n.getCamelLabel() + "\">" + ((WithFormula) n).getDtxFormula() + "</condBox>\n";
+					condBoxes += "<condBox name = \"" + n.getCamelLabel() + "\" description = \"Condition Box\">" + ((WithFormula) n).getDtxFormula() + "</condBox>\n";
 					System.out.println("Adding precondition formula "+ ((WithFormula) n).getDtxFormula());
 				} else if (((WithFormula) n).hasFormula()) {
 					//It is a named box but has a non-XML formula
-					condBoxes += "<condBox name = \"" + n.getCamelLabel() + "\">" + parser.parse(((WithFormula) n).getFormula()) + "</condBox>\n";
+					condBoxes += "<condBox name = \"" + n.getCamelLabel() + "\" description = \"Condition Box\">" + parser.parse(((WithFormula) n).getFormula()) + "</condBox>\n";
 				} else {
 					//Label has the formula
-					condBoxes += "<condBox name = \"default" + cBoxCounter++ + "\" >\n" + getIndent(1) + parser.parse(n.getLabel()) + "</condBox>\n";	
+					condBoxes += "<condBox name = \"default" + cBoxCounter++ + "\"  description = \"Condition Box\" >\n" + getIndent(1) + parser.parse(n.getLabel()) + "</condBox>\n";	
 				}
 				 
 			
